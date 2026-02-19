@@ -1,0 +1,52 @@
+<div class="container">
+  <h1>Ejemplo de Uso de Servicios</h1>
+
+  <!-- Mostrar errores -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    Cargando...
+  </div>
+
+  <!-- Botón para crear paciente -->
+  <button (click)="createNewPatient()" [disabled]="loading">
+    Crear Nuevo Paciente
+  </button>
+
+  <!-- Lista de pacientes -->
+  <section class="patients-section" *ngIf="!loading">
+    <h2>Pacientes</h2>
+    <div *ngIf="patients.length === 0" class="empty-state">
+      No hay pacientes registrados
+    </div>
+    <ul class="patient-list">
+      <li *ngFor="let patient of patients" [class.active]="selectedPatient?.id === patient.id">
+        <div (click)="selectPatient(patient)" class="patient-info">
+          <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
+          <span>{{ patient.email }}</span>
+          <small>DNI: {{ patient.dni }}</small>
+        </div>
+        <button (click)="deletePatient(patient.id)" class="delete-btn">
+          Eliminar
+        </button>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Registros médicos del paciente seleccionado -->
+  <section class="records-section" *ngIf="selectedPatient && !loading">
+    <h2>Registros Médicos de {{ selectedPatient.firstName }} {{ selectedPatient.lastName }}</h2>
+    <div *ngIf="medicalRecords.length === 0" class="empty-state">
+      No hay registros médicos para este paciente
+    </div>
+    <ul class="records-list">
+      <li *ngFor="let record of medicalRecords">
+        <strong>{{ record.description }}</strong>
+        <small>{{ record.createdAt | date:'short' }}</small>
+      </li>
+    </ul>
+  </section>
+</div>

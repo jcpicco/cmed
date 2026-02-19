@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-prettier"
+  ],
+  "rules": {
+    "no-empty-source": null,
+    "color-named": "never",
+    "declaration-property-value-disallowed-list": null,
+    "no-descending-specificity": null,
+    "selector-no-qualifying-type": null,
+    "max-nesting-depth": 5
+  }
+}
