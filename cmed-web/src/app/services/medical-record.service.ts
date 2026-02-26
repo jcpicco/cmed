@@ -8,9 +8,9 @@ import { MedicalRecordListDto, MedicalRecordDto, MedicalRecordCreateDto, Medical
   providedIn: 'root'
 })
 export class MedicalRecordService {
-  private apiUrl = `${environment.apiUrl}/medicalRecords`;
+  private apiUrl = `${environment.apiUrl}/medical-records`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Obtener todos los registros médicos

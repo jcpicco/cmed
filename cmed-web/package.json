@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider ng serve --disable-host-check --poll 2000",
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider ng build",
+    "start": "cross-env NODE_OPTIONS=\"--openssl-legacy-provider --no-deprecation\" ng serve --disable-host-check --poll 2000",
+    "build": "cross-env NODE_OPTIONS=\"--openssl-legacy-provider --no-deprecation\" ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

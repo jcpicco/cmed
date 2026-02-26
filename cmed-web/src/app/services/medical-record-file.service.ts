@@ -6,7 +6,7 @@ import { MedicalRecordFile } from '../models/file.model';
 
 /**
  * Servicio para gestionar archivos de registros médicos
- * Endpoints: /api/medicalRecords/{medicalRecordId}/files
+ * Endpoints: /api/medical-records/{medicalRecordId}/files
  */
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,7 @@ export class MedicalRecordFileService {
      */
     getAllByMedicalRecordId(medicalRecordId: string): Observable<MedicalRecordFile[]> {
         return this.http.get<MedicalRecordFile[]>(
-            `${environment.apiUrl}/medicalRecords/${medicalRecordId}/files`
+            `${environment.apiUrl}/medical-records/${medicalRecordId}/files`
         );
     }
 
@@ -32,7 +32,7 @@ export class MedicalRecordFileService {
         formData.append('file', file);
 
         return this.http.post<MedicalRecordFile>(
-            `${environment.apiUrl}/medicalRecords/${medicalRecordId}/files`,
+            `${environment.apiUrl}/medical-records/${medicalRecordId}/files`,
             formData
         );
     }
@@ -42,7 +42,7 @@ export class MedicalRecordFileService {
      */
     deleteFile(medicalRecordId: string, fileId: string): Observable<void> {
         return this.http.delete<void>(
-            `${environment.apiUrl}/medicalRecords/${medicalRecordId}/files/${fileId}`
+            `${environment.apiUrl}/medical-records/${medicalRecordId}/files/${fileId}`
         );
     }
 }

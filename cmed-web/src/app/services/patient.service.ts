@@ -12,7 +12,7 @@ import { PreviousRecordListDto } from '../models/previous-record.model';
 export class PatientService {
   private apiUrl = `${environment.apiUrl}/patients`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Obtener todos los pacientes
@@ -53,13 +53,13 @@ export class PatientService {
    * Obtener todos los registros médicos de un paciente
    */
   getMedicalRecordsByPatientId(patientId: string): Observable<MedicalRecordListDto[]> {
-    return this.http.get<MedicalRecordListDto[]>(`${this.apiUrl}/${patientId}/medicalRecords`);
+    return this.http.get<MedicalRecordListDto[]>(`${this.apiUrl}/${patientId}/medical-records`);
   }
 
   /**
    * Obtener todos los registros previos de un paciente
    */
   getPreviousRecordsByPatientId(patientId: string): Observable<PreviousRecordListDto[]> {
-    return this.http.get<PreviousRecordListDto[]>(`${this.apiUrl}/${patientId}/previousRecords`);
+    return this.http.get<PreviousRecordListDto[]>(`${this.apiUrl}/${patientId}/previous-records`);
   }
 }

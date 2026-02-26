@@ -25,31 +25,19 @@ export class PdfService {
         const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.width;
 
-        // Colors
-        const primaryColor: [number, number, number] = [44, 62, 80]; // Dark Slate Blue
-        const accentColor: [number, number, number] = [52, 152, 219]; // Light Blue
-        const grayColor: [number, number, number] = [127, 140, 141]; // Gray
+        const textColor: [number, number, number] = [0, 0, 0];
 
         // --- Header Section ---
-        doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-        doc.rect(0, 0, pageWidth, 40, 'F');
-
-        // Logo Background (White)
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(10, 5, 40, 30, 3, 3, 'F');
-
-        // Logo
         try {
-            // Centering logo vertically roughly in the box (y=5 to y=35)
-            // y=11 gives 6px padding top (relative to box start), suitable for aspect ratios ~2:1 to 3:1
-            doc.addImage('assets/logo.png', 'PNG', 15, 11, 30, 0);
+            // Logo
+            doc.addImage('assets/logo.png', 'PNG', 15, 10, 30, 0);
         } catch (e) {
             console.error('Error loading logo', e);
         }
 
-        // Title (Centered vertically relative to 40px header)
+        // Title 
         doc.setFontSize(22);
-        doc.setTextColor(255, 255, 255);
+        doc.setTextColor(textColor[0], textColor[1], textColor[2]);
         doc.setFont('helvetica', 'bold');
         doc.text('INFORME CLÍNICO', 60, 25);
 
@@ -61,14 +49,15 @@ export class PdfService {
         const dateStr = formatDate(today, 'dd/MM/yyyy', 'en-US');
         doc.text(`Fecha de emisión: ${dateStr}`, pageWidth - 15, 25, { align: 'right' });
 
-        let yPos = 50;
+        // Add a separation line
+        doc.setDrawColor(0, 0, 0);
+        doc.setLineWidth(0.1);
+        doc.line(15, 35, pageWidth - 15, 35);
+
+        let yPos = 45;
         const margin = 15;
 
         // --- Patient Info Section ---
-        doc.setDrawColor(200, 200, 200);
-        doc.setLineWidth(0.1);
-
-        // We use autoTable for layout of patient info to look like a grid form
         autoTable(doc, {
             startY: yPos,
             head: [['DATOS DEL PACIENTE', '']],
@@ -81,19 +70,21 @@ export class PdfService {
             ],
             theme: 'grid',
             headStyles: {
-                fillColor: [240, 240, 240],
+                fillColor: [255, 255, 255],
                 textColor: [0, 0, 0],
                 fontStyle: 'bold',
-                lineColor: [200, 200, 200]
+                lineColor: [0, 0, 0],
+                lineWidth: 0.1
             },
             columnStyles: {
-                0: { cellWidth: 50, fontStyle: 'bold', fillColor: [250, 250, 250] },
-                1: { cellWidth: 'auto' }
+                0: { cellWidth: 50, fontStyle: 'bold', fillColor: [255, 255, 255], textColor: [0, 0, 0] },
+                1: { cellWidth: 'auto', textColor: [0, 0, 0], fillColor: [255, 255, 255] }
             },
             styles: {
-                lineColor: [200, 200, 200],
+                lineColor: [0, 0, 0],
                 lineWidth: 0.1,
-                fontSize: 10
+                fontSize: 10,
+                textColor: [0, 0, 0]
             }
         });
 
@@ -105,84 +96,107 @@ export class PdfService {
 
             // Section Title
             doc.setFontSize(14);
-            doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
             doc.setFont('helvetica', 'bold');
             doc.text('HISTORIA CLÍNICA', margin, yPos);
             yPos += 5;
 
-            const tableBody: any[] = [];
-
             medicalRecords.forEach((record, index) => {
-                // Formatting content
-                const valoraciones = record.notes && record.notes.length > 0
-                    ? record.notes.map(n => `• ${n.description}`).join('\n')
-                    : 'Sin valoraciones.';
-
-                const diagnosticos = record.diagnoses && record.diagnoses.length > 0
-                    ? record.diagnoses.map(d => {
-                        let text = `• ${d.description}`;
-                        if (d.prescription) text += `\n   Tratamiento: ${d.prescription}`;
-                        if (d.protocol) text += `\n   Conducta: ${d.protocol}`;
-                        return text;
-                    }).join('\n')
-                    : 'Sin diagnósticos.';
-
-                // Add a spacer row if not the first item, to separate records
-                if (index > 0) {
-                    tableBody.push([{ content: '', colSpan: 2, styles: { cellPadding: 1, fillColor: [255, 255, 255] } }]);
-                }
-
-                // Row 1: Header/Date - Full width or labeled? 
-                // User asked for "Row with first column: Fecha, Desc, Val, Diag".
-                // Let's interpret "Fecha" as the first row of the block.
+                const tableBody: any[] = [];
 
                 // Block Header (Date)
                 tableBody.push([
-                    { content: 'FECHA DE CONSULTA', styles: { fontStyle: 'bold', fillColor: [240, 248, 255] } },
-                    { content: formatDate(record.createdAt, 'dd/MM/yyyy', 'en-US'), styles: { fontStyle: 'bold', fillColor: [240, 248, 255] } }
+                    { content: 'FECHA DE CONSULTA', styles: { fontStyle: 'bold', fillColor: [255, 255, 255] } },
+                    { content: formatDate(record.createdAt, 'dd/MM/yyyy', 'en-US'), styles: { fontStyle: 'bold', fillColor: [255, 255, 255] } }
                 ]);
 
                 // Description
                 tableBody.push([
-                    { content: 'ENFERMEDAD ACTUAL', styles: { fontStyle: 'bold' } },
+                    { content: 'DESCRIPCIÓN', styles: { fontStyle: 'bold' } },
                     { content: record.description }
                 ]);
 
+                // Antecedentes
+                if (record.background) {
+                    tableBody.push([
+                        { content: 'ANTECEDENTES', styles: { fontStyle: 'bold' } },
+                        { content: record.background }
+                    ]);
+                }
+
                 // Valoraciones
-                tableBody.push([
-                    { content: 'VALORACIONES', styles: { fontStyle: 'bold' } },
-                    { content: valoraciones }
-                ]);
+                if (record.notes && record.notes.length > 0) {
+                    const valoraciones = record.notes.map(n => `• ${n.description}`).join('\n');
+                    tableBody.push([
+                        { content: 'VALORACIONES', styles: { fontStyle: 'bold' } },
+                        { content: valoraciones }
+                    ]);
+                }
 
                 // Diagnosticos
-                tableBody.push([
-                    { content: 'DIAGNÓSTICOS', styles: { fontStyle: 'bold' } },
-                    { content: diagnosticos }
-                ]);
-            });
+                if (record.diagnoses && record.diagnoses.length > 0) {
+                    record.diagnoses.forEach((d, indexDiag) => {
+                        // Add a blank separation row before each diagnosis (including the first one)
+                        tableBody.push([{
+                            content: '',
+                            colSpan: 2,
+                            styles: { cellPadding: 0, minCellHeight: 4, fillColor: [255, 255, 255] }
+                        }]);
 
-            autoTable(doc, {
-                startY: yPos,
-                // No header row needed as labels are in the first column
-                head: [],
-                body: tableBody,
-                theme: 'grid',
-                styles: {
-                    fontSize: 9,
-                    cellPadding: 4,
-                    valign: 'top',
-                    lineColor: [220, 220, 220],
-                    lineWidth: 0.1
-                },
-                columnStyles: {
-                    0: { cellWidth: 50, textColor: primaryColor }, // Labels column
-                    1: { cellWidth: 'auto', textColor: [0, 0, 0] } // Content column
-                },
-                margin: { left: margin, right: margin }
-            });
+                        const isMultiple = record.diagnoses.length > 1;
+                        const diagLabel = isMultiple ? `DIAGNÓSTICO ${indexDiag + 1}` : 'DIAGNÓSTICO';
 
-            // @ts-ignore
-            yPos = doc.lastAutoTable.finalY + 15;
+                        tableBody.push([
+                            { content: diagLabel, styles: { fontStyle: 'bold' } },
+                            { content: d.description }
+                        ]);
+
+                        if (d.protocol) {
+                            tableBody.push([
+                                { content: 'CONDUCTA', styles: { fontStyle: 'bold' } },
+                                { content: d.protocol }
+                            ]);
+                        }
+
+                        // Emphasize Treatment
+                        if (d.prescription) {
+                            tableBody.push([
+                                { content: 'TRATAMIENTO', styles: { fontStyle: 'bold', fontSize: 10 } },
+                                { content: d.prescription, styles: { fontStyle: 'bold', fontSize: 10 } }
+                            ]);
+                        }
+                    });
+                } else {
+                    tableBody.push([
+                        { content: 'DIAGNÓSTICOS', styles: { fontStyle: 'bold' } },
+                        { content: 'Sin diagnósticos.' }
+                    ]);
+                }
+
+                autoTable(doc, {
+                    startY: yPos,
+                    head: [],
+                    body: tableBody,
+                    theme: 'grid',
+                    styles: {
+                        fontSize: 9,
+                        cellPadding: 4,
+                        valign: 'top',
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.1,
+                        textColor: [0, 0, 0],
+                        fillColor: [255, 255, 255]
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 50, textColor: [0, 0, 0] },
+                        1: { cellWidth: 'auto', textColor: [0, 0, 0] }
+                    },
+                    margin: { left: margin, right: margin }
+                });
+
+                // @ts-ignore
+                yPos = doc.lastAutoTable.finalY + 10; // Extra spacing between tables
+            });
         }
 
         // --- Previous Records Section ---
@@ -196,7 +210,7 @@ export class PdfService {
 
             // Section Title
             doc.setFontSize(14);
-            doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
             doc.setFont('helvetica', 'bold');
             doc.text('ANTECEDENTES MÉDICOS', margin, yPos);
             yPos += 5;
@@ -206,13 +220,13 @@ export class PdfService {
             previousRecords.forEach((record, index) => {
                 // Add a spacer row if not the first item
                 if (index > 0) {
-                    prevRecordsTableBody.push([{ content: '', colSpan: 2, styles: { cellPadding: 1, fillColor: [255, 255, 255] } }]);
+                    prevRecordsTableBody.push([{ content: '', colSpan: 2, styles: { cellPadding: 2, fillColor: [255, 255, 255] } }]);
                 }
 
                 // Block Header (Date)
                 prevRecordsTableBody.push([
-                    { content: 'FECHA DE REGISTRO', styles: { fontStyle: 'bold', fillColor: [248, 248, 248] } }, // Slightly lighter gray than HC
-                    { content: formatDate(record.createdAt, 'dd/MM/yyyy', 'en-US'), styles: { fontStyle: 'bold', fillColor: [248, 248, 248] } }
+                    { content: 'FECHA DE REGISTRO', styles: { fontStyle: 'bold', fillColor: [255, 255, 255] } },
+                    { content: formatDate(record.createdAt, 'dd/MM/yyyy', 'en-US'), styles: { fontStyle: 'bold', fillColor: [255, 255, 255] } }
                 ]);
 
                 // Description
@@ -231,12 +245,14 @@ export class PdfService {
                     fontSize: 9,
                     cellPadding: 4,
                     valign: 'top',
-                    lineColor: [220, 220, 220],
-                    lineWidth: 0.1
+                    lineColor: [0, 0, 0],
+                    lineWidth: 0.1,
+                    textColor: [0, 0, 0],
+                    fillColor: [255, 255, 255]
                 },
                 columnStyles: {
-                    0: { cellWidth: 50, textColor: primaryColor }, // Labels column (Match HC color)
-                    1: { cellWidth: 'auto', textColor: [0, 0, 0] } // Content column
+                    0: { cellWidth: 50, textColor: [0, 0, 0] },
+                    1: { cellWidth: 'auto', textColor: [0, 0, 0] }
                 },
                 margin: { left: margin, right: margin }
             });
@@ -250,7 +266,7 @@ export class PdfService {
         for (let i = 1; i <= pageCount; i++) {
             doc.setPage(i);
             doc.setFontSize(8);
-            doc.setTextColor(150, 150, 150);
+            doc.setTextColor(textColor[0], textColor[1], textColor[2]);
             doc.text(`Página ${i} de ${pageCount}`, pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
         }
 

@@ -5,6 +5,7 @@ export interface MedicalRecordListDto {
   id: string;
   patientId: string;
   description: string;
+  background?: string;
   createdAt: Date;
 }
 
@@ -17,8 +18,10 @@ export interface MedicalRecordDto extends MedicalRecordListDto {
 export interface MedicalRecordCreateDto {
   patientId: string;
   description: string;
+  background?: string;
 }
 
 export interface MedicalRecordUpdateDto {
   description?: string;
+  background?: string;
 }

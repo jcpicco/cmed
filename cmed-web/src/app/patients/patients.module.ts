@@ -5,10 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { PatientsComponent } from './patients.component';
 import { PatientsRoutingModule } from './patients-routing.module';
+import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 
 @NgModule({
   declarations: [
-    PatientsComponent
+    PatientsComponent,
+    PatientDetailComponent
   ],
   imports: [
     CommonModule,
