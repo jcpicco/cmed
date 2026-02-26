@@ -30,7 +30,7 @@ export class NoteService {
    * Crear una nota para un historial médico
    */
   createMedicalRecordNote(medicalRecordId: string, note: NoteCreateDto): Observable<Note> {
-    return this.http.post<Note>(`${environment.apiUrl}/medicalRecords/${medicalRecordId}/notes`, note);
+    return this.http.post<Note>(`${environment.apiUrl}/medical-records/${medicalRecordId}/notes`, note);
   }
 
   /**
@@ -51,7 +51,7 @@ export class NoteService {
    * Actualizar una nota de historial médico
    */
   updateMedicalRecordNote(medicalRecordId: string, noteId: string, note: NoteUpdateDto): Observable<Note> {
-    return this.http.patch<Note>(`${environment.apiUrl}/medicalRecords/${medicalRecordId}/notes/${noteId}`, note);
+    return this.http.patch<Note>(`${environment.apiUrl}/medical-records/${medicalRecordId}/notes/${noteId}`, note);
   }
 
   /**
@@ -65,7 +65,7 @@ export class NoteService {
    * Eliminar una nota de historial médico
    */
   deleteMedicalRecordNote(medicalRecordId: string, noteId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/medicalRecords/${medicalRecordId}/notes/${noteId}`);
+    return this.http.delete<void>(`${environment.apiUrl}/medical-records/${medicalRecordId}/notes/${noteId}`);
   }
 
   /**

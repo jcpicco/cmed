@@ -12,7 +12,7 @@ try {
     # 2. Copy Angular Build to Spring Boot Static Folder (Backend)
     Write-Host "Copying Frontend to Backend..."
     $SourcePath = "dist/cmed"
-    $DestPath = "../cmed-app/app/src/main/resources/static"
+    $DestPath = "../cmed-app/src/main/resources/static"
 
     if (-not (Test-Path $SourcePath)) {
         Write-Error "Angular build output not found at $SourcePath. Did 'npm run build' succeed?"
@@ -26,7 +26,7 @@ try {
     Copy-Item "$SourcePath\*" $DestPath -Recurse -Force
 
     # 3. Build Spring Boot JAR
-    Set-Location "../cmed-app/app"
+    Set-Location "../cmed-app"
 
     # Run Tests
     Write-Host "Running Backend Tests..."
@@ -42,7 +42,7 @@ try {
 
     # 4. Move JAR to Root
     $JarSource = "build/libs/cmed-app-1.0.0.jar"
-    $JarDest = "../../cmed.jar"
+    $JarDest = "../cmed.jar"
 
     if (Test-Path $JarSource) {
         Copy-Item $JarSource $JarDest -Force

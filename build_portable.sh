@@ -19,7 +19,7 @@ npm run build -- --configuration=production
 # 2. Copy Angular Build to Spring Boot Static Folder (Backend)
 echo "Copying Frontend to Backend..."
 SOURCE="dist/cmed"
-DEST="../cmed-app/app/src/main/resources/static"
+DEST="../cmed-app/src/main/resources/static"
 
 if [ ! -d "$SOURCE" ]; then
     echo "Angular build output not found at $SOURCE. Did 'npm run build' succeed?"
@@ -32,7 +32,7 @@ cp -r "$SOURCE"/* "$DEST"
 
 # 3. Build Spring Boot JAR
 echo "Running Backend Tests..."
-cd ../cmed-app/app || exit 1
+cd ../cmed-app || exit 1
 ./gradlew test || { echo "Tests failed! Aborting build."; exit 1; }
 
 echo "Building Spring Boot JAR..."
@@ -40,7 +40,7 @@ echo "Building Spring Boot JAR..."
 
 # 4. Move JAR to Root
 JAR_SOURCE="build/libs/cmed-app-1.0.0.jar"
-JAR_DEST="../../cmed.jar"
+JAR_DEST="../cmed.jar"
 
 if [ -f "$JAR_SOURCE" ]; then
     cp "$JAR_SOURCE" "$JAR_DEST"

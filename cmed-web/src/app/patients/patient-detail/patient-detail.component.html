@@ -1,0 +1,1099 @@
+<!-- Patient Detail View -->
+<div class="patients-container">
+
+  <!-- Detalles del paciente -->
+  <div *ngIf="selectedPatient" class="details-section">
+    <div class="details-header">
+      <h2>Detalles del Paciente</h2>
+      <a routerLink="/patients" class="btn btn-secondary">← Volver a Pacientes</a>
+    </div>
+
+    <div class="details-content">
+      <div class="detail-item">
+        <span class="detail-label">Nombre:</span>
+        <span class="detail-value">{{ selectedPatient.name }} {{ selectedPatient.lastName }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value">{{ selectedPatient.email || 'No proporcionado' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Teléfono:</span>
+        <span class="detail-value">{{ selectedPatient.phone || 'No proporcionado' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">DNI:</span>
+        <span class="detail-value">{{ selectedPatient.dni }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Nacimiento:</span>
+        <span class="detail-value">{{ formatDate(selectedPatient.birthDate) }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Alergias:</span>
+        <span class="detail-value">{{ selectedPatient.allergies || 'Ninguna / No registradas' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Creado:</span>
+        <span class="detail-value">{{ formatDateTime(selectedPatient.createdAt) }}</span>
+      </div>
+
+      <div class="details-actions">
+        <button class="btn btn-primary" (click)="openEditPatientForm()">
+          Editar
+        </button>
+        <button class="btn btn-danger" (click)="confirmDeletePatient()">
+          Eliminar
+        </button>
+        <button class="btn btn-info" (click)="generatePdf()" [disabled]="pdfLoading">
+          <span *ngIf="!pdfLoading">Generar PDF</span>
+          <span *ngIf="pdfLoading" class="spinner-small"></span>
+        </button>
+      </div>
+
+      <!-- Tabs para Registros -->
+      <div class="records-tabs">
+        <button class="tab-button" [class.active]="selectedTab === 'medical'" (click)="selectedTab = 'medical'">
+          Historia Clínica
+        </button>
+        <button class="tab-button" [class.active]="selectedTab === 'previous'" (click)="selectedTab = 'previous'">
+          Antecedentes
+        </button>
+        <button class="tab-button" [class.active]="selectedTab === 'notes'" (click)="selectedTab = 'notes'">
+          Notas
+        </button>
+      </div>
+
+      <!-- Medical Records Section -->
+      <div *ngIf="selectedTab === 'medical'" class="records-section">
+        <div class="records-header">
+          <h3>Historia Clínica</h3>
+          <button (click)="openAddMedicalRecordForm()">
+            + Agregar Registro
+          </button>
+        </div>
+
+        <div *ngIf="medicalRecordsLoading" class="loading">
+          <div class="spinner"></div>
+          <p>Cargando registros médicos...</p>
+        </div>
+
+        <div *ngIf="!medicalRecordsLoading && medicalRecords.length === 0" class="empty-state">
+          No hay historia clínica para este paciente
+        </div>
+
+        <div *ngIf="!medicalRecordsLoading && medicalRecords.length > 0" class="records-list">
+          <div class="records-table-header">
+            <div class="header-item sortable" (click)="sortMedicalRecords('description')">
+              Descripción <span *ngIf="medicalRecordSort.field === 'description'">{{ medicalRecordSort.direction
+                === 'asc' ? '↑' : '↓' }}</span>
+            </div>
+            <div class="header-item sortable" (click)="sortMedicalRecords('createdAt')">
+              Creado <span *ngIf="medicalRecordSort.field === 'createdAt'">{{ medicalRecordSort.direction === 'asc' ?
+                '↑'
+                : '↓' }}</span>
+            </div>
+          </div>
+          <div *ngFor="let record of paginatedMedicalRecords" class="record-item clickable"
+            (click)="viewMedicalRecordDetails(record)">
+            <div class="record-column description">{{ truncateText(record.description, 100) }}</div>
+            <div class="record-column date">{{ formatDateTime(record.createdAt) }}</div>
+          </div>
+        </div>
+
+        <!-- Pagination for Medical Records -->
+        <div class="pagination" *ngIf="medicalRecords.length > 0">
+          <button class="btn btn-sm" (click)="changeMedicalPage(-1)" [disabled]="medicalPage === 1">
+            ← Anterior
+          </button>
+          <div class="page-info">
+            Página {{ medicalPage }} de {{ totalMedicalPages }}
+          </div>
+          <button class="btn btn-sm" (click)="changeMedicalPage(1)"
+            [disabled]="medicalPage >= totalMedicalPages || totalMedicalPages === 0">
+            Siguiente →
+          </button>
+        </div>
+      </div>
+
+      <!-- Previous Records Section -->
+      <div *ngIf="selectedTab === 'previous'" class="records-section">
+        <div class="records-header">
+          <h3>Antecedentes</h3>
+          <button (click)="openAddPreviousRecordForm()">
+            + Agregar Registro
+          </button>
+        </div>
+
+        <div *ngIf="previousRecordsLoading" class="loading">
+          <div class="spinner"></div>
+          <p>Cargando antecedentes...</p>
+        </div>
+
+        <div *ngIf="!previousRecordsLoading && previousRecords.length === 0" class="empty-state">
+          No hay antecedentes para este paciente
+        </div>
+
+        <div *ngIf="!previousRecordsLoading && previousRecords.length > 0" class="records-list">
+          <div class="records-table-header">
+            <div class="header-item sortable" (click)="sortPreviousRecords('description')">
+              Descripción <span *ngIf="previousRecordSort.field === 'description'">{{ previousRecordSort.direction ===
+                'asc' ? '↑' : '↓' }}</span>
+            </div>
+            <div class="header-item sortable" (click)="sortPreviousRecords('createdAt')">
+              Creado <span *ngIf="previousRecordSort.field === 'createdAt'">{{ previousRecordSort.direction === 'asc' ?
+                '↑' : '↓' }}</span>
+            </div>
+          </div>
+          <div *ngFor="let record of paginatedPreviousRecords" class="record-item clickable"
+            (click)="viewPreviousRecordDetails(record)">
+            <div class="record-column description">{{ truncateText(record.description, 100) }}</div>
+            <div class="record-column date">{{ formatDateTime(record.createdAt) }}</div>
+          </div>
+        </div>
+
+        <!-- Pagination for Previous Records -->
+        <div class="pagination" *ngIf="previousRecords.length > 0">
+          <button class="btn btn-sm" (click)="changePreviousPage(-1)" [disabled]="previousRecordsPage === 1">
+            ← Anterior
+          </button>
+          <div class="page-info">
+            Página {{ previousRecordsPage }} de {{ totalPreviousPages }}
+          </div>
+          <button class="btn btn-sm" (click)="changePreviousPage(1)"
+            [disabled]="previousRecordsPage >= totalPreviousPages || totalPreviousPages === 0">
+            Siguiente →
+          </button>
+        </div>
+      </div>
+
+      <!-- Patient Notes Section -->
+      <div *ngIf="selectedTab === 'notes'" class="records-section">
+        <div class="records-header">
+          <h3>Notas</h3>
+          <button (click)="openAddPatientNoteForm()">
+            + Agregar Nota
+          </button>
+        </div>
+
+        <div *ngIf="patientNotesLoading" class="loading">
+          <div class="spinner"></div>
+          <p>Cargando notas...</p>
+        </div>
+
+        <div *ngIf="!patientNotesLoading && patientNotes.length === 0" class="empty-state">
+          No hay notas para este paciente
+        </div>
+
+        <div *ngIf="!patientNotesLoading && patientNotes.length > 0" class="records-list">
+          <div class="records-table-header">
+            <div class="header-item sortable" (click)="sortPatientNotes('description')">
+              Descripción <span *ngIf="patientNoteSort.field === 'description'">{{ patientNoteSort.direction ===
+                'asc' ? '↑' : '↓' }}</span>
+            </div>
+            <div class="header-item sortable" (click)="sortPatientNotes('createdAt')">
+              Creado <span *ngIf="patientNoteSort.field === 'createdAt'">{{ patientNoteSort.direction === 'asc' ?
+                '↑' : '↓' }}</span>
+            </div>
+          </div>
+          <div *ngFor="let note of paginatedPatientNotes" class="record-item clickable"
+            (click)="viewPatientNoteDetails(note)">
+            <div class="record-column description">
+              {{ truncateText(note.description, 100) }}
+            </div>
+            <div class="record-column date">{{ formatDateTime(note.createdAt) }}</div>
+          </div>
+        </div>
+
+        <!-- Pagination for Patient Notes -->
+        <div class="pagination" *ngIf="patientNotes.length > 0">
+          <button class="btn btn-sm" (click)="changePatientNotesPage(-1)" [disabled]="patientNotesPage === 1">
+            ← Anterior
+          </button>
+          <div class="page-info">
+            Página {{ patientNotesPage }} de {{ totalPatientNotesPages }}
+          </div>
+          <button class="btn btn-sm" (click)="changePatientNotesPage(1)"
+            [disabled]="patientNotesPage >= totalPatientNotesPages || totalPatientNotesPages === 0">
+            Siguiente →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Registro Médico -->
+  <div *ngIf="showMedicalRecordModal" class="modal-overlay" (click)="closeMedicalRecordModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingMedicalRecord ? 'Editar Historia Clínica' : 'Agregar a Historia Clínica' }}</h2>
+        <button class="btn-close" (click)="closeMedicalRecordModal()">✕</button>
+      </div>
+
+      <div class="modal-body scrollable">
+        <form [formGroup]="medicalRecordForm">
+          <!-- Descripción del Registro -->
+          <div class="form-section">
+            <h3>Enfermedad Actual *</h3>
+            <div class="form-group">
+              <textarea id="medicalRecordDescription" formControlName="description" class="form-control" rows="4"
+                maxlength="10000" placeholder="Ingrese la enfermedad actual..."></textarea>
+              <div class="char-counter">
+                {{ medicalRecordForm.get('description')?.value?.length || 0 }} / 10000
+              </div>
+              <div class="error-message"
+                *ngIf="medicalRecordForm.get('description')?.invalid && medicalRecordForm.get('description')?.touched">
+                La descripción es requerida y debe tener al menos 5 caracteres
+              </div>
+            </div>
+          </div>
+
+          <!-- Antecedentes del Registro -->
+          <div class="form-section">
+            <h3>Antecedentes</h3>
+            <div class="form-group">
+              <textarea id="medicalRecordBackground" formControlName="background" class="form-control" rows="4"
+                maxlength="10000" placeholder="Ingrese los antecedentes..."></textarea>
+              <div class="char-counter">
+                {{ medicalRecordForm.get('background')?.value?.length || 0 }} / 10000
+              </div>
+            </div>
+          </div>
+
+          <!-- Destructive Actions (Only in Edit Mode) -->
+          <div *ngIf="editingMedicalRecord" class="form-section destructive-zone">
+            <button type="button" class="btn btn-danger btn-full"
+              (click)="deleteMedicalRecord(editingMedicalRecord.id)">
+              Eliminar Historia Clínica
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"
+          (click)="editingMedicalRecord ? cancelMedicalRecordEdit() : closeMedicalRecordModal()"
+          [disabled]="medicalRecordFormLoading">
+          Cancelar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="saveMedicalRecord()"
+          [disabled]="!medicalRecordForm.valid || medicalRecordFormLoading">
+          <span *ngIf="!medicalRecordFormLoading">
+            {{ editingMedicalRecord ? 'Guardar' : 'Crear' }}
+          </span>
+          <span *ngIf="medicalRecordFormLoading">
+            <span class="spinner-small"></span> Guardando...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Ver Detalles del Registro Médico (Solo Lectura) -->
+  <div *ngIf="showViewMedicalRecordModal" class="modal-overlay" (click)="closeViewMedicalRecordModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalles de Historia Clínica</h2>
+        <button class="btn-close" (click)="closeViewMedicalRecordModal()">✕</button>
+      </div>
+
+      <div class="modal-body scrollable">
+        <!-- Descripción -->
+        <div class="form-section">
+          <h3>Descripción</h3>
+          <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.description, 100)"
+            (click)="needsTruncation(viewingMedicalRecord?.description, 100) ? openContentPopup('Descripción - Historia Clínica', viewingMedicalRecord?.description || '') : null">
+            {{ truncateText(viewingMedicalRecord?.description, 100) }}
+            <span *ngIf="needsTruncation(viewingMedicalRecord?.description, 100)" class="read-more-hint">Click para ver
+              completo</span>
+          </div>
+        </div>
+
+        <!-- Antecedentes -->
+        <div class="form-section" *ngIf="viewingMedicalRecord?.background">
+          <h3>Antecedentes</h3>
+          <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.background, 100)"
+            (click)="needsTruncation(viewingMedicalRecord?.background, 100) ? openContentPopup('Antecedentes - Historia Clínica', viewingMedicalRecord?.background || '') : null">
+            {{ truncateText(viewingMedicalRecord?.background, 100) }}
+            <span *ngIf="needsTruncation(viewingMedicalRecord?.background, 100)" class="read-more-hint">Click para ver
+              completo</span>
+          </div>
+        </div>
+
+        <!-- Notas -->
+        <div class="form-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Valoración</h3>
+            <button type="button" class="btn btn-sm btn-info" (click)="openAddNoteModal(viewingMedicalRecord!.id)">
+              + Añadir Valoración
+            </button>
+          </div>
+          <div *ngIf="viewMedicalRecordNotes.length > 0" class="notes-list">
+            <div *ngFor="let note of paginatedViewNotes" class="note-item">
+              <div class="note-content">
+                <div class="note-description" [class.clickable]="needsTruncation(note.description, 100)"
+                  (click)="needsTruncation(note.description, 100) ? openContentPopup('Valoración', note.description) : null">
+                  {{ truncateText(note.description, 100) }}
+                  <span *ngIf="needsTruncation(note.description, 100)" class="read-more-hint-inline">(ver
+                    completo)</span>
+                </div>
+              </div>
+              <div class="item-actions">
+                <button type="button" class="btn btn-xs btn-ghost" (click)="openEditNoteModal(note)"
+                  title="Editar">Editar</button>
+              </div>
+              <div class="note-date">{{ formatDate(note.createdAt) }}</div>
+            </div>
+
+            <!-- Paginación de Notas -->
+            <div *ngIf="totalViewNotesPages > 1" class="modal-pagination">
+              <button type="button" (click)="changeNotesPage(-1)" [disabled]="notesPage === 1">Anterior</button>
+              <span class="page-info">{{ notesPage }} / {{ totalViewNotesPages }}</span>
+              <button type="button" (click)="changeNotesPage(1)"
+                [disabled]="notesPage === totalViewNotesPages">Siguiente</button>
+            </div>
+          </div>
+          <div *ngIf="viewMedicalRecordNotes.length === 0" class="empty-item">
+            No hay valoraciones
+          </div>
+        </div>
+
+        <!-- Diagnósticos -->
+        <div class="form-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Diagnósticos</h3>
+            <button type="button" class="btn btn-sm btn-info" (click)="openAddDiagnoseModal(viewingMedicalRecord!.id)">
+              + Añadir Diagnóstico
+            </button>
+          </div>
+          <div *ngIf="viewMedicalRecordDiagnoses.length > 0" class="diagnoses-list">
+            <div *ngFor="let diagnose of paginatedViewDiagnoses" class="diagnose-item">
+              <div class="diagnose-content">
+                <div class="diagnose-header">
+                  <div class="diagnose-description clickable" (click)="openDiagnoseDetailsPopup(diagnose)">
+                    {{ truncateText(diagnose.description, 255) }}
+                    <span class="read-more-hint-inline">(ver completo)</span>
+                  </div>
+                  <div class="item-actions">
+                    <button type="button" class="btn btn-xs btn-ghost" (click)="openEditDiagnoseModal(diagnose)"
+                      title="Editar">Editar</button>
+                  </div>
+                  <div class="diagnose-date">{{ formatDate(diagnose.createdAt) }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paginación de Diagnósticos -->
+            <div *ngIf="totalViewDiagnosesPages > 1" class="modal-pagination">
+              <button type="button" (click)="changeDiagnosesPage(-1)" [disabled]="diagnosesPage === 1">Anterior</button>
+              <span class="page-info">{{ diagnosesPage }} / {{ totalViewDiagnosesPages }}</span>
+              <button type="button" (click)="changeDiagnosesPage(1)"
+                [disabled]="diagnosesPage === totalViewDiagnosesPages">Siguiente</button>
+            </div>
+          </div>
+          <div *ngIf="viewMedicalRecordDiagnoses.length === 0" class="empty-item">
+            No hay diagnósticos
+          </div>
+        </div>
+
+        <!-- Archivos -->
+        <div class="form-section">
+          <h3>Archivos Adjuntos</h3>
+
+          <!-- Subir archivo directamente desde detalles -->
+          <div class="file-upload-section" style="margin-bottom: 1.5rem;">
+            <input type="file" id="detailRecordFileInput" (change)="onFileSelected($event)" style="display: none" />
+            <label for="detailRecordFileInput" class="btn btn-sm btn-info">
+              Seleccionar Archivo
+            </label>
+            <span *ngIf="selectedFile" class="selected-file-name">
+              {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
+            </span>
+            <button *ngIf="selectedFile" type="button" class="btn btn-sm btn-success"
+              (click)="uploadMedicalRecordFile(viewingMedicalRecord!.id)" [disabled]="uploadingFile">
+              <span *ngIf="!uploadingFile">Subir</span>
+              <span *ngIf="uploadingFile">Subiendo...</span>
+            </button>
+            <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+          </div>
+
+          <!-- Lista de archivos -->
+          <div *ngIf="viewMedicalRecordFiles.length > 0" class="files-list">
+            <div *ngFor="let file of paginatedViewFiles" class="file-item">
+              <div class="file-icon">{{ getFileIcon(file.originalName) }}</div>
+              <div class="file-info clickable" (click)="openMedicalRecordFile(file)">
+                <div class="file-name">{{ file.originalName }}</div>
+                <div class="file-meta">
+                  {{ formatFileSize(file.fileSize) }} • {{ formatDate(file.createdAt) }}
+                </div>
+              </div>
+              <button type="button" class="btn-delete-small"
+                (click)="deleteMedicalRecordFile(viewingMedicalRecord!.id, file.id)" title="Eliminar">
+                ×
+              </button>
+            </div>
+
+            <!-- Paginación de Archivos -->
+            <div *ngIf="totalFilesPages > 1" class="modal-pagination">
+              <button type="button" (click)="changeFilesPage(-1)" [disabled]="filesPage === 1">Anterior</button>
+              <span class="page-info">{{ filesPage }} / {{ totalFilesPages }}</span>
+              <button type="button" (click)="changeFilesPage(1)"
+                [disabled]="filesPage === totalFilesPages">Siguiente</button>
+            </div>
+          </div>
+          <div *ngIf="viewMedicalRecordFiles.length === 0" class="empty-item">
+            No hay archivos adjuntos
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeViewMedicalRecordModal()">
+          Cerrar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="editMedicalRecord(viewingMedicalRecord!)">
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Ver Detalles del Registro Previo (Solo Lectura) -->
+  <div *ngIf="showViewPreviousRecordModal" class="modal-overlay" (click)="closeViewPreviousRecordModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalles de Antecedentes</h2>
+        <button class="btn-close" (click)="closeViewPreviousRecordModal()">✕</button>
+      </div>
+
+      <div class="modal-body scrollable">
+        <div class="form-section">
+          <h3>Descripción</h3>
+          <div class="view-content" [class.clickable-text]="needsTruncation(viewingPreviousRecord?.description, 100)"
+            (click)="needsTruncation(viewingPreviousRecord?.description, 100) ? openContentPopup('Descripción - Antecedentes', viewingPreviousRecord?.description || '') : null">
+            {{ truncateText(viewingPreviousRecord?.description, 100) }}
+            <span *ngIf="needsTruncation(viewingPreviousRecord?.description, 100)" class="read-more-hint">Click para ver
+              completo</span>
+          </div>
+        </div>
+
+        <!-- Archivos -->
+        <div class="form-section">
+          <h3>Archivos Adjuntos</h3>
+
+          <!-- Subir archivo directamente desde detalles -->
+          <div class="file-upload-section" style="margin-bottom: 1.5rem;">
+            <input type="file" id="detailPreviousRecordFileInput" (change)="onFileSelected($event)"
+              style="display: none" />
+            <label for="detailPreviousRecordFileInput" class="btn btn-sm btn-info">
+              Seleccionar Archivo
+            </label>
+            <span *ngIf="selectedFile" class="selected-file-name">
+              {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
+            </span>
+            <button *ngIf="selectedFile" type="button" class="btn btn-sm btn-success"
+              (click)="uploadPreviousRecordFile(viewingPreviousRecord!.id)" [disabled]="uploadingFile">
+              <span *ngIf="!uploadingFile">Subir</span>
+              <span *ngIf="uploadingFile">Subiendo...</span>
+            </button>
+            <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+          </div>
+
+          <!-- Lista de archivos -->
+          <div *ngIf="viewPreviousRecordFiles.length > 0" class="files-list">
+            <div *ngFor="let file of paginatedViewFiles" class="file-item">
+              <div class="file-icon">{{ getFileIcon(file.originalName) }}</div>
+              <div class="file-info clickable" (click)="openPreviousRecordFile(file)">
+                <div class="file-name">{{ file.originalName }}</div>
+                <div class="file-meta">
+                  {{ formatFileSize(file.fileSize) }} • {{ formatDateTime(file.createdAt) }}
+                </div>
+              </div>
+              <button type="button" class="btn-delete-small"
+                (click)="deletePreviousRecordFile(viewingPreviousRecord!.id, file.id)" title="Eliminar">
+                ×
+              </button>
+            </div>
+
+            <!-- Paginación de Archivos -->
+            <div *ngIf="totalFilesPages > 1" class="modal-pagination">
+              <button type="button" (click)="changeFilesPage(-1)" [disabled]="filesPage === 1">Anterior</button>
+              <span class="page-info">{{ filesPage }} / {{ totalFilesPages }}</span>
+              <button type="button" (click)="changeFilesPage(1)"
+                [disabled]="filesPage === totalFilesPages">Siguiente</button>
+            </div>
+          </div>
+          <div *ngIf="viewPreviousRecordFiles.length === 0" class="empty-item">
+            No hay archivos adjuntos
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeViewPreviousRecordModal()">
+          Cerrar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="editPreviousRecord(viewingPreviousRecord!)">
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Registro Previo -->
+  <div *ngIf="showPreviousRecordModal" class="modal-overlay" (click)="closePreviousRecordModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingPreviousRecord ? 'Editar Antecedentes' : 'Agregar Antecedentes' }}</h2>
+        <button class="btn-close" (click)="closePreviousRecordModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="previousRecordForm">
+          <div class="form-group">
+            <label for="previousRecordDescription">Descripción</label>
+            <textarea id="previousRecordDescription" formControlName="description" class="form-control" rows="6"
+              maxlength="10000" placeholder="Ingrese la descripción de los antecedentes..."></textarea>
+            <div class="char-counter">
+              {{ previousRecordForm.get('description')?.value?.length || 0 }} / 10000
+            </div>
+            <div class="error-message"
+              *ngIf="previousRecordForm.get('description')?.invalid && previousRecordForm.get('description')?.touched">
+              La descripción es requerida y debe tener al menos 5 caracteres
+            </div>
+          </div>
+        </form>
+
+
+
+        <!-- Destructive Actions (Only in Edit Mode) -->
+        <div *ngIf="editingPreviousRecord" class="form-section destructive-zone">
+          <button type="button" class="btn btn-danger btn-full"
+            (click)="deletePreviousRecord(editingPreviousRecord.id)">
+            Eliminar Antecedentes
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"
+          (click)="editingPreviousRecord ? cancelPreviousRecordEdit() : closePreviousRecordModal()"
+          [disabled]="previousRecordFormLoading">
+          Cancelar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="savePreviousRecord()"
+          [disabled]="!previousRecordForm.valid || previousRecordFormLoading">
+          <span *ngIf="!previousRecordFormLoading">
+            {{ editingPreviousRecord ? 'Guardar' : 'Crear' }}
+          </span>
+          <span *ngIf="previousRecordFormLoading">
+            <span class="spinner-small"></span> Guardando...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Nota de Paciente -->
+  <div *ngIf="showPatientNoteModal" class="modal-overlay" (click)="closePatientNoteModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingPatientNote ? 'Editar Nota' : 'Agregar Nota' }}</h2>
+        <button class="btn-close" (click)="closePatientNoteModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="patientNoteForm">
+          <div class="form-group">
+            <label for="patientNoteDescription">Descripción</label>
+            <textarea id="patientNoteDescription" formControlName="description" class="form-control" rows="6"
+              maxlength="10000" placeholder="Ingrese la descripción de la nota..."></textarea>
+            <div class="char-counter">
+              {{ patientNoteForm.get('description')?.value?.length || 0 }} / 10000
+            </div>
+            <div class="error-message"
+              *ngIf="patientNoteForm.get('description')?.invalid && patientNoteForm.get('description')?.touched">
+              La descripción es requerida y debe tener al menos 5 caracteres
+            </div>
+          </div>
+
+          <div *ngIf="patientNoteError" class="alert alert-danger">
+            {{ patientNoteError }}
+          </div>
+
+          <!-- Destructive Actions (Only in Edit Mode) -->
+          <div *ngIf="editingPatientNote" class="form-section destructive-zone">
+            <button type="button" class="btn btn-danger btn-full"
+              (click)="deletePatientNoteFromModal(editingPatientNote.id)">
+              Eliminar Nota
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"
+          (click)="editingPatientNote ? cancelPatientNoteEdit() : closePatientNoteModal()"
+          [disabled]="patientNoteFormLoading">
+          Cancelar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="savePatientNote()"
+          [disabled]="!patientNoteForm.valid || patientNoteFormLoading">
+          <span *ngIf="!patientNoteFormLoading">
+            {{ editingPatientNote ? 'Guardar' : 'Crear' }}
+          </span>
+          <span *ngIf="patientNoteFormLoading">
+            <span class="spinner-small"></span> Guardando...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Ver Detalles de Nota de Paciente (Solo Lectura) -->
+  <div *ngIf="showViewPatientNoteModal" class="modal-overlay" (click)="closeViewPatientNoteModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalles de Nota</h2>
+        <button class="btn-close" (click)="closeViewPatientNoteModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-section">
+          <h3>Descripción</h3>
+          <div class="view-content" [class.clickable-text]="needsTruncation(viewingPatientNote?.description, 100)"
+            (click)="needsTruncation(viewingPatientNote?.description, 100) ? openContentPopup('Descripción - Nota', viewingPatientNote?.description || '') : null">
+            {{ truncateText(viewingPatientNote?.description, 100) }}
+            <span *ngIf="needsTruncation(viewingPatientNote?.description, 100)" class="read-more-hint">Click para ver
+              completo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeViewPatientNoteModal()">
+          Cerrar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="editPatientNote(viewingPatientNote!)">
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Detalles del Diagnóstico -->
+  <div *ngIf="showDiagnoseDetailsPopup" class="modal-overlay" (click)="closeDiagnoseDetailsPopup()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalles del Diagnóstico</h2>
+        <button class="btn-close" (click)="closeDiagnoseDetailsPopup()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-section">
+          <h3>Descripción</h3>
+          <div class="view-content">
+            {{ diagnoseDetailsData?.description }}
+          </div>
+        </div>
+
+        <div *ngIf="diagnoseDetailsData?.protocol" class="diagnose-conduct">
+          <div class="diagnose-label">CONDUCTA</div>
+          <div class="diagnose-text">{{ diagnoseDetailsData.protocol }}</div>
+        </div>
+
+        <div *ngIf="diagnoseDetailsData?.prescription" class="diagnose-prescription">
+          <div class="diagnose-label">TRATAMIENTO</div>
+          <div class="diagnose-text">{{ diagnoseDetailsData.prescription }}</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeDiagnoseDetailsPopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Valoración (Atómico) -->
+  <div *ngIf="showNoteModal" class="modal-overlay" (click)="closeNoteModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingNote ? 'Editar Valoración' : 'Añadir Valoración' }}</h2>
+        <button class="btn-close" (click)="closeNoteModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="noteForm">
+          <div class="form-group">
+            <label for="atomicNoteDescription">Descripción</label>
+            <textarea id="atomicNoteDescription" formControlName="description" class="form-control" rows="4"
+              maxlength="10000" placeholder="Ingrese valoración..."></textarea>
+            <div class="char-counter">
+              {{ noteForm.get('description')?.value?.length || 0 }} / 10000
+            </div>
+            <div *ngIf="noteError" class="error-message">{{ noteError }}</div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeNoteModal()">Cancelar</button>
+        <div class="spacer"></div>
+        <button *ngIf="editingNote" class="btn btn-danger" (click)="deleteNoteFromModal(editingNote.id)"
+          style="margin-right: 8px;">
+          Eliminar
+        </button>
+        <button class="btn btn-primary" (click)="saveNote()" [disabled]="noteForm.invalid || noteFormLoading">
+          <span *ngIf="!noteFormLoading">{{ editingNote ? 'Actualizar' : 'Guardar' }}</span>
+          <span *ngIf="noteFormLoading" class="spinner-small"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Diagnóstico (Atómico) -->
+  <div *ngIf="showDiagnoseModal" class="modal-overlay" (click)="closeDiagnoseModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingDiagnose ? 'Editar Diagnóstico' : 'Añadir Diagnóstico' }}</h2>
+        <button class="btn-close" (click)="closeDiagnoseModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="diagnoseForm">
+          <div class="form-group">
+            <label for="atomicDiagnoseDescription">Descripción</label>
+            <textarea id="atomicDiagnoseDescription" formControlName="description" class="form-control" rows="3"
+              maxlength="10000" placeholder="Descripción del diagnóstico..."></textarea>
+            <div class="char-counter">{{ diagnoseForm.get('description')?.value?.length || 0 }} / 10000</div>
+          </div>
+
+          <div class="form-group">
+            <label for="atomicDiagnoseConduct">Conducta (Opcional)</label>
+            <textarea id="atomicDiagnoseConduct" formControlName="protocol" class="form-control" rows="2"
+              maxlength="10000" placeholder="Conducta..."></textarea>
+            <div class="char-counter">{{ diagnoseForm.get('protocol')?.value?.length || 0 }} / 10000</div>
+          </div>
+
+          <div class="form-group">
+            <label for="atomicDiagnosePrescription">Tratamiento (Opcional)</label>
+            <textarea id="atomicDiagnosePrescription" formControlName="prescription" class="form-control" rows="2"
+              maxlength="10000" placeholder="Tratamiento..."></textarea>
+            <div class="char-counter">{{ diagnoseForm.get('prescription')?.value?.length || 0 }} / 10000</div>
+          </div>
+          <div *ngIf="diagnoseError" class="error-message">{{ diagnoseError }}</div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeDiagnoseModal()">Cancelar</button>
+        <div class="spacer"></div>
+        <button *ngIf="editingDiagnose" class="btn btn-danger" (click)="deleteDiagnoseFromModal(editingDiagnose.id)"
+          style="margin-right: 8px;">
+          Eliminar
+        </button>
+        <button class="btn btn-primary" (click)="saveDiagnose()"
+          [disabled]="diagnoseForm.invalid || diagnoseFormLoading">
+          <span *ngIf="!diagnoseFormLoading">{{ editingDiagnose ? 'Actualizar' : 'Guardar' }}</span>
+          <span *ngIf="diagnoseFormLoading" class="spinner-small"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Contenido Completo -->
+  <div *ngIf="showContentPopup" class="modal-overlay" (click)="closeContentPopup()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ contentPopupTitle }}</h2>
+        <button class="btn-close" (click)="closeContentPopup()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="view-content formatted-content">
+          {{ contentPopupText }}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeContentPopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF Generation Modal -->
+  <div class="modal-overlay" *ngIf="showPdfModal" (click)="closePdfModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Generar PDF - Selección de Registros</h2>
+        <button class="btn-close" (click)="closePdfModal()">✕</button>
+      </div>
+
+      <div class="modal-body scrollable">
+        <!-- Loading State -->
+        <div *ngIf="pdfLoading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Generando PDF...</p>
+        </div>
+
+        <!-- Selection Lists -->
+        <div *ngIf="!generatedPdf && !pdfLoading">
+          <!-- Medical Records Selection -->
+          <div class="form-section">
+            <h3>Historia Clínica</h3>
+            <div *ngIf="medicalRecords.length === 0" class="empty-item">
+              No hay registros disponibles.
+            </div>
+            <div *ngIf="medicalRecords.length > 0" class="notes-list">
+              <div *ngFor="let record of paginatedPdfMedicalRecords" class="note-item clickable"
+                (click)="toggleMedicalRecordSelection(record.id, $event)">
+                <div style="display: flex; align-items: center; margin-right: 15px;">
+                  <input type="checkbox" [checked]="isMedicalRecordSelected(record.id)"
+                    style="cursor: pointer; transform: scale(1.2);">
+                </div>
+                <div class="note-content">
+                  <div class="note-description">{{ truncateText(record.description, 80) }}</div>
+                </div>
+                <div class="note-date">{{ formatDateTime(record.createdAt) }}</div>
+              </div>
+
+              <!-- Pagination -->
+              <div *ngIf="totalPdfMedicalPages > 1" class="modal-pagination">
+                <button type="button" (click)="changePdfMedicalPage(-1)"
+                  [disabled]="pdfMedicalPage === 1">Anterior</button>
+                <span class="page-info">{{ pdfMedicalPage }} / {{ totalPdfMedicalPages }}</span>
+                <button type="button" (click)="changePdfMedicalPage(1)"
+                  [disabled]="pdfMedicalPage === totalPdfMedicalPages">Siguiente</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Previous Records Selection -->
+          <div class="form-section">
+            <h3>Antecedentes</h3>
+            <div *ngIf="previousRecords.length === 0" class="empty-item">
+              No hay antecedentes disponibles.
+            </div>
+            <div *ngIf="previousRecords.length > 0" class="notes-list">
+              <div *ngFor="let record of paginatedPdfPreviousRecords" class="note-item clickable"
+                (click)="togglePreviousRecordSelection(record.id, $event)">
+                <div style="display: flex; align-items: center; margin-right: 15px;">
+                  <input type="checkbox" [checked]="isPreviousRecordSelected(record.id)"
+                    style="cursor: pointer; transform: scale(1.2);">
+                </div>
+                <div class="note-content">
+                  <div class="note-description">{{ truncateText(record.description, 80) }}</div>
+                </div>
+                <div class="note-date">{{ formatDateTime(record.createdAt) }}</div>
+              </div>
+
+              <!-- Pagination -->
+              <div *ngIf="totalPdfPreviousPages > 1" class="modal-pagination">
+                <button type="button" (click)="changePdfPreviousPage(-1)"
+                  [disabled]="pdfPreviousPage === 1">Anterior</button>
+                <span class="page-info">{{ pdfPreviousPage }} / {{ totalPdfPreviousPages }}</span>
+                <button type="button" (click)="changePdfPreviousPage(1)"
+                  [disabled]="pdfPreviousPage === totalPdfPreviousPages">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success State inside Modal -->
+        <div *ngIf="generatedPdf" class="pdf-actions">
+          <div class="alert alert-success">PDF Generado correctamente</div>
+          <div class="pdf-buttons">
+            <button class="btn btn-primary" (click)="openPdf()">Descargar PDF</button>
+            <button type="button" class="btn btn-secondary" (click)="prepareEmail()">
+              <span *ngIf="!emailSending">Enviar por Email</span>
+              <span *ngIf="emailSending" class="spinner-small"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closePdfModal()" [disabled]="pdfLoading">Cerrar</button>
+        <div class="spacer"></div>
+        <button *ngIf="!generatedPdf" class="btn btn-primary" (click)="confirmPdfGeneration()" [disabled]="pdfLoading">
+          <span *ngIf="!pdfLoading">Generar PDF</span>
+          <span *ngIf="pdfLoading" class="spinner-small"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Enviar por Email -->
+  <div *ngIf="showEmailModal" class="modal-overlay" (click)="cancelEmail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Enviar por Email</h2>
+        <button class="btn-close" (click)="cancelEmail()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="email-instruction">
+          <strong>Importante:</strong> Por seguridad, los navegadores no permiten adjuntar archivos automáticamente a
+          tu programa de correo.
+        </p>
+        <p class="email-instruction">
+          Al hacer clic en "Enviar", ocurrirá lo siguiente:
+        </p>
+        <div class="email-steps">
+          <ol>
+            <li>Se <strong>descargará</strong> el PDF a tu ordenador.</li>
+            <li>Se abrirá tu programa de correo con los datos rellenos.</li>
+            <li>Deberás <strong>adjuntar manualmente</strong> el archivo descargado.</li>
+          </ol>
+        </div>
+
+        <div class="form-group">
+          <label for="emailRecipient">Email Destinatario</label>
+          <input type="email" id="emailRecipient" [(ngModel)]="emailRecipient" class="form-control"
+            placeholder="ejemplo@correo.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="emailSubject">Asunto</label>
+          <input type="text" id="emailSubject" [(ngModel)]="emailSubject" class="form-control" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cancelEmail()">
+          Cancelar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="executeEmail()" [disabled]="!emailRecipient">
+          Abrir Correo y Descargar PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Paciente -->
+  <div *ngIf="showEditPatientModal" class="modal-overlay" (click)="closeEditPatientModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Editar Paciente</h2>
+        <button class="btn-close" (click)="closeEditPatientModal()">✕</button>
+      </div>
+
+      <div class="modal-body scrollable">
+        <form [formGroup]="patientForm" class="patient-form">
+          <!-- Error message -->
+          <div *ngIf="formError" class="alert alert-danger">
+            {{ formError }}
+          </div>
+
+          <!-- Row 1: First Name & Last Name -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Nombre *</label>
+              <input type="text" id="name" formControlName="name" class="form-control" maxlength="50"
+                [class.is-invalid]="(formSubmitted || patientForm.get('name')?.touched) && patientForm.get('name')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('name')?.touched) && patientForm.get('name')?.invalid">
+                {{ getFieldError('name') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Apellido *</label>
+              <input type="text" id="lastName" formControlName="lastName" class="form-control" maxlength="50"
+                [class.is-invalid]="(formSubmitted || patientForm.get('lastName')?.touched) && patientForm.get('lastName')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('lastName')?.touched) && patientForm.get('lastName')?.invalid">
+                {{ getFieldError('lastName') }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Row 2: Email & Phone -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" formControlName="email" class="form-control" maxlength="100"
+                [class.is-invalid]="(formSubmitted || patientForm.get('email')?.touched) && patientForm.get('email')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('email')?.touched) && patientForm.get('email')?.invalid">
+                {{ getFieldError('email') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Teléfono *</label>
+              <input type="tel" id="phone" formControlName="phone" class="form-control" maxlength="20"
+                [class.is-invalid]="(formSubmitted || patientForm.get('phone')?.touched) && patientForm.get('phone')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('phone')?.touched) && patientForm.get('phone')?.invalid">
+                {{ getFieldError('phone') }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Row 3: DNI & Birth Date -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dni">DNI *</label>
+              <input type="text" id="dni" formControlName="dni" class="form-control" maxlength="20"
+                [class.is-invalid]="(formSubmitted || patientForm.get('dni')?.touched) && patientForm.get('dni')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('dni')?.touched) && patientForm.get('dni')?.invalid">
+                {{ getFieldError('dni') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="birthDate">Fecha de Nacimiento *</label>
+              <input type="date" id="birthDate" formControlName="birthDate" class="form-control"
+                [class.is-invalid]="(formSubmitted || patientForm.get('birthDate')?.touched) && patientForm.get('birthDate')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('birthDate')?.touched) && patientForm.get('birthDate')?.invalid">
+                {{ getFieldError('birthDate') }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Row 4: Allergies -->
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="allergies">Alergias</label>
+              <textarea id="allergies" formControlName="allergies" class="form-control" maxlength="255" rows="2"
+                [class.is-invalid]="(formSubmitted || patientForm.get('allergies')?.touched) && patientForm.get('allergies')?.invalid"></textarea>
+              <div class="char-counter">
+                {{ patientForm.get('allergies')?.value?.length || 0 }} / 255
+              </div>
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('allergies')?.touched) && patientForm.get('allergies')?.invalid">
+                {{ getFieldError('allergies') }}
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeEditPatientModal()" [disabled]="formLoading">
+          Cancelar
+        </button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" (click)="savePatient()" [disabled]="formLoading">
+          <span *ngIf="!formLoading">Guardar</span>
+          <span *ngIf="formLoading"><span class="spinner-small"></span> Guardando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div><!-- /patients-container -->

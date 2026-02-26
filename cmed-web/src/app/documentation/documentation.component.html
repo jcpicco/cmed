@@ -2,7 +2,7 @@
     <header class="doc-header">
         <div class="header-content">
             <h1>📚 Documentación del Sistema CMED-WEB</h1>
-            <p>Guía completa para el uso del Gestor de Pacientes - Versión 1.0</p>
+            <p>Guía completa para el uso del Gestor de Pacientes</p>
             <button class="btn btn-primary" routerLink="/">
                 ← Volver al Inicio
             </button>
@@ -20,7 +20,7 @@
                 antecedentes, gestionar notas y adjuntar documentación digital de forma segura y eficiente.
             </p>
             <div class="version-badge">
-                <strong>Versión 1.0</strong> - Actualizado el 19/02/2026
+                <strong>Versión 1.1.0</strong> - Actualizado el 26/02/2026
             </div>
         </section>
 
@@ -38,9 +38,12 @@
                             nueva ficha. Es obligatorio ingresar:</p>
                         <ul>
                             <li>Nombre y apellido</li>
-                            <li>DNI (3-20 caracteres)</li>
-                            <li>Email válido</li>
-                            <li>Teléfono (3-20 caracteres)</li>
+                            <li>DNI (3-20 caracteres) <span class="badge badge-warning"
+                                    style="font-size: 0.6em">NEW</span></li>
+                            <li>Email (Opcional) <span class="badge badge-warning" style="font-size: 0.6em">NEW</span>
+                            </li>
+                            <li>Teléfono (3-20 caracteres) <span class="badge badge-warning"
+                                    style="font-size: 0.6em">NEW</span></li>
                             <li>Fecha de nacimiento</li>
                         </ul>
                     </div>
@@ -126,8 +129,10 @@
                 </div>
 
                 <p class="note">
-                    <strong>Nota:</strong> Todas las listas tienen ordenamiento por columna y
-                    truncamiento automático de texto largo (máximo 100 caracteres + "...").
+                    <strong>Nota:</strong> Todas las listas tienen ordenamiento por columna (por defecto, lo más antiguo
+                    primero <span class="badge badge-warning" style="font-size: 0.6em">NEW</span>) y
+                    truncamiento automático de texto largo (máximo 100 caracteres + "...") expandible al hacer clic
+                    <span class="badge badge-warning" style="font-size: 0.6em">NEW</span>.
                 </p>
             </div>
         </section>
@@ -150,7 +155,13 @@
                     </div>
 
                     <div class="info-card">
-                        <h4>2️⃣ Valoraciones</h4>
+                        <h4>2️⃣ Antecedentes</h4>
+                        <p>Descripción de antecedentes médicos o quirúrgicos relevantes para la consulta actual.</p>
+                        <span class="optional">Opcional</span>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>3️⃣ Valoraciones</h4>
                         <p>Notas médicas asociadas al registro para seguimiento evolutivo.</p>
                         <ul>
                             <li>Se agregan desde el modal de edición</li>
@@ -161,7 +172,7 @@
                     </div>
 
                     <div class="info-card">
-                        <h4>3️⃣ Diagnósticos</h4>
+                        <h4>4️⃣ Diagnósticos</h4>
                         <p>Diagnósticos médicos con tratamiento opcional.</p>
                         <ul>
                             <li>Descripción del diagnóstico (obligatorio)</li>
@@ -172,7 +183,7 @@
                     </div>
 
                     <div class="info-card">
-                        <h4>4️⃣ Archivos Adjuntos</h4>
+                        <h4>5️⃣ Archivos Adjuntos</h4>
                         <p>Documentos, imágenes o videos relacionados.</p>
                         <ul>
                             <li>Solo disponible en modo edición</li>
@@ -189,7 +200,7 @@
                         <strong>1.</strong> Click en <span class="badge">+ Agregar Registro</span>
                     </div>
                     <div class="step">
-                        <strong>2.</strong> Completar "Enfermedad Actual"
+                        <strong>2.</strong> Completar "Enfermedad Actual" y "Antecedentes" (si aplica)
                     </div>
                     <div class="step">
                         <strong>3.</strong> Agregar Valoraciones (opcional)
@@ -254,7 +265,8 @@
         <section class="doc-section highlight">
             <div class="section-header">
                 <span class="icon">📝</span>
-                <h2>Notas del Paciente</h2>
+                <h2>Notas del Paciente <span class="badge badge-warning"
+                        style="font-size: 0.6em; vertical-align: middle;">NEW v1.1</span></h2>
             </div>
             <div class="section-body">
                 <p class="intro-highlight">
@@ -458,6 +470,84 @@
         </section>
 
 
+        <!-- ============== EJECUTABLE PORTABLE ============== -->
+        <section class="doc-section highlight">
+            <div class="section-header">
+                <span class="icon">🚀</span>
+                <h2>Lanzamiento Portable <span class="badge badge-warning"
+                        style="font-size: 0.6em; vertical-align: middle;">NEW v1.1</span></h2>
+            </div>
+            <div class="section-body">
+                <p>
+                    Ahora CMED cuenta con soporte para ser lanzado como un ejecutable portable, agrupando base de datos,
+                    backend y frontend.
+                </p>
+                <ul>
+                    <li>Sin necesidad de Docker.</li>
+                    <li>Soporta doble clic para ejecutar.</li>
+                    <li>Ejecuta <code>build_portable.ps1</code> o <code>build_portable.sh</code> para compilar la
+                        aplicación completa en un único archivo JAR.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============== DOCUMENTACIÓN DE API (SWAGGER) ============== -->
+        <section class="doc-section highlight">
+            <div class="section-header">
+                <span class="icon">🔌</span>
+                <h2>Documentación de API (Swagger) <span class="badge badge-warning"
+                        style="font-size: 0.6em; vertical-align: middle;">NEW v1.1</span></h2>
+            </div>
+            <div class="section-body">
+                <p>
+                    El backend está completamente documentado utilizando OpenAPI 3 (Swagger UI).
+                    Esto permite explorar y probar interactivamente todos los endpoints de la API.
+                </p>
+                <ul>
+                    <li><strong>Interfaz Visual (Swagger UI):</strong> <a
+                            href="http://localhost:8080/swagger-ui/index.html"
+                            target="_blank">http://localhost:8080/swagger-ui/index.html</a></li>
+                    <li><strong>Definición JSON (OpenAPI v3):</strong> <a href="http://localhost:8080/v3/api-docs"
+                            target="_blank">http://localhost:8080/v3/api-docs</a></li>
+                </ul>
+                <p class="note">
+                    Asegúrate de que el backend esté en ejecución (por ejemplo, mediante <code>./gradlew bootRun</code>
+                    o tu ejecutable portable) para acceder a estas URLs.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============== CHANGELOG REDUCIDO ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📦</span>
+                <h2>Changelog (Versión 1.1)</h2>
+            </div>
+            <div class="section-body">
+                <ul>
+                    <li><strong>Feature:</strong> Documentación interactiva de la API Backend integrada usando
+                        Swagger/OpenAPI 3.</li>
+                    <li><strong>Feature:</strong> Lanzamiento como ejecutable (.JAR) mediante scripts portables
+                        (Windows/Linux).</li>
+                    <li><strong>Feature:</strong> Nuevo sistema de notas directamente vinculadas al paciente.</li>
+                    <li><strong>Mejora:</strong> Refactorización de todos los endpoints de la API Backend a formato
+                        kebab-case (ej. <code>/api/medical-records</code>) mejorando la consistencia RESTful.</li>
+                    <li><strong>Mejora:</strong> Modo Oscuro optimizado para el exportador a PDF y validaciones.</li>
+                    <li><strong>Mejora:</strong> Reportes PDF refactorizados con mejor estructura, logo centrado, y
+                        botones mejorados.</li>
+                    <li><strong>Mejora:</strong> Listas ordenadas por defecto de más antiguo a más reciente; texto
+                        expandible en detalles.</li>
+                    <li><strong>Componentes:</strong> Extracción de <code>patient-detail</code> para un enrutamiento
+                        lazy-loaded.</li>
+                    <li><strong>Formularios:</strong> Validaciones más amigables (DNI, Teléfono) y campo Email opcional.
+                        Alertas visuales "on-touch".</li>
+                    <li><strong>Arquitectura:</strong> Simplificación del Backend quitando el subdirectorio
+                        <code>app/</code> y eliminando Docker por defecto. Rutas REST estandarizadas.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
         <!-- ============== CONSEJOS Y BUENAS PRÁCTICAS ============== -->
         <section class="doc-section">
             <div class="section-header">
@@ -511,8 +601,8 @@
         <!-- Footer -->
         <footer class="doc-footer">
             <p>
-                <strong>Sistema CMED-WEB v1.0</strong> - Desarrollado para la gestión médica integral<br>
-                Última actualización: 19/02/2026 12:00
+                <strong>Sistema CMED-WEB v1.1.0</strong> - Desarrollado para la gestión médica integral<br>
+                Última actualización: 26/02/2026 08:30
             </p>
             <button class="btn btn-primary" routerLink="/">
                 ← Volver al Inicio

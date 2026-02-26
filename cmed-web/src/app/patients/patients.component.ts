@@ -75,7 +75,7 @@ export class PatientsComponent implements OnInit {
   patientNotes: Note[] = [];
   patientNotesLoading = false;
   patientNotesPage = 1;
-  patientNoteSort = { field: 'createdAt', direction: 'desc' };
+  patientNoteSort = { field: 'createdAt', direction: 'asc' };
   showPatientNoteModal = false;
   showViewPatientNoteModal = false;
   patientNoteForm: FormGroup;
@@ -177,7 +177,8 @@ export class PatientsComponent implements OnInit {
    */
   private createMedicalRecordForm(): FormGroup {
     return this.formBuilder.group({
-      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10000)]]
+      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10000)]],
+      background: ['', [Validators.maxLength(10000)]]
     });
   }
 
@@ -206,7 +207,7 @@ export class PatientsComponent implements OnInit {
     return this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
+      email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       dni: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       birthDate: ['', Validators.required],
@@ -558,8 +559,8 @@ export class PatientsComponent implements OnInit {
     // Cargar notas y diagnósticos del registro
     this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
       next: (fullRecord) => {
-        this.viewMedicalRecordNotes = fullRecord.notes || [];
-        this.viewMedicalRecordDiagnoses = fullRecord.diagnoses || [];
+        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.viewMedicalRecordDiagnoses = (fullRecord.diagnoses || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.showViewMedicalRecordModal = true;
       },
       error: (err) => {
@@ -645,10 +646,11 @@ export class PatientsComponent implements OnInit {
       next: (fullRecord) => {
         this.editingMedicalRecord = fullRecord;
         this.medicalRecordForm.patchValue({
-          description: fullRecord.description
+          description: fullRecord.description,
+          background: fullRecord.background
         });
-        this.notesForRecord = [...(fullRecord.notes || [])];
-        this.diagnosesForRecord = [...(fullRecord.diagnoses || [])];
+        this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.diagnosesForRecord = [...(fullRecord.diagnoses || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.medicalRecordFormError = null;
         this.showMedicalRecordModal = true;
         this.medicalRecordFormLoading = false;
@@ -661,7 +663,8 @@ export class PatientsComponent implements OnInit {
         // Fallback to basic info if fetch fails
         this.editingMedicalRecord = record;
         this.medicalRecordForm.patchValue({
-          description: record.description
+          description: record.description,
+          background: record.background
         });
         this.notesForRecord = [];
         this.diagnosesForRecord = [];
@@ -712,7 +715,8 @@ export class PatientsComponent implements OnInit {
       // Editar registro médico existente
       const editingRecordId = this.editingMedicalRecord.id;
       const updateDto = {
-        description: this.medicalRecordForm.get('description')?.value
+        description: this.medicalRecordForm.get('description')?.value,
+        background: this.medicalRecordForm.get('background')?.value
       };
       this.medicalRecordService.updateMedicalRecord(editingRecordId, updateDto).subscribe({
         next: () => {
@@ -729,7 +733,8 @@ export class PatientsComponent implements OnInit {
       // Crear nuevo registro médico
       const createDto = {
         patientId: selectedPatientId,
-        description: this.medicalRecordForm.get('description')?.value
+        description: this.medicalRecordForm.get('description')?.value,
+        background: this.medicalRecordForm.get('background')?.value
       };
       this.medicalRecordService.createMedicalRecord(createDto).subscribe({
         next: (createdRecord) => {
@@ -804,6 +809,7 @@ export class PatientsComponent implements OnInit {
     // Update the local record with form values so the view is up to date immediately
     if (recordToView) {
       recordToView.description = this.medicalRecordForm.get('description')?.value;
+      recordToView.background = this.medicalRecordForm.get('background')?.value;
     }
 
     this.closeMedicalRecordModal();
@@ -1811,12 +1817,12 @@ export class PatientsComponent implements OnInit {
   // ==================== MÉTODOS PARA ABRIR ARCHIVOS ====================
 
   openMedicalRecordFile(file: MedicalRecordFile): void {
-    const url = `${environment.apiUrl}/medicalRecords/${file.medicalRecordId}/files/${file.id}/content`;
+    const url = `${environment.apiUrl}/medical-records/${file.medicalRecordId}/files/${file.id}/content`;
     window.open(url, '_blank');
   }
 
   openPreviousRecordFile(file: PreviousRecordFile): void {
-    const url = `${environment.apiUrl}/previousRecords/${file.previousRecordId}/files/${file.id}/content`;
+    const url = `${environment.apiUrl}/previous-records/${file.previousRecordId}/files/${file.id}/content`;
     window.open(url, '_blank');
   }
 

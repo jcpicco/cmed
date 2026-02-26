@@ -6,7 +6,7 @@ import { PreviousRecordFile } from '../models/file.model';
 
 /**
  * Servicio para gestionar archivos de registros previos
- * Endpoints: /api/previousRecords/{previousRecordId}/files
+ * Endpoints: /api/previous-records/{previousRecordId}/files
  */
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,7 @@ export class PreviousRecordFileService {
      */
     getAllByPreviousRecordId(previousRecordId: string): Observable<PreviousRecordFile[]> {
         return this.http.get<PreviousRecordFile[]>(
-            `${environment.apiUrl}/previousRecords/${previousRecordId}/files`
+            `${environment.apiUrl}/previous-records/${previousRecordId}/files`
         );
     }
 
@@ -32,7 +32,7 @@ export class PreviousRecordFileService {
         formData.append('file', file);
 
         return this.http.post<PreviousRecordFile>(
-            `${environment.apiUrl}/previousRecords/${previousRecordId}/files`,
+            `${environment.apiUrl}/previous-records/${previousRecordId}/files`,
             formData
         );
     }
@@ -42,7 +42,7 @@ export class PreviousRecordFileService {
      */
     deleteFile(previousRecordId: string, fileId: string): Observable<void> {
         return this.http.delete<void>(
-            `${environment.apiUrl}/previousRecords/${previousRecordId}/files/${fileId}`
+            `${environment.apiUrl}/previous-records/${previousRecordId}/files/${fileId}`
         );
     }
 }

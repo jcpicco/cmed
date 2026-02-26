@@ -8,9 +8,9 @@ import { PreviousRecordListDto, PreviousRecordDto, PreviousRecordCreateDto, Prev
   providedIn: 'root'
 })
 export class PreviousRecordService {
-  private apiUrl = `${environment.apiUrl}/previousRecords`;
+  private apiUrl = `${environment.apiUrl}/previous-records`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Obtener todos los registros previos

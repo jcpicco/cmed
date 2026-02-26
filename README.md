@@ -8,7 +8,14 @@ Medical Management Application (Clinical Medical Management).
 - [File System](cmed-app/FILES.md): Documentation on attachment management, storage, and architecture.
 
 ## 🚀 Version
-1.0.0
+1.1.0
+
+### 📦 Changelog (v1.1.0) **NEW**
+- **Feature:** Portable executable mode (.JAR) with automatic frontend bundling.
+- **Feature:** Patient-specific Notes system, separated from medical records.
+- **Improved:** PDF generation (professional layout, dynamic dark mode support, timezone fixes).
+- **Improved:** Form validation feedback (on-touch) and relaxed format rules for DNI and Phone.
+- **Refactoring:** Backend architecture simplified, Docker removed as the standard dependency, REST routes standardized.
 
 ## 📦 Portable Version (All-in-One)
 
