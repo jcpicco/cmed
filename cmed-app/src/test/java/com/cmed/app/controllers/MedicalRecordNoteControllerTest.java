@@ -86,7 +86,6 @@ class MedicalRecordNoteControllerTest {
                 .patient(patient)
                 .description("General Checkup")
                 .notes(new ArrayList<>())
-                .diagnoses(new ArrayList<>())
                 .files(new ArrayList<>())
                 .build();
 

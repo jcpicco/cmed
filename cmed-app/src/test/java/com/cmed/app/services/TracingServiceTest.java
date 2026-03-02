@@ -3,10 +3,10 @@ package com.cmed.app.services;
 import com.cmed.app.dtos.notes.NoteCreateDto;
 import com.cmed.app.dtos.notes.NoteUpdateDto;
 import com.cmed.app.exceptions.NoteNotFoundException;
-import com.cmed.app.models.notes.MedicalRecordNote;
+import com.cmed.app.models.Tracing;
 import com.cmed.app.models.MedicalRecord;
 import com.cmed.app.models.Patient;
-import com.cmed.app.repositories.MedicalRecordNoteRepository;
+import com.cmed.app.repositories.TracingRepository;
 import com.cmed.app.repositories.MedicalRecordRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,26 +26,26 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MedicalRecordNoteServiceTest {
+class TracingServiceTest {
 
     @Mock
-    private MedicalRecordNoteRepository noteRepository;
+    private TracingRepository tracingRepository;
 
     @Mock
     private MedicalRecordRepository medicalRecordRepository;
 
     @InjectMocks
-    private MedicalRecordNoteService noteService;
+    private TracingService tracingService;
 
     private MedicalRecord medicalRecord;
-    private MedicalRecordNote note;
-    private UUID noteId;
+    private Tracing tracing;
+    private UUID tracingId;
 
-    private static final String NOTE_NOT_FOUND = "Note not found: ";
+    private static final String TRACING_NOT_FOUND = "Tracing not found: ";
 
     @BeforeEach
     void init() {
-        noteId = UUID.randomUUID();
+        tracingId = UUID.randomUUID();
 
         Patient patient = Patient.builder()
                 .id(UUID.randomUUID())
@@ -71,118 +71,118 @@ class MedicalRecordNoteServiceTest {
                 .files(new ArrayList<>())
                 .build();
 
-        note = new MedicalRecordNote();
-        note.setId(noteId);
-        note.setCreatedAt(LocalDateTime.now());
-        note.setUpdatedAt(LocalDateTime.now());
-        note.setMedicalRecord(medicalRecord);
-        note.setDescription("Headache");
+        tracing = new Tracing();
+        tracing.setId(tracingId);
+        tracing.setCreatedAt(LocalDateTime.now());
+        tracing.setUpdatedAt(LocalDateTime.now());
+        tracing.setMedicalRecord(medicalRecord);
+        tracing.setDescription("Headache");
     }
 
     @Test
     void getAll_whenExists_returnsListOfNotes() {
-        when(noteRepository.findAll()).thenReturn(List.of(note));
+        when(tracingRepository.findAll()).thenReturn(List.of(tracing));
 
-        List<MedicalRecordNote> result = noteService.getAll();
+        List<Tracing> result = tracingService.getAll();
 
         assertEquals(1, result.size());
-        verify(noteRepository, times(1)).findAll();
+        verify(tracingRepository, times(1)).findAll();
     }
 
     @Test
     void getAll_whenNotExists_returnsEmpty() {
-        when(noteRepository.findAll()).thenReturn(List.of());
+        when(tracingRepository.findAll()).thenReturn(List.of());
 
-        List<MedicalRecordNote> result = noteService.getAll();
+        List<Tracing> result = tracingService.getAll();
 
         assertTrue(result.isEmpty());
-        verify(noteRepository, times(1)).findAll();
+        verify(tracingRepository, times(1)).findAll();
     }
 
     @Test
     void getById_whenExists_returnsNote() {
-        when(noteRepository.findById(noteId)).thenReturn(Optional.of(note));
+        when(tracingRepository.findById(tracingId)).thenReturn(Optional.of(tracing));
 
-        MedicalRecordNote result = noteService.getById(noteId);
+        Tracing result = tracingService.getById(tracingId);
 
-        assertEquals(note.getDescription(), result.getDescription());
-        verify(noteRepository, times(1)).findById(noteId);
+        assertEquals(tracing.getDescription(), result.getDescription());
+        verify(tracingRepository, times(1)).findById(tracingId);
     }
 
     @Test
     void getById_whenNotExists_throwsException() {
-        when(noteRepository.findById(noteId)).thenReturn(Optional.empty());
+        when(tracingRepository.findById(tracingId)).thenReturn(Optional.empty());
 
         NoteNotFoundException ex = assertThrows(NoteNotFoundException.class,
-                () -> noteService.getById(noteId));
-        assertEquals(NOTE_NOT_FOUND + noteId, ex.getMessage());
+                () -> tracingService.getById(tracingId));
+        assertEquals(TRACING_NOT_FOUND + tracingId, ex.getMessage());
     }
 
     @Test
     void create_whenCorrect_returnsSavedNote() {
         NoteCreateDto dto = NoteCreateDto.builder()
-                .description(note.getDescription())
+                .description(tracing.getDescription())
                 .build();
 
         when(medicalRecordRepository.findById(medicalRecord.getId())).thenReturn(Optional.of(medicalRecord));
-        when(noteRepository.save(any(MedicalRecordNote.class))).thenReturn(note);
+        when(tracingRepository.save(any(Tracing.class))).thenReturn(tracing);
 
-        MedicalRecordNote result = noteService.create(medicalRecord.getId(), dto);
+        Tracing result = tracingService.create(medicalRecord.getId(), dto);
 
         assertNotNull(result);
-        assertEquals(note.getDescription(), result.getDescription());
-        verify(noteRepository).save(any(MedicalRecordNote.class));
+        assertEquals(tracing.getDescription(), result.getDescription());
+        verify(tracingRepository).save(any(Tracing.class));
     }
 
     @Test
     void update_whenExists_updatesAndReturnsNote() {
-        MedicalRecordNote updated = new MedicalRecordNote();
+        Tracing updated = new Tracing();
         updated.setId(UUID.randomUUID());
         updated.setCreatedAt(LocalDateTime.now());
         updated.setUpdatedAt(LocalDateTime.now());
-        updated.setMedicalRecord(note.getMedicalRecord());
+        updated.setMedicalRecord(tracing.getMedicalRecord());
         updated.setDescription("Note example");
 
         NoteUpdateDto noteUpdateDto = NoteUpdateDto.builder()
                 .description("Note example")
                 .build();
 
-        when(noteRepository.findById(noteId)).thenReturn(Optional.of(note));
-        when(noteRepository.save(any(MedicalRecordNote.class))).thenReturn(updated);
+        when(tracingRepository.findById(tracingId)).thenReturn(Optional.of(tracing));
+        when(tracingRepository.save(any(Tracing.class))).thenReturn(updated);
 
-        MedicalRecordNote result = noteService.update(noteId, noteUpdateDto);
+        Tracing result = tracingService.update(tracingId, noteUpdateDto);
 
         assertEquals(updated.getDescription(), result.getDescription());
-        verify(noteRepository).save(note);
+        verify(tracingRepository).save(tracing);
     }
 
     @Test
     void update_whenNotExists_throwsException() {
-        when(noteRepository.findById(noteId)).thenReturn(Optional.empty());
+        when(tracingRepository.findById(tracingId)).thenReturn(Optional.empty());
 
         NoteUpdateDto updateDto = NoteUpdateDto.builder().description("test").build();
 
         NoteNotFoundException ex = assertThrows(NoteNotFoundException.class,
-                () -> noteService.update(noteId, updateDto));
-        assertEquals(NOTE_NOT_FOUND + noteId, ex.getMessage());
+                () -> tracingService.update(tracingId, updateDto));
+        assertEquals(TRACING_NOT_FOUND + tracingId, ex.getMessage());
     }
 
     @Test
     void delete_whenExists_deletesNote() {
-        when(noteRepository.findById(noteId)).thenReturn(Optional.of(note));
-        doNothing().when(noteRepository).delete(note);
+        when(tracingRepository.findById(tracingId)).thenReturn(Optional.of(tracing));
+        doNothing().when(tracingRepository).delete(tracing);
 
-        noteService.delete(noteId);
+        tracingService.delete(tracingId);
 
-        verify(noteRepository).delete(note);
+        verify(tracingRepository).delete(tracing);
     }
 
     @Test
     void delete_whenNotExists_throwsException() {
-        when(noteRepository.findById(noteId)).thenReturn(Optional.empty());
+        when(tracingRepository.findById(tracingId)).thenReturn(Optional.empty());
 
         NoteNotFoundException ex = assertThrows(NoteNotFoundException.class,
-                () -> noteService.delete(noteId));
-        assertEquals(NOTE_NOT_FOUND + noteId, ex.getMessage());
+                () -> tracingService.delete(tracingId));
+        assertEquals(TRACING_NOT_FOUND + tracingId, ex.getMessage());
     }
 }

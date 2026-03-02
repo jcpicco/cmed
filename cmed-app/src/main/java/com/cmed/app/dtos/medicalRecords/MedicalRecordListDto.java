@@ -8,5 +8,8 @@ public record MedicalRecordListDto(
         LocalDateTime createdAt,
         UUID patientId,
         String description,
-        String background
+        String background,
+        String diagnose,
+        String protocol,
+        String prescription
 ) {}

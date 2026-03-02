@@ -49,13 +49,22 @@ public class MedicalRecord {
     @Column(length = 10000)
     private String background;
 
+    @Column(length = 1000)
+    private String diagnose;
+
+    @Column(length = 1000)
+    private String protocol;
+
+    @Column(length = 1000)
+    private String prescription;
+
     @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<MedicalRecordNote> notes;
 
     @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Diagnose> diagnoses;
+    private List<Tracing> tracings;
 
     @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MedicalRecordFile> files;

@@ -1,8 +1,5 @@
 package com.cmed.app.dtos.previousRecords;
 
-import com.cmed.app.models.Diagnose;
-import com.cmed.app.models.Note;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

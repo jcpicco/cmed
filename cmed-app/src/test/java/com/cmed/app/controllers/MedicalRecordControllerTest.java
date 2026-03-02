@@ -57,7 +57,6 @@ class MedicalRecordControllerTest {
 
     private Patient patient;
     private MedicalRecordNote note;
-    private Diagnose diagnose;
     private MedicalRecord medicalRecord;
     private MedicalRecord medicalRecord2;
 
@@ -86,15 +85,6 @@ class MedicalRecordControllerTest {
         note.setUpdatedAt(LocalDateTime.now());
         note.setDescription("Headache");
 
-        diagnose = Diagnose.builder()
-                .id(UUID.randomUUID())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .medicalRecord(medicalRecord)
-                .description("Headache")
-                .prescription("Paracetamol")
-                .build();
-
         medicalRecord = MedicalRecord.builder()
                 .id(UUID.randomUUID())
                 .createdAt(LocalDateTime.now())
@@ -103,11 +93,11 @@ class MedicalRecordControllerTest {
                 .patient(patient)
                 .description("General Checkup")
                 .background("Antecedentes del paciente 1")
+                .diagnose("Headache")
+                .prescription("Paracetamol")
+                .protocol("Rest")
                 .notes(new ArrayList<>() {{
                     add(note);
-                }})
-                .diagnoses(new ArrayList<>() {{
-                    add(diagnose);
                 }})
                 .files(new ArrayList<>())
                 .build();
@@ -123,7 +113,6 @@ class MedicalRecordControllerTest {
                 .description("General Checkup 2")
                 .background("Antecedentes del paciente 2")
                 .notes(new ArrayList<>())
-                .diagnoses(new ArrayList<>())
                 .files(new ArrayList<>())
                 .build();
     }
@@ -192,10 +181,11 @@ class MedicalRecordControllerTest {
                     .andExpect(jsonPath("$.patientId").value(medicalRecord.getPatient().getId().toString()))
                     .andExpect(jsonPath("$.description").value(medicalRecord.getDescription()))
                     .andExpect(jsonPath("$.background").value(medicalRecord.getBackground()))
+                    .andExpect(jsonPath("$.diagnose").value(medicalRecord.getDiagnose()))
+                    .andExpect(jsonPath("$.prescription").value(medicalRecord.getPrescription()))
+                    .andExpect(jsonPath("$.protocol").value(medicalRecord.getProtocol()))
                     .andExpect(jsonPath("$.notes").isArray())
-                    .andExpect(jsonPath("$.notes", hasSize(1)))
-                    .andExpect(jsonPath("$.diagnoses").isArray())
-                    .andExpect(jsonPath("$.diagnoses", hasSize(1)));
+                    .andExpect(jsonPath("$.notes", hasSize(1)));
 
             verify(medicalRecordService, times(1)).getById(medicalRecord.getId());
         }
@@ -242,10 +232,11 @@ class MedicalRecordControllerTest {
                     .andExpect(jsonPath("$.patientId").value(medicalRecord.getPatient().getId().toString()))
                     .andExpect(jsonPath("$.description").value(medicalRecord.getDescription()))
                     .andExpect(jsonPath("$.background").value(medicalRecord.getBackground()))
+                    .andExpect(jsonPath("$.diagnose").value(medicalRecord.getDiagnose()))
+                    .andExpect(jsonPath("$.prescription").value(medicalRecord.getPrescription()))
+                    .andExpect(jsonPath("$.protocol").value(medicalRecord.getProtocol()))
                     .andExpect(jsonPath("$.notes").isArray())
-                    .andExpect(jsonPath("$.notes", hasSize(1)))
-                    .andExpect(jsonPath("$.diagnoses").isArray())
-                    .andExpect(jsonPath("$.diagnoses", hasSize(1)));
+                    .andExpect(jsonPath("$.notes", hasSize(1)));
 
             verify(medicalRecordService, times(1)).create(any(MedicalRecordCreateDto.class));
         }
@@ -278,6 +269,8 @@ class MedicalRecordControllerTest {
             MedicalRecord minimalMedicalRecord = new MedicalRecord();
             minimalMedicalRecord.setPatient(patient);
             minimalMedicalRecord.setDescription("Simple headache");
+            minimalMedicalRecord.setDiagnose("Headache");
+            minimalMedicalRecord.setProtocol("Rest");
 
             when(medicalRecordService.create(any(MedicalRecordCreateDto.class))).thenReturn(medicalRecordDtoMapper.toDto(minimalMedicalRecord));
             when(medicalRecordRepository.findById(medicalRecord.getId())).thenReturn(Optional.of(medicalRecord));
@@ -310,8 +303,10 @@ class MedicalRecordControllerTest {
                     .patient(medicalRecord.getPatient())
                     .description("New Description")
                     .background("New Background")
+                    .diagnose(medicalRecord.getDiagnose())
+                    .prescription(medicalRecord.getPrescription())
+                    .protocol(medicalRecord.getProtocol())
                     .notes(medicalRecord.getNotes())
-                    .diagnoses(medicalRecord.getDiagnoses())
                     .files(medicalRecord.getFiles())
                     .build();
 
@@ -327,10 +322,11 @@ class MedicalRecordControllerTest {
                     .andExpect(jsonPath("$.patientId").value(medicalRecord.getPatient().getId().toString()))
                     .andExpect(jsonPath("$.description").value(updatedMedicalRecord.getDescription()))
                     .andExpect(jsonPath("$.background").value(updatedMedicalRecord.getBackground()))
+                    .andExpect(jsonPath("$.diagnose").value(updatedMedicalRecord.getDiagnose()))
+                    .andExpect(jsonPath("$.prescription").value(updatedMedicalRecord.getPrescription()))
+                    .andExpect(jsonPath("$.protocol").value(updatedMedicalRecord.getProtocol()))
                     .andExpect(jsonPath("$.notes").isArray())
-                    .andExpect(jsonPath("$.notes", hasSize(1)))
-                    .andExpect(jsonPath("$.diagnoses").isArray())
-                    .andExpect(jsonPath("$.diagnoses", hasSize(1)));
+                    .andExpect(jsonPath("$.notes", hasSize(1)));
 
             verify(medicalRecordService, times(1)).update(eq(medicalRecord.getId()), any(MedicalRecordUpdateDto.class));
         }
@@ -419,7 +415,9 @@ class MedicalRecordControllerTest {
             String longDescription = "A".repeat(1000);
             MedicalRecord longMedicalRecord = new MedicalRecord();
             longMedicalRecord.setPatient(patient);
-            longMedicalRecord.setDescription(longDescription);;
+            longMedicalRecord.setDescription(longDescription);
+            longMedicalRecord.setDiagnose("Headache");
+            longMedicalRecord.setProtocol("Rest");
 
             when(medicalRecordService.create(any(MedicalRecordCreateDto.class)))
                     .thenReturn(medicalRecordDtoMapper.toDto(longMedicalRecord));
@@ -452,8 +450,10 @@ class MedicalRecordControllerTest {
                     .patient(medicalRecord.getPatient())
                     .description(null)
                     .background(null)
+                    .diagnose(medicalRecord.getDiagnose())
+                    .prescription(medicalRecord.getPrescription())
+                    .protocol(medicalRecord.getProtocol())
                     .notes(medicalRecord.getNotes())
-                    .diagnoses(medicalRecord.getDiagnoses())
                     .files(medicalRecord.getFiles())
                     .build();
 

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PatientService } from '../services/patient.service';
-import { MedicalRecordService } from '../services/medical-record.service';
-import { PatientListDto, PatientCreateDto } from '../models/patient.model';
-import { MedicalRecordListDto } from '../models/medical-record.model';
+import { PatientService } from './services/patient.service';
+import { MedicalRecordService } from './services/medical-record.service';
+import { PatientListDto, PatientCreateDto } from './models/patient.model';
+import { MedicalRecordListDto } from './models/medical-record.model';
 
 /**
  * Componente de ejemplo que muestra cómo usar los servicios
@@ -28,7 +28,7 @@ export class ExampleComponent implements OnInit, OnDestroy {
   constructor(
     private patientService: PatientService,
     private medicalRecordService: MedicalRecordService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadPatients();
@@ -93,12 +93,12 @@ export class ExampleComponent implements OnInit, OnDestroy {
    */
   createNewPatient() {
     const newPatient: PatientCreateDto = {
-      firstName: 'Juan',
+      name: 'Juan',
       lastName: 'Pérez',
       dni: '12345678A',
       email: 'juan@example.com',
       phone: '666123456',
-      address: 'Calle Principal 123'
+      birthDate: new Date()
     };
 
     this.patientService

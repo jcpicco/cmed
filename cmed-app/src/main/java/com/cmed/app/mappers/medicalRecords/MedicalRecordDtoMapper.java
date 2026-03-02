@@ -17,5 +17,6 @@ public interface MedicalRecordDtoMapper {
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "files", ignore = true)
     @Mapping(target = "notes", ignore = true)
+    @Mapping(target = "tracings", ignore = true)
     MedicalRecord toEntity(MedicalRecordDto dto);
 }

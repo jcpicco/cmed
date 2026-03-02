@@ -62,6 +62,9 @@ public class MedicalRecordService {
                 .patient(patient)
                 .description(toCreateMedicalRecord.getDescription())
                 .background(toCreateMedicalRecord.getBackground())
+                .diagnose(toCreateMedicalRecord.getDiagnose())
+                .protocol(toCreateMedicalRecord.getProtocol())
+                .prescription(toCreateMedicalRecord.getPrescription())
                 .build();
 
         medicalRecordRepository.save(medicalRecord);
@@ -76,6 +79,15 @@ public class MedicalRecordService {
             }
             if (toUpdateMedicalRecord.getBackground() != null) {
                 medicalRecord.setBackground(toUpdateMedicalRecord.getBackground());
+            }
+            if (toUpdateMedicalRecord.getDiagnose() != null) {
+                medicalRecord.setDiagnose(toUpdateMedicalRecord.getDiagnose());
+            }
+            if (toUpdateMedicalRecord.getProtocol() != null) {
+                medicalRecord.setProtocol(toUpdateMedicalRecord.getProtocol());
+            }
+            if (toUpdateMedicalRecord.getPrescription() != null) {
+                medicalRecord.setPrescription(toUpdateMedicalRecord.getPrescription());
             }
 
             MedicalRecord updatedMedicalRecord = medicalRecordRepository.save(medicalRecord);

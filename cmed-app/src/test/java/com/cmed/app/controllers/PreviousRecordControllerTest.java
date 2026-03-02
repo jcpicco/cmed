@@ -5,8 +5,6 @@ import com.cmed.app.dtos.previousRecords.PreviousRecordCreateDto;
 import com.cmed.app.dtos.previousRecords.PreviousRecordUpdateDto;
 import com.cmed.app.exceptions.PreviousRecordNotFoundException;
 import com.cmed.app.mappers.previousRecords.*;
-import com.cmed.app.models.Diagnose;
-import com.cmed.app.models.PreviousRecord;
 import com.cmed.app.models.PreviousRecord;
 import com.cmed.app.models.Patient;
 import com.cmed.app.repositories.PreviousRecordRepository;
@@ -58,8 +56,6 @@ class PreviousRecordControllerTest {
     private ObjectMapper objectMapper;
 
     private Patient patient;
-
-    private Diagnose diagnose;
     private PreviousRecord previousRecord;
     private PreviousRecord previousRecord2;
 

@@ -1,7 +1,7 @@
 package com.cmed.app.dtos.medicalRecords;
 
-import com.cmed.app.models.Diagnose;
 import com.cmed.app.models.Note;
+import com.cmed.app.models.Tracing;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +14,9 @@ public record MedicalRecordDto(
         UUID patientId,
         String description,
         String background,
+        String diagnose,
+        String protocol,
+        String prescription,
         List<Note> notes,
-        List<Diagnose> diagnoses
+        List<Tracing> tracings
 ) {}

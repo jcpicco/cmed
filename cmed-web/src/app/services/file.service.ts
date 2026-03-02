@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { BaseFile, FileCategory, EntityType } from '../models/file.model';
+import { BaseFile, FileCategory } from '../models/file.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,14 @@ import { BaseFile, FileCategory, EntityType } from '../models/file.model';
 export class FileService {
   private apiUrl = `${environment.apiUrl}/files`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Subir un archivo
    */
   uploadFile(
     file: File,
-    entityType: EntityType,
+    entityType: string,
     category: FileCategory,
     medicalRecordId?: string,
     previousRecordId?: string

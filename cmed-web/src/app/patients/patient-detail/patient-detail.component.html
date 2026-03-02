@@ -57,7 +57,7 @@
           Historia Clínica
         </button>
         <button class="tab-button" [class.active]="selectedTab === 'previous'" (click)="selectedTab = 'previous'">
-          Antecedentes
+          Antecedentes Generales
         </button>
         <button class="tab-button" [class.active]="selectedTab === 'notes'" (click)="selectedTab = 'notes'">
           Notas
@@ -119,7 +119,7 @@
       <!-- Previous Records Section -->
       <div *ngIf="selectedTab === 'previous'" class="records-section">
         <div class="records-header">
-          <h3>Antecedentes</h3>
+          <h3>Antecedentes Generales</h3>
           <button (click)="openAddPreviousRecordForm()">
             + Agregar Registro
           </button>
@@ -232,7 +232,7 @@
 
       <div class="modal-body scrollable">
         <form [formGroup]="medicalRecordForm">
-          <!-- Descripción del Registro -->
+          <!-- Enfermedad Actual -->
           <div class="form-section">
             <h3>Enfermedad Actual *</h3>
             <div class="form-group">
@@ -248,15 +248,214 @@
             </div>
           </div>
 
-          <!-- Antecedentes del Registro -->
+          <!-- Antecedentes Específicos -->
           <div class="form-section">
-            <h3>Antecedentes</h3>
+            <h3>Antecedentes Específicos</h3>
             <div class="form-group">
               <textarea id="medicalRecordBackground" formControlName="background" class="form-control" rows="4"
-                maxlength="10000" placeholder="Ingrese los antecedentes..."></textarea>
+                maxlength="10000" placeholder="Ingrese los antecedentes específicos..."></textarea>
               <div class="char-counter">
                 {{ medicalRecordForm.get('background')?.value?.length || 0 }} / 10000
               </div>
+            </div>
+          </div>
+
+          <!-- Valoraciones -->
+          <div class="form-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3>Valoraciones</h3>
+              <button type="button" class="btn btn-sm btn-info" (click)="showAddNoteInput = !showAddNoteInput">
+                <span *ngIf="!showAddNoteInput">+ Añadir valoración</span>
+                <span *ngIf="showAddNoteInput">Ocultar</span>
+              </button>
+            </div>
+
+            <!-- Añadir nueva valoración -->
+            <div *ngIf="showAddNoteInput" class="form-group"
+              style="margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+              <textarea id="newNoteDescriptionInline" [(ngModel)]="newNoteDescription"
+                [ngModelOptions]="{standalone: true}" class="form-control" rows="3" maxlength="255"
+                placeholder="Escriba la valoración aquí...">
+              </textarea>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                <div class="char-counter" style="margin-top: 0;">
+                  {{ newNoteDescription?.length || 0 }} / 255
+                </div>
+                <button type="button" class="btn btn-sm btn-primary" (click)="addNoteToRecord()"
+                  [disabled]="!newNoteDescription || newNoteDescription.length < 5">
+                  Guardar Valoración
+                </button>
+              </div>
+            </div>
+
+            <!-- Lista paginada -->
+            <div *ngIf="notesForRecord.length > 0" class="notes-list" style="margin-bottom: 1rem;">
+              <div *ngFor="let note of paginatedEditNotes" class="note-item">
+                <div class="note-content" style="flex: 1;">
+                  <div class="note-description" [class.clickable]="needsTruncation(note.description, 100)"
+                    (click)="needsTruncation(note.description, 100) ? openContentPopup('Valoración', note.description) : null">
+                    {{ truncateText(note.description, 100) }}
+                    <span *ngIf="needsTruncation(note.description, 100)" class="read-more-hint-inline">(ver
+                      completo)</span>
+                  </div>
+                </div>
+                <div class="item-actions">
+                  <button type="button" class="btn btn-xs btn-ghost" (click)="openEditNoteForRecord(note)"
+                    title="Editar">Editar</button>
+                </div>
+              </div>
+
+              <!-- Paginación -->
+              <div *ngIf="totalEditNotesPages > 1" class="modal-pagination">
+                <button type="button" (click)="changeEditNotesPage(-1)"
+                  [disabled]="editNotesPage === 1">Anterior</button>
+                <span class="page-info">{{ editNotesPage }} / {{ totalEditNotesPages }}</span>
+                <button type="button" (click)="changeEditNotesPage(1)"
+                  [disabled]="editNotesPage === totalEditNotesPages">Siguiente</button>
+              </div>
+            </div>
+            <div *ngIf="notesForRecord.length === 0" class="empty-item">Sin valoraciones</div>
+            <div *ngIf="noteError" class="error-message">{{ noteError }}</div>
+          </div>
+
+          <!-- Diagnóstico -->
+          <div class="form-section">
+            <h3>Diagnóstico</h3>
+            <div class="form-group">
+              <textarea id="medicalRecordDiagnose" formControlName="diagnose" class="form-control" rows="4"
+                maxlength="10000" placeholder="Ingrese el diagnóstico..."></textarea>
+              <div class="char-counter">
+                {{ medicalRecordForm.get('diagnose')?.value?.length || 0 }} / 10000
+              </div>
+            </div>
+          </div>
+
+          <!-- Conducta -->
+          <div class="form-section">
+            <h3>Conducta</h3>
+            <div class="form-group">
+              <textarea id="medicalRecordProtocol" formControlName="protocol" class="form-control" rows="4"
+                maxlength="10000" placeholder="Ingrese la conducta..."></textarea>
+              <div class="char-counter">
+                {{ medicalRecordForm.get('protocol')?.value?.length || 0 }} / 10000
+              </div>
+            </div>
+          </div>
+
+          <!-- Tratamiento -->
+          <div class="form-section">
+            <h3>Tratamiento</h3>
+            <div class="form-group">
+              <textarea id="medicalRecordPrescription" formControlName="prescription" class="form-control" rows="4"
+                maxlength="10000" placeholder="Ingrese el tratamiento..."></textarea>
+              <div class="char-counter">
+                {{ medicalRecordForm.get('prescription')?.value?.length || 0 }} / 10000
+              </div>
+            </div>
+          </div>
+
+          <!-- Seguimiento -->
+          <div class="form-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3>Seguimiento</h3>
+              <button type="button" class="btn btn-sm btn-info" (click)="showAddTracingInput = !showAddTracingInput">
+                <span *ngIf="!showAddTracingInput">+ Añadir seguimiento</span>
+                <span *ngIf="showAddTracingInput">Ocultar</span>
+              </button>
+            </div>
+
+            <!-- Añadir nuevo seguimiento -->
+            <div *ngIf="showAddTracingInput" class="form-group"
+              style="margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+              <textarea id="newTracingDescriptionInline" [(ngModel)]="newTracingDescription"
+                [ngModelOptions]="{standalone: true}" class="form-control" rows="3" maxlength="255"
+                placeholder="Escriba el seguimiento aquí...">
+              </textarea>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                <div class="char-counter" style="margin-top: 0;">
+                  {{ newTracingDescription?.length || 0 }} / 255
+                </div>
+                <button type="button" class="btn btn-sm btn-primary" (click)="addTracingToRecord()"
+                  [disabled]="!newTracingDescription || newTracingDescription.length < 5">
+                  Guardar Seguimiento
+                </button>
+              </div>
+            </div>
+
+            <!-- Lista paginada -->
+            <div *ngIf="tracingsForRecord.length > 0" class="notes-list" style="margin-bottom: 1rem;">
+              <div *ngFor="let tracing of paginatedEditTracings" class="note-item">
+                <div class="note-content" style="flex: 1;">
+                  <div class="note-description" [class.clickable]="needsTruncation(tracing.description, 100)"
+                    (click)="needsTruncation(tracing.description, 100) ? openContentPopup('Seguimiento', tracing.description) : null">
+                    {{ truncateText(tracing.description, 100) }}
+                    <span *ngIf="needsTruncation(tracing.description, 100)" class="read-more-hint-inline">(ver
+                      completo)</span>
+                  </div>
+                </div>
+                <div class="item-actions">
+                  <button type="button" class="btn btn-xs btn-ghost" (click)="openEditTracingForRecord(tracing)"
+                    title="Editar">Editar</button>
+                </div>
+              </div>
+
+              <!-- Paginación -->
+              <div *ngIf="totalEditTracingsPages > 1" class="modal-pagination">
+                <button type="button" (click)="changeEditTracingsPage(-1)"
+                  [disabled]="editTracingsPage === 1">Anterior</button>
+                <span class="page-info">{{ editTracingsPage }} / {{ totalEditTracingsPages }}</span>
+                <button type="button" (click)="changeEditTracingsPage(1)"
+                  [disabled]="editTracingsPage === totalEditTracingsPages">Siguiente</button>
+              </div>
+            </div>
+            <div *ngIf="tracingsForRecord.length === 0" class="empty-item">Sin seguimiento</div>
+            <div *ngIf="tracingError" class="error-message">{{ tracingError }}</div>
+          </div>
+
+          <!-- Archivos Adjuntos (solo en modo edición) -->
+          <div *ngIf="editingMedicalRecord" class="form-section">
+            <h3>Archivos Adjuntos</h3>
+
+            <div class="file-upload-section" style="margin-bottom: 1.5rem;">
+              <input type="file" id="editRecordFileInput" (change)="onFileSelected($event)" style="display: none" />
+              <label for="editRecordFileInput" class="btn btn-sm btn-info">
+                Seleccionar Archivo
+              </label>
+              <span *ngIf="selectedFile" class="selected-file-name">
+                {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
+              </span>
+              <button *ngIf="selectedFile" type="button" class="btn btn-sm btn-success"
+                (click)="uploadMedicalRecordFile(editingMedicalRecord.id)" [disabled]="uploadingFile">
+                <span *ngIf="!uploadingFile">Subir</span>
+                <span *ngIf="uploadingFile">Subiendo...</span>
+              </button>
+              <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+            </div>
+
+            <div *ngIf="viewMedicalRecordFiles.length > 0" class="files-list">
+              <div *ngFor="let file of paginatedViewFiles" class="file-item">
+                <div class="file-icon">{{ getFileIcon(file.originalName) }}</div>
+                <div class="file-info clickable" (click)="openMedicalRecordFile(file)">
+                  <div class="file-name">{{ file.originalName }}</div>
+                  <div class="file-meta">
+                    {{ formatFileSize(file.fileSize) }} • {{ formatDate(file.createdAt) }}
+                  </div>
+                </div>
+                <button type="button" class="btn-delete-small"
+                  (click)="deleteMedicalRecordFile(editingMedicalRecord.id, file.id)" title="Eliminar">
+                  ×
+                </button>
+              </div>
+
+              <div *ngIf="totalFilesPages > 1" class="modal-pagination">
+                <button type="button" (click)="changeFilesPage(-1)" [disabled]="filesPage === 1">Anterior</button>
+                <span class="page-info">{{ filesPage }} / {{ totalFilesPages }}</span>
+                <button type="button" (click)="changeFilesPage(1)"
+                  [disabled]="filesPage === totalFilesPages">Siguiente</button>
+              </div>
+            </div>
+            <div *ngIf="viewMedicalRecordFiles.length === 0" class="empty-item">
+              No hay archivos adjuntos
             </div>
           </div>
 
@@ -301,47 +500,40 @@
       <div class="modal-body scrollable">
         <!-- Descripción -->
         <div class="form-section">
-          <h3>Descripción</h3>
+          <h3>Enfermedad Actual</h3>
           <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.description, 100)"
-            (click)="needsTruncation(viewingMedicalRecord?.description, 100) ? openContentPopup('Descripción - Historia Clínica', viewingMedicalRecord?.description || '') : null">
+            (click)="needsTruncation(viewingMedicalRecord?.description, 100) ? openContentPopup('Enfermedad Actual - Historia Clínica', viewingMedicalRecord?.description || '') : null">
             {{ truncateText(viewingMedicalRecord?.description, 100) }}
             <span *ngIf="needsTruncation(viewingMedicalRecord?.description, 100)" class="read-more-hint">Click para ver
               completo</span>
           </div>
         </div>
 
-        <!-- Antecedentes -->
-        <div class="form-section" *ngIf="viewingMedicalRecord?.background">
-          <h3>Antecedentes</h3>
-          <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.background, 100)"
-            (click)="needsTruncation(viewingMedicalRecord?.background, 100) ? openContentPopup('Antecedentes - Historia Clínica', viewingMedicalRecord?.background || '') : null">
+        <!-- Antecedentes Específicos (siempre visible) -->
+        <div class="form-section">
+          <h3>Antecedentes Específicos</h3>
+          <div *ngIf="viewingMedicalRecord?.background" class="view-content"
+            [class.clickable-text]="needsTruncation(viewingMedicalRecord?.background, 100)"
+            (click)="needsTruncation(viewingMedicalRecord?.background, 100) ? openContentPopup('Antecedentes Específicos - Historia Clínica', viewingMedicalRecord?.background || '') : null">
             {{ truncateText(viewingMedicalRecord?.background, 100) }}
             <span *ngIf="needsTruncation(viewingMedicalRecord?.background, 100)" class="read-more-hint">Click para ver
               completo</span>
           </div>
+          <div *ngIf="!viewingMedicalRecord?.background" class="empty-item">Sin antecedentes específicos</div>
         </div>
 
-        <!-- Notas -->
+        <!-- Valoraciones (solo lectura, sin botón Editar) -->
         <div class="form-section">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 style="margin: 0;">Valoración</h3>
-            <button type="button" class="btn btn-sm btn-info" (click)="openAddNoteModal(viewingMedicalRecord!.id)">
-              + Añadir Valoración
-            </button>
-          </div>
+          <h3>Valoraciones</h3>
           <div *ngIf="viewMedicalRecordNotes.length > 0" class="notes-list">
             <div *ngFor="let note of paginatedViewNotes" class="note-item">
-              <div class="note-content">
+              <div class="note-content" style="flex: 1;">
                 <div class="note-description" [class.clickable]="needsTruncation(note.description, 100)"
                   (click)="needsTruncation(note.description, 100) ? openContentPopup('Valoración', note.description) : null">
                   {{ truncateText(note.description, 100) }}
                   <span *ngIf="needsTruncation(note.description, 100)" class="read-more-hint-inline">(ver
                     completo)</span>
                 </div>
-              </div>
-              <div class="item-actions">
-                <button type="button" class="btn btn-xs btn-ghost" (click)="openEditNoteModal(note)"
-                  title="Editar">Editar</button>
               </div>
               <div class="note-date">{{ formatDate(note.createdAt) }}</div>
             </div>
@@ -355,70 +547,85 @@
             </div>
           </div>
           <div *ngIf="viewMedicalRecordNotes.length === 0" class="empty-item">
-            No hay valoraciones
+            Sin valoraciones
           </div>
         </div>
 
-        <!-- Diagnósticos -->
+        <!-- Diagnóstico -->
         <div class="form-section">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 style="margin: 0;">Diagnósticos</h3>
-            <button type="button" class="btn btn-sm btn-info" (click)="openAddDiagnoseModal(viewingMedicalRecord!.id)">
-              + Añadir Diagnóstico
-            </button>
+          <h3>Diagnóstico</h3>
+
+          <div
+            *ngIf="!viewingMedicalRecord?.diagnose && !viewingMedicalRecord?.protocol && !viewingMedicalRecord?.prescription"
+            class="empty-item">
+            Sin diagnóstico registrado.
           </div>
-          <div *ngIf="viewMedicalRecordDiagnoses.length > 0" class="diagnoses-list">
-            <div *ngFor="let diagnose of paginatedViewDiagnoses" class="diagnose-item">
-              <div class="diagnose-content">
-                <div class="diagnose-header">
-                  <div class="diagnose-description clickable" (click)="openDiagnoseDetailsPopup(diagnose)">
-                    {{ truncateText(diagnose.description, 255) }}
-                    <span class="read-more-hint-inline">(ver completo)</span>
-                  </div>
-                  <div class="item-actions">
-                    <button type="button" class="btn btn-xs btn-ghost" (click)="openEditDiagnoseModal(diagnose)"
-                      title="Editar">Editar</button>
-                  </div>
-                  <div class="diagnose-date">{{ formatDate(diagnose.createdAt) }}</div>
+
+          <div *ngIf="viewingMedicalRecord?.diagnose" style="margin-bottom: 1rem;">
+            <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.diagnose, 100)"
+              (click)="needsTruncation(viewingMedicalRecord?.diagnose, 100) ? openContentPopup('Diagnóstico - Historia Clínica', viewingMedicalRecord?.diagnose || '') : null">
+              {{ truncateText(viewingMedicalRecord?.diagnose, 100) }}
+              <span *ngIf="needsTruncation(viewingMedicalRecord?.diagnose, 100)" class="read-more-hint">Click para ver
+                completo</span>
+            </div>
+          </div>
+
+          <div *ngIf="viewingMedicalRecord?.protocol" style="margin-bottom: 1rem;">
+            <div class="diagnose-label" style="font-weight: bold; margin-bottom: 4px; color: var(--text-color);">
+              CONDUCTA</div>
+            <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.protocol, 100)"
+              (click)="needsTruncation(viewingMedicalRecord?.protocol, 100) ? openContentPopup('Conducta - Historia Clínica', viewingMedicalRecord?.protocol || '') : null">
+              {{ truncateText(viewingMedicalRecord?.protocol, 100) }}
+              <span *ngIf="needsTruncation(viewingMedicalRecord?.protocol, 100)" class="read-more-hint">Click para ver
+                completo</span>
+            </div>
+          </div>
+
+          <div *ngIf="viewingMedicalRecord?.prescription">
+            <div class="diagnose-label" style="font-weight: bold; margin-bottom: 4px; color: var(--text-color);">
+              TRATAMIENTO</div>
+            <div class="view-content" [class.clickable-text]="needsTruncation(viewingMedicalRecord?.prescription, 100)"
+              (click)="needsTruncation(viewingMedicalRecord?.prescription, 100) ? openContentPopup('Tratamiento - Historia Clínica', viewingMedicalRecord?.prescription || '') : null">
+              {{ truncateText(viewingMedicalRecord?.prescription, 100) }}
+              <span *ngIf="needsTruncation(viewingMedicalRecord?.prescription, 100)" class="read-more-hint">Click para
+                ver
+                completo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seguimiento (solo lectura) -->
+        <div class="form-section">
+          <h3>Seguimiento</h3>
+          <div *ngIf="viewMedicalRecordTracings.length > 0" class="notes-list">
+            <div *ngFor="let tracing of paginatedViewTracings" class="note-item">
+              <div class="note-content" style="flex: 1;">
+                <div class="note-description" [class.clickable]="needsTruncation(tracing.description, 100)"
+                  (click)="needsTruncation(tracing.description, 100) ? openContentPopup('Seguimiento', tracing.description) : null">
+                  {{ truncateText(tracing.description, 100) }}
+                  <span *ngIf="needsTruncation(tracing.description, 100)" class="read-more-hint-inline">(ver
+                    completo)</span>
                 </div>
               </div>
+              <div class="note-date">{{ formatDate(tracing.createdAt) }}</div>
             </div>
 
-            <!-- Paginación de Diagnósticos -->
-            <div *ngIf="totalViewDiagnosesPages > 1" class="modal-pagination">
-              <button type="button" (click)="changeDiagnosesPage(-1)" [disabled]="diagnosesPage === 1">Anterior</button>
-              <span class="page-info">{{ diagnosesPage }} / {{ totalViewDiagnosesPages }}</span>
-              <button type="button" (click)="changeDiagnosesPage(1)"
-                [disabled]="diagnosesPage === totalViewDiagnosesPages">Siguiente</button>
+            <!-- Paginación de Seguimientos -->
+            <div *ngIf="totalViewTracingsPages > 1" class="modal-pagination">
+              <button type="button" (click)="changeTracingsPage(-1)" [disabled]="tracingsPage === 1">Anterior</button>
+              <span class="page-info">{{ tracingsPage }} / {{ totalViewTracingsPages }}</span>
+              <button type="button" (click)="changeTracingsPage(1)"
+                [disabled]="tracingsPage === totalViewTracingsPages">Siguiente</button>
             </div>
           </div>
-          <div *ngIf="viewMedicalRecordDiagnoses.length === 0" class="empty-item">
-            No hay diagnósticos
+          <div *ngIf="viewMedicalRecordTracings.length === 0" class="empty-item">
+            No hay seguimiento
           </div>
         </div>
 
-        <!-- Archivos -->
+        <!-- Archivos (solo lista, sin upload) -->
         <div class="form-section">
           <h3>Archivos Adjuntos</h3>
-
-          <!-- Subir archivo directamente desde detalles -->
-          <div class="file-upload-section" style="margin-bottom: 1.5rem;">
-            <input type="file" id="detailRecordFileInput" (change)="onFileSelected($event)" style="display: none" />
-            <label for="detailRecordFileInput" class="btn btn-sm btn-info">
-              Seleccionar Archivo
-            </label>
-            <span *ngIf="selectedFile" class="selected-file-name">
-              {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
-            </span>
-            <button *ngIf="selectedFile" type="button" class="btn btn-sm btn-success"
-              (click)="uploadMedicalRecordFile(viewingMedicalRecord!.id)" [disabled]="uploadingFile">
-              <span *ngIf="!uploadingFile">Subir</span>
-              <span *ngIf="uploadingFile">Subiendo...</span>
-            </button>
-            <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
-          </div>
-
-          <!-- Lista de archivos -->
           <div *ngIf="viewMedicalRecordFiles.length > 0" class="files-list">
             <div *ngFor="let file of paginatedViewFiles" class="file-item">
               <div class="file-icon">{{ getFileIcon(file.originalName) }}</div>
@@ -428,13 +635,8 @@
                   {{ formatFileSize(file.fileSize) }} • {{ formatDate(file.createdAt) }}
                 </div>
               </div>
-              <button type="button" class="btn-delete-small"
-                (click)="deleteMedicalRecordFile(viewingMedicalRecord!.id, file.id)" title="Eliminar">
-                ×
-              </button>
             </div>
 
-            <!-- Paginación de Archivos -->
             <div *ngIf="totalFilesPages > 1" class="modal-pagination">
               <button type="button" (click)="changeFilesPage(-1)" [disabled]="filesPage === 1">Anterior</button>
               <span class="page-info">{{ filesPage }} / {{ totalFilesPages }}</span>
@@ -460,6 +662,9 @@
     </div>
   </div>
 
+
+
+
   <!-- Modal para Ver Detalles del Registro Previo (Solo Lectura) -->
   <div *ngIf="showViewPreviousRecordModal" class="modal-overlay" (click)="closeViewPreviousRecordModal()">
     <div class="modal-content modal-large" (click)="$event.stopPropagation()">
@@ -474,32 +679,15 @@
           <div class="view-content" [class.clickable-text]="needsTruncation(viewingPreviousRecord?.description, 100)"
             (click)="needsTruncation(viewingPreviousRecord?.description, 100) ? openContentPopup('Descripción - Antecedentes', viewingPreviousRecord?.description || '') : null">
             {{ truncateText(viewingPreviousRecord?.description, 100) }}
-            <span *ngIf="needsTruncation(viewingPreviousRecord?.description, 100)" class="read-more-hint">Click para ver
+            <span *ngIf="needsTruncation(viewingPreviousRecord?.description, 100)" class="read-more-hint">Click
+              para ver
               completo</span>
           </div>
         </div>
 
-        <!-- Archivos -->
+        <!-- Archivos (solo lista, sin upload) -->
         <div class="form-section">
           <h3>Archivos Adjuntos</h3>
-
-          <!-- Subir archivo directamente desde detalles -->
-          <div class="file-upload-section" style="margin-bottom: 1.5rem;">
-            <input type="file" id="detailPreviousRecordFileInput" (change)="onFileSelected($event)"
-              style="display: none" />
-            <label for="detailPreviousRecordFileInput" class="btn btn-sm btn-info">
-              Seleccionar Archivo
-            </label>
-            <span *ngIf="selectedFile" class="selected-file-name">
-              {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
-            </span>
-            <button *ngIf="selectedFile" type="button" class="btn btn-sm btn-success"
-              (click)="uploadPreviousRecordFile(viewingPreviousRecord!.id)" [disabled]="uploadingFile">
-              <span *ngIf="!uploadingFile">Subir</span>
-              <span *ngIf="uploadingFile">Subiendo...</span>
-            </button>
-            <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
-          </div>
 
           <!-- Lista de archivos -->
           <div *ngIf="viewPreviousRecordFiles.length > 0" class="files-list">
@@ -511,10 +699,6 @@
                   {{ formatFileSize(file.fileSize) }} • {{ formatDateTime(file.createdAt) }}
                 </div>
               </div>
-              <button type="button" class="btn-delete-small"
-                (click)="deletePreviousRecordFile(viewingPreviousRecord!.id, file.id)" title="Eliminar">
-                ×
-              </button>
             </div>
 
             <!-- Paginación de Archivos -->
@@ -545,27 +729,78 @@
 
   <!-- Modal para Registro Previo -->
   <div *ngIf="showPreviousRecordModal" class="modal-overlay" (click)="closePreviousRecordModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ editingPreviousRecord ? 'Editar Antecedentes' : 'Agregar Antecedentes' }}</h2>
         <button class="btn-close" (click)="closePreviousRecordModal()">✕</button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body scrollable">
         <form [formGroup]="previousRecordForm">
-          <div class="form-group">
-            <label for="previousRecordDescription">Descripción</label>
-            <textarea id="previousRecordDescription" formControlName="description" class="form-control" rows="6"
-              maxlength="10000" placeholder="Ingrese la descripción de los antecedentes..."></textarea>
-            <div class="char-counter">
-              {{ previousRecordForm.get('description')?.value?.length || 0 }} / 10000
-            </div>
-            <div class="error-message"
-              *ngIf="previousRecordForm.get('description')?.invalid && previousRecordForm.get('description')?.touched">
-              La descripción es requerida y debe tener al menos 5 caracteres
+          <div class="form-section">
+            <h3>Descripción *</h3>
+            <div class="form-group">
+              <textarea id="previousRecordDescription" formControlName="description" class="form-control" rows="6"
+                maxlength="10000" placeholder="Ingrese la descripción de los antecedentes..."></textarea>
+              <div class="char-counter">
+                {{ previousRecordForm.get('description')?.value?.length || 0 }} / 10000
+              </div>
+              <div class="error-message"
+                *ngIf="previousRecordForm.get('description')?.invalid && previousRecordForm.get('description')?.touched">
+                La descripción es requerida y debe tener al menos 5 caracteres
+              </div>
             </div>
           </div>
         </form>
+
+        <!-- Archivos Adjuntos (solo en modo edición) -->
+        <div *ngIf="editingPreviousRecord" class="form-section">
+          <h3>Archivos Adjuntos</h3>
+
+          <div class="file-upload-section" style="margin-bottom: 1.5rem;">
+            <input type="file" id="editPreviousRecordFileInput" (change)="onFileSelected($event)"
+              style="display: none" />
+            <label for="editPreviousRecordFileInput" class="btn btn-sm btn-info">
+              Seleccionar Archivo
+            </label>
+            <span *ngIf="selectedFile" class="selected-file-name">
+              {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
+            </span>
+            <button *ngIf="selectedFile" type="button" class="btn btn-sm btn-success"
+              (click)="uploadPreviousRecordFile(editingPreviousRecord.id)" [disabled]="uploadingFile">
+              <span *ngIf="!uploadingFile">Subir</span>
+              <span *ngIf="uploadingFile">Subiendo...</span>
+            </button>
+            <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+          </div>
+
+          <div *ngIf="viewPreviousRecordFiles.length > 0" class="files-list">
+            <div *ngFor="let file of paginatedViewFiles" class="file-item">
+              <div class="file-icon">{{ getFileIcon(file.originalName) }}</div>
+              <div class="file-info clickable" (click)="openPreviousRecordFile(file)">
+                <div class="file-name">{{ file.originalName }}</div>
+                <div class="file-meta">
+                  {{ formatFileSize(file.fileSize) }} • {{ formatDate(file.createdAt) }}
+                </div>
+              </div>
+              <button type="button" class="btn-delete-small"
+                (click)="deletePreviousRecordFile(editingPreviousRecord.id, file.id)" title="Eliminar">
+                ×
+              </button>
+            </div>
+
+            <!-- Paginación de Archivos en Modal -->
+            <div *ngIf="totalFilesPages > 1" class="modal-pagination">
+              <button type="button" (click)="changeFilesPage(-1)" [disabled]="filesPage === 1">Anterior</button>
+              <span class="page-info">{{ filesPage }} / {{ totalFilesPages }}</span>
+              <button type="button" (click)="changeFilesPage(1)"
+                [disabled]="filesPage === totalFilesPages">Siguiente</button>
+            </div>
+          </div>
+          <div *ngIf="viewPreviousRecordFiles.length === 0" class="empty-item">
+            No hay archivos adjuntos
+          </div>
+        </div>
 
 
 
@@ -669,7 +904,8 @@
           <div class="view-content" [class.clickable-text]="needsTruncation(viewingPatientNote?.description, 100)"
             (click)="needsTruncation(viewingPatientNote?.description, 100) ? openContentPopup('Descripción - Nota', viewingPatientNote?.description || '') : null">
             {{ truncateText(viewingPatientNote?.description, 100) }}
-            <span *ngIf="needsTruncation(viewingPatientNote?.description, 100)" class="read-more-hint">Click para ver
+            <span *ngIf="needsTruncation(viewingPatientNote?.description, 100)" class="read-more-hint">Click para
+              ver
               completo</span>
           </div>
         </div>
@@ -687,123 +923,63 @@
     </div>
   </div>
 
-  <!-- Modal para Detalles del Diagnóstico -->
-  <div *ngIf="showDiagnoseDetailsPopup" class="modal-overlay" (click)="closeDiagnoseDetailsPopup()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Detalles del Diagnóstico</h2>
-        <button class="btn-close" (click)="closeDiagnoseDetailsPopup()">✕</button>
-      </div>
 
-      <div class="modal-body">
-        <div class="form-section">
-          <h3>Descripción</h3>
-          <div class="view-content">
-            {{ diagnoseDetailsData?.description }}
-          </div>
-        </div>
 
-        <div *ngIf="diagnoseDetailsData?.protocol" class="diagnose-conduct">
-          <div class="diagnose-label">CONDUCTA</div>
-          <div class="diagnose-text">{{ diagnoseDetailsData.protocol }}</div>
-        </div>
 
-        <div *ngIf="diagnoseDetailsData?.prescription" class="diagnose-prescription">
-          <div class="diagnose-label">TRATAMIENTO</div>
-          <div class="diagnose-text">{{ diagnoseDetailsData.prescription }}</div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="closeDiagnoseDetailsPopup()">
-          Cerrar
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para Valoración (Atómico) -->
+  <!-- Modal para Valoración / Seguimiento (Nota de Registro Médico) -->
   <div *ngIf="showNoteModal" class="modal-overlay" (click)="closeNoteModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>{{ editingNote ? 'Editar Valoración' : 'Añadir Valoración' }}</h2>
+        <h2>{{ editingTracingInRecord ? 'Editar Seguimiento' : (editingNote ? 'Editar Valoración' : 'Agregar
+          Valoración') }}</h2>
         <button class="btn-close" (click)="closeNoteModal()">✕</button>
       </div>
 
       <div class="modal-body">
         <form [formGroup]="noteForm">
           <div class="form-group">
-            <label for="atomicNoteDescription">Descripción</label>
-            <textarea id="atomicNoteDescription" formControlName="description" class="form-control" rows="4"
-              maxlength="10000" placeholder="Ingrese valoración..."></textarea>
+            <label for="noteDescription">Descripción</label>
+            <textarea id="noteDescription" formControlName="description" class="form-control" rows="6" maxlength="10000"
+              placeholder="Ingrese la descripción de la valoración..."></textarea>
             <div class="char-counter">
               {{ noteForm.get('description')?.value?.length || 0 }} / 10000
             </div>
-            <div *ngIf="noteError" class="error-message">{{ noteError }}</div>
+            <div class="error-message"
+              *ngIf="noteForm.get('description')?.invalid && noteForm.get('description')?.touched">
+              La descripción es requerida y debe tener al menos 5 caracteres
+            </div>
+          </div>
+
+          <div *ngIf="noteError" class="alert alert-danger">
+            {{ noteError }}
+          </div>
+
+          <!-- Destructive Actions -->
+          <div *ngIf="editingNote || editingTracingInRecord" class="form-section destructive-zone">
+            <button *ngIf="editingNote" type="button" class="btn btn-danger btn-full"
+              (click)="deleteNoteFromModal(editingNote.id)">
+              Eliminar Valoración
+            </button>
+            <button *ngIf="editingTracingInRecord" type="button" class="btn btn-danger btn-full"
+              (click)="confirmDeleteTracingFromModal(editingTracingInRecord.id)">
+              Eliminar Seguimiento
+            </button>
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="closeNoteModal()">Cancelar</button>
+        <button class="btn btn-secondary" (click)="closeNoteModal()" [disabled]="noteFormLoading">
+          Cancelar
+        </button>
         <div class="spacer"></div>
-        <button *ngIf="editingNote" class="btn btn-danger" (click)="deleteNoteFromModal(editingNote.id)"
-          style="margin-right: 8px;">
-          Eliminar
-        </button>
-        <button class="btn btn-primary" (click)="saveNote()" [disabled]="noteForm.invalid || noteFormLoading">
-          <span *ngIf="!noteFormLoading">{{ editingNote ? 'Actualizar' : 'Guardar' }}</span>
-          <span *ngIf="noteFormLoading" class="spinner-small"></span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para Diagnóstico (Atómico) -->
-  <div *ngIf="showDiagnoseModal" class="modal-overlay" (click)="closeDiagnoseModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>{{ editingDiagnose ? 'Editar Diagnóstico' : 'Añadir Diagnóstico' }}</h2>
-        <button class="btn-close" (click)="closeDiagnoseModal()">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <form [formGroup]="diagnoseForm">
-          <div class="form-group">
-            <label for="atomicDiagnoseDescription">Descripción</label>
-            <textarea id="atomicDiagnoseDescription" formControlName="description" class="form-control" rows="3"
-              maxlength="10000" placeholder="Descripción del diagnóstico..."></textarea>
-            <div class="char-counter">{{ diagnoseForm.get('description')?.value?.length || 0 }} / 10000</div>
-          </div>
-
-          <div class="form-group">
-            <label for="atomicDiagnoseConduct">Conducta (Opcional)</label>
-            <textarea id="atomicDiagnoseConduct" formControlName="protocol" class="form-control" rows="2"
-              maxlength="10000" placeholder="Conducta..."></textarea>
-            <div class="char-counter">{{ diagnoseForm.get('protocol')?.value?.length || 0 }} / 10000</div>
-          </div>
-
-          <div class="form-group">
-            <label for="atomicDiagnosePrescription">Tratamiento (Opcional)</label>
-            <textarea id="atomicDiagnosePrescription" formControlName="prescription" class="form-control" rows="2"
-              maxlength="10000" placeholder="Tratamiento..."></textarea>
-            <div class="char-counter">{{ diagnoseForm.get('prescription')?.value?.length || 0 }} / 10000</div>
-          </div>
-          <div *ngIf="diagnoseError" class="error-message">{{ diagnoseError }}</div>
-        </form>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="closeDiagnoseModal()">Cancelar</button>
-        <div class="spacer"></div>
-        <button *ngIf="editingDiagnose" class="btn btn-danger" (click)="deleteDiagnoseFromModal(editingDiagnose.id)"
-          style="margin-right: 8px;">
-          Eliminar
-        </button>
-        <button class="btn btn-primary" (click)="saveDiagnose()"
-          [disabled]="diagnoseForm.invalid || diagnoseFormLoading">
-          <span *ngIf="!diagnoseFormLoading">{{ editingDiagnose ? 'Actualizar' : 'Guardar' }}</span>
-          <span *ngIf="diagnoseFormLoading" class="spinner-small"></span>
+        <button class="btn btn-primary" (click)="saveNote()" [disabled]="!noteForm.valid || noteFormLoading">
+          <span *ngIf="!noteFormLoading">
+            {{ (editingNote || editingTracingInRecord) ? 'Guardar' : 'Agregar' }}
+          </span>
+          <span *ngIf="noteFormLoading">
+            <span class="spinner-small"></span> Guardando...
+          </span>
         </button>
       </div>
     </div>
@@ -944,7 +1120,8 @@
 
       <div class="modal-body">
         <p class="email-instruction">
-          <strong>Importante:</strong> Por seguridad, los navegadores no permiten adjuntar archivos automáticamente a
+          <strong>Importante:</strong> Por seguridad, los navegadores no permiten adjuntar archivos
+          automáticamente a
           tu programa de correo.
         </p>
         <p class="email-instruction">
