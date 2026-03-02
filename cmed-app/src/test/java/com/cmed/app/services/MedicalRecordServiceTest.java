@@ -54,7 +54,6 @@ class MedicalRecordServiceTest {
 
     private Patient patient;
     private MedicalRecordNote note;
-    private Diagnose diagnose;
     private MedicalRecord medicalRecord;
 
     private static final String MEDICAL_RECORD_NOT_FOUND = "MedicalRecord not found: ";
@@ -80,15 +79,6 @@ class MedicalRecordServiceTest {
         note.setUpdatedAt(LocalDateTime.now());
         note.setDescription("Headache");
         
-        diagnose = Diagnose.builder()
-                .id(UUID.randomUUID())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .medicalRecord(medicalRecord)
-                .description("Headache")
-                .prescription("Paracetamol")
-                .build();
-
         medicalRecord = MedicalRecord.builder()
                 .id(UUID.randomUUID())
                 .createdAt(LocalDateTime.now())
@@ -97,11 +87,11 @@ class MedicalRecordServiceTest {
                 .patient(patient)
                 .description("General Checkup")
                 .background("Antecedentes")
+                .diagnose("Diagnóstico test")
+                .prescription("Prescription test")
+                .protocol("Protocol test")
                 .notes(new ArrayList<>() {{
                     add(note);
-                }})
-                .diagnoses(new ArrayList<>() {{
-                    add(diagnose);
                 }})
                 .files(new ArrayList<>())
                 .build();
@@ -116,7 +106,10 @@ class MedicalRecordServiceTest {
                 LocalDateTime.now(),
                 medicalRecord.getPatient().getId(),
                 medicalRecord.getDescription(),
-                medicalRecord.getBackground()
+                medicalRecord.getBackground(),
+                medicalRecord.getDiagnose(),
+                medicalRecord.getProtocol(),
+                medicalRecord.getPrescription()
         );
 
         when(medicalRecordRepository.findAll()).thenReturn(List.of(medicalRecord));
@@ -145,7 +138,10 @@ class MedicalRecordServiceTest {
                 LocalDateTime.now(),
                 medicalRecord.getPatient().getId(),
                 medicalRecord.getDescription(),
-                medicalRecord.getBackground()
+                medicalRecord.getBackground(),
+                medicalRecord.getDiagnose(),
+                medicalRecord.getProtocol(),
+                medicalRecord.getPrescription()
         );
 
         when(patientRepository.findById(patient.getId())).thenReturn(Optional.of(patient));
@@ -180,8 +176,11 @@ class MedicalRecordServiceTest {
                 medicalRecord.getPatient().getId(),
                 medicalRecord.getDescription(),
                 medicalRecord.getBackground(),
+                medicalRecord.getDiagnose(),
+                medicalRecord.getProtocol(),
+                medicalRecord.getPrescription(),
                 new ArrayList<Note>(medicalRecord.getNotes()),
-                medicalRecord.getDiagnoses()
+                new ArrayList<Tracing>()
         );
 
         when(medicalRecordRepository.findById(medicalRecord.getId())).thenReturn(Optional.of(medicalRecord));
@@ -193,7 +192,9 @@ class MedicalRecordServiceTest {
         assertEquals(medicalRecord.getDescription(), result.description());
         assertEquals(medicalRecord.getBackground(), result.background());
         assertEquals(medicalRecord.getNotes(), result.notes());
-        assertEquals(medicalRecord.getDiagnoses(), result.diagnoses());
+        assertEquals(medicalRecord.getDiagnose(), result.diagnose());
+        assertEquals(medicalRecord.getProtocol(), result.protocol());
+        assertEquals(medicalRecord.getPrescription(), result.prescription());
         verify(medicalRecordRepository, times(1)).findById(medicalRecord.getId());
     }
 
@@ -221,8 +222,11 @@ class MedicalRecordServiceTest {
                 medicalRecord.getPatient().getId(),
                 medicalRecord.getDescription(),
                 medicalRecord.getBackground(),
+                medicalRecord.getDiagnose(),
+                medicalRecord.getProtocol(),
+                medicalRecord.getPrescription(),
                 new ArrayList<Note>(medicalRecord.getNotes()),
-                medicalRecord.getDiagnoses()
+                new ArrayList<Tracing>()
         );
 
         when(medicalRecordRepository.save(any(MedicalRecord.class))).thenReturn(medicalRecord);
@@ -236,7 +240,9 @@ class MedicalRecordServiceTest {
         assertEquals(medicalRecord.getDescription(), result.description());
         assertEquals(medicalRecord.getBackground(), result.background());
         assertEquals(medicalRecord.getNotes(), result.notes());
-        assertEquals(medicalRecord.getDiagnoses(), result.diagnoses());
+        assertEquals(medicalRecord.getDiagnose(), result.diagnose());
+        assertEquals(medicalRecord.getProtocol(), result.protocol());
+        assertEquals(medicalRecord.getPrescription(), result.prescription());
         verify(medicalRecordRepository).save(any(MedicalRecord.class));
     }
 
@@ -267,8 +273,10 @@ class MedicalRecordServiceTest {
                 .patient(medicalRecord.getPatient())
                 .description("General Checkup UPDATED")
                 .background("Antecedentes UPDATED")
+                .diagnose(medicalRecord.getDiagnose())
+                .protocol(medicalRecord.getProtocol())
+                .prescription(medicalRecord.getPrescription())
                 .notes(medicalRecord.getNotes())
-                .diagnoses(medicalRecord.getDiagnoses())
                 .files(medicalRecord.getFiles())
                 .build();
 
@@ -279,8 +287,11 @@ class MedicalRecordServiceTest {
                 updatedMedicalRecord.getPatient().getId(),
                 updatedMedicalRecord.getDescription(),
                 updatedMedicalRecord.getBackground(),
+                updatedMedicalRecord.getDiagnose(),
+                updatedMedicalRecord.getProtocol(),
+                updatedMedicalRecord.getPrescription(),
                 new ArrayList<Note>(updatedMedicalRecord.getNotes()),
-                updatedMedicalRecord.getDiagnoses()
+                new ArrayList<Tracing>()
         );
 
         MedicalRecordUpdateDto updateDto = MedicalRecordUpdateDto.builder()

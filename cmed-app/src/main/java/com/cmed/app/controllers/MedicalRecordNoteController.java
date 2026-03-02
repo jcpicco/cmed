@@ -1,6 +1,5 @@
 package com.cmed.app.controllers;
 
-import com.cmed.app.dtos.diagnoses.DiagnoseCreateDto;
 import com.cmed.app.dtos.notes.NoteCreateDto;
 import com.cmed.app.dtos.notes.NoteUpdateDto;
 import com.cmed.app.models.notes.MedicalRecordNote;

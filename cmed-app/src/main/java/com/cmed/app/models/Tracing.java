@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "diagnoses")
+@Table(name = "tracings")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Diagnose {
+public class Tracing {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -29,17 +29,11 @@ public class Diagnose {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "medical_record_id", nullable = false, updatable = false)
-    @JsonBackReference
-    private MedicalRecord medicalRecord;
-
-    @Column(nullable = false, length = 1000)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Column(length = 1000)
-    private String prescription;
-
-    @Column(length = 1000)
-    private String protocol;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_record_id", nullable = false)
+    @JsonBackReference
+    private MedicalRecord medicalRecord;
 }

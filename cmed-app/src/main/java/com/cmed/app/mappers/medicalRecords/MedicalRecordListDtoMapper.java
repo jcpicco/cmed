@@ -17,7 +17,7 @@ public interface MedicalRecordListDtoMapper {
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "notes", ignore = true)
-    @Mapping(target = "diagnoses", ignore = true)
     @Mapping(target = "files", ignore = true)
+    @Mapping(target = "tracings", ignore = true)
     MedicalRecord toEntity(MedicalRecordListDto dto);
 }

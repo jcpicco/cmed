@@ -21,8 +21,8 @@ public interface MedicalRecordCreateDtoMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "notes", ignore = true)
-    @Mapping(target = "diagnoses", ignore = true)
     @Mapping(target = "files", ignore = true)
+    @Mapping(target = "tracings", ignore = true)
     MedicalRecord toEntity(MedicalRecordCreateDto dto);
 
     @Named("mapPatient")

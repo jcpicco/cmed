@@ -5,14 +5,13 @@ import { PatientService } from '../services/patient.service';
 import { MedicalRecordService } from '../services/medical-record.service';
 import { PreviousRecordService } from '../services/previous-record.service';
 import { NoteService } from '../services/note.service';
-import { DiagnoseService } from '../services/diagnose.service';
+import { TracingService } from '../services/tracing.service';
 import { MedicalRecordFileService } from '../services/medical-record-file.service';
 import { PreviousRecordFileService } from '../services/previous-record-file.service';
 import { PatientListDto, PatientDto, PatientCreateDto, PatientUpdateDto } from '../models/patient.model';
 import { MedicalRecordListDto } from '../models/medical-record.model';
 import { PreviousRecordListDto } from '../models/previous-record.model';
 import { Note } from '../models/note.model';
-import { Diagnose } from '../models/diagnose.model';
 import { MedicalRecordFile, PreviousRecordFile, BaseFile } from '../models/file.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -67,9 +66,7 @@ export class PatientsComponent implements OnInit {
 
   // Notes and Diagnoses for Medical Records
   notesForRecord: Note[] = [];
-  diagnosesForRecord: Diagnose[] = [];
   viewMedicalRecordNotes: Note[] = [];
-  viewMedicalRecordDiagnoses: Diagnose[] = [];
 
   // Patient Notes
   patientNotes: Note[] = [];
@@ -87,14 +84,8 @@ export class PatientsComponent implements OnInit {
   patientNoteError: string | null = null;
 
   newNoteDescription = '';
-  newDiagnoseDescription = '';
-  newDiagnosePrescription = '';
-  newDiagnoseConduct = '';
-  selectedDiagnose: Diagnose | null = null;
   noteError: string | null = null;
-  diagnoseError: string | null = null;
   notesToDelete: string[] = [];
-  diagnosesToDelete: string[] = [];
 
   // Files for Medical and Previous Records
   viewMedicalRecordFiles: MedicalRecordFile[] = [];
@@ -108,9 +99,6 @@ export class PatientsComponent implements OnInit {
   contentPopupTitle = '';
   contentPopupText = '';
 
-  // Diagnose Details Popup
-  showDiagnoseDetailsPopup = false;
-  diagnoseDetailsData: Diagnose | null = null;
 
   // Pagination for Modal Lists (max 3 items)
   recordPageSize = 3;
@@ -118,7 +106,6 @@ export class PatientsComponent implements OnInit {
   listPageSize = 10;
 
   notesPage = 1;
-  diagnosesPage = 1;
   filesPage = 1;
 
   // Pagination for Records Lists
@@ -155,7 +142,7 @@ export class PatientsComponent implements OnInit {
     private medicalRecordService: MedicalRecordService,
     private previousRecordService: PreviousRecordService,
     private noteService: NoteService,
-    private diagnoseService: DiagnoseService,
+    private tracingService: TracingService,
     private medicalRecordFileService: MedicalRecordFileService,
     private previousRecordFileService: PreviousRecordFileService,
     private formBuilder: FormBuilder,
@@ -178,6 +165,9 @@ export class PatientsComponent implements OnInit {
   private createMedicalRecordForm(): FormGroup {
     return this.formBuilder.group({
       description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10000)]],
+      diagnose: ['', [Validators.maxLength(10000)]],
+      prescription: ['', [Validators.maxLength(10000)]],
+      protocol: ['', [Validators.maxLength(10000)]],
       background: ['', [Validators.maxLength(10000)]]
     });
   }
@@ -554,13 +544,11 @@ export class PatientsComponent implements OnInit {
   viewMedicalRecordDetails(record: MedicalRecordListDto): void {
     this.viewingMedicalRecord = record;
     this.notesPage = 1;
-    this.diagnosesPage = 1;
     this.filesPage = 1;
-    // Cargar notas y diagnósticos del registro
+    // Cargar notas del registro
     this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
       next: (fullRecord) => {
         this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-        this.viewMedicalRecordDiagnoses = (fullRecord.diagnoses || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.showViewMedicalRecordModal = true;
       },
       error: (err) => {
@@ -589,7 +577,6 @@ export class PatientsComponent implements OnInit {
     this.showViewMedicalRecordModal = false;
     this.viewingMedicalRecord = null;
     this.viewMedicalRecordNotes = [];
-    this.viewMedicalRecordDiagnoses = [];
     this.viewMedicalRecordFiles = [];
     this.selectedFile = null;
     this.fileError = null;
@@ -634,10 +621,8 @@ export class PatientsComponent implements OnInit {
 
     // Reset modal pagination and deletion tracking
     this.notesPage = 1;
-    this.diagnosesPage = 1;
     this.filesPage = 1;
     this.notesToDelete = [];
-    this.diagnosesToDelete = [];
     this.viewMedicalRecordFiles = []; // Consolidamos aquí
 
     // Fetch full record to get notes and diagnoses
@@ -647,10 +632,12 @@ export class PatientsComponent implements OnInit {
         this.editingMedicalRecord = fullRecord;
         this.medicalRecordForm.patchValue({
           description: fullRecord.description,
+          diagnose: fullRecord.diagnose,
+          prescription: fullRecord.prescription,
+          protocol: fullRecord.protocol,
           background: fullRecord.background
         });
         this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-        this.diagnosesForRecord = [...(fullRecord.diagnoses || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.medicalRecordFormError = null;
         this.showMedicalRecordModal = true;
         this.medicalRecordFormLoading = false;
@@ -664,10 +651,12 @@ export class PatientsComponent implements OnInit {
         this.editingMedicalRecord = record;
         this.medicalRecordForm.patchValue({
           description: record.description,
+          diagnose: record.diagnose,
+          prescription: record.prescription,
+          protocol: record.protocol,
           background: record.background
         });
         this.notesForRecord = [];
-        this.diagnosesForRecord = [];
         this.showMedicalRecordModal = true;
         this.medicalRecordFormLoading = false;
 
@@ -716,12 +705,15 @@ export class PatientsComponent implements OnInit {
       const editingRecordId = this.editingMedicalRecord.id;
       const updateDto = {
         description: this.medicalRecordForm.get('description')?.value,
+        diagnose: this.medicalRecordForm.get('diagnose')?.value || undefined,
+        protocol: this.medicalRecordForm.get('protocol')?.value || undefined,
+        prescription: this.medicalRecordForm.get('prescription')?.value || undefined,
         background: this.medicalRecordForm.get('background')?.value
       };
       this.medicalRecordService.updateMedicalRecord(editingRecordId, updateDto).subscribe({
         next: () => {
           // Guardar notas y diagnósticos
-          this.saveNotesAndDiagnoses(editingRecordId);
+          this.saveNotes(editingRecordId);
         },
         error: (err) => {
           this.medicalRecordFormError = 'Error al actualizar registro médico';
@@ -734,12 +726,15 @@ export class PatientsComponent implements OnInit {
       const createDto = {
         patientId: selectedPatientId,
         description: this.medicalRecordForm.get('description')?.value,
+        diagnose: this.medicalRecordForm.get('diagnose')?.value || undefined,
+        protocol: this.medicalRecordForm.get('protocol')?.value || undefined,
+        prescription: this.medicalRecordForm.get('prescription')?.value || undefined,
         background: this.medicalRecordForm.get('background')?.value
       };
       this.medicalRecordService.createMedicalRecord(createDto).subscribe({
         next: (createdRecord) => {
-          // Guardar notas y diagnósticos del nuevo registro
-          this.saveNotesAndDiagnoses(createdRecord.id);
+          // Guardar notas del nuevo registro
+          this.saveNotes(createdRecord.id);
         },
         error: (err) => {
           this.medicalRecordFormError = 'Error al crear registro médico';
@@ -751,29 +746,19 @@ export class PatientsComponent implements OnInit {
   }
 
   /**
-   * Guardar notas y diagnósticos del registro médico
+   * Guardar notas del registro médico
    */
-  private saveNotesAndDiagnoses(medicalRecordId: string): void {
+  private saveNotes(medicalRecordId: string): void {
     const deleteOps: Observable<any>[] = [];
     const createOps: Observable<any>[] = [];
 
     // Operaciones de eliminación
     this.notesToDelete.forEach(id => deleteOps.push(this.noteService.deleteMedicalRecordNote(medicalRecordId, id)));
-    this.diagnosesToDelete.forEach(id => deleteOps.push(this.diagnoseService.deleteDiagnose(id)));
 
     // Operaciones de creación (solo para IDs temporales)
     this.notesForRecord.filter(n => this.isTempId(n.id)).forEach(note => {
       createOps.push(this.noteService.createMedicalRecordNote(medicalRecordId, {
         description: note.description
-      }));
-    });
-
-    this.diagnosesForRecord.filter(d => this.isTempId(d.id)).forEach(diagnose => {
-      createOps.push(this.diagnoseService.createDiagnose({
-        medicalRecordId: medicalRecordId,
-        description: diagnose.description,
-        prescription: diagnose.prescription,
-        protocol: diagnose.protocol
       }));
     });
 
@@ -787,7 +772,6 @@ export class PatientsComponent implements OnInit {
     forkJoin(allOps).subscribe({
       next: () => {
         this.notesToDelete = [];
-        this.diagnosesToDelete = [];
         this.finishMedicalRecordSave();
       },
       error: (err) => {
@@ -971,64 +955,6 @@ export class PatientsComponent implements OnInit {
     }
   }
 
-  /**
-   * Agregar diagnóstico al registro médico
-   */
-  addDiagnoseToRecord(): void {
-    if (!this.newDiagnoseDescription.trim()) {
-      this.diagnoseError = 'La descripción del diagnóstico no puede estar vacía';
-      return;
-    }
-    if (this.newDiagnoseDescription.trim().length < 5) {
-      this.diagnoseError = 'La descripción debe tener al menos 5 caracteres';
-      return;
-    }
-    if (this.newDiagnoseDescription.length > 1000) {
-      this.diagnoseError = 'La descripción no puede exceder los 1000 caracteres';
-      return;
-    }
-    if (this.newDiagnosePrescription.length > 255) {
-      this.diagnoseError = 'El tratamiento no puede exceder los 255 caracteres';
-      return;
-    }
-    if (this.newDiagnoseConduct.length > 1000) {
-      this.diagnoseError = 'La conducta no puede exceder los 1000 caracteres';
-      return;
-    }
-    if (this.newDiagnoseConduct.trim() && this.newDiagnoseConduct.trim().length < 5) {
-      this.diagnoseError = 'La conducta debe tener al menos 5 caracteres';
-      return;
-    }
-
-    this.diagnoseError = null;
-    const newDiagnose: Diagnose = {
-      id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      medicalRecordId: this.editingMedicalRecord?.id || '',
-      description: this.newDiagnoseDescription.trim(),
-      prescription: this.newDiagnosePrescription.trim() || undefined,
-      protocol: this.newDiagnoseConduct.trim() || undefined,
-      createdAt: new Date()
-    };
-
-    this.diagnosesForRecord.push(newDiagnose);
-    this.newDiagnoseDescription = '';
-    this.newDiagnosePrescription = '';
-    this.newDiagnoseConduct = '';
-  }
-
-  /**
-   * Eliminar diagnóstico del registro médico
-   */
-  deleteDiagnoseFromRecord(diagnoseId: string): void {
-    if (!this.isTempId(diagnoseId)) {
-      this.diagnosesToDelete.push(diagnoseId);
-    }
-    this.diagnosesForRecord = this.diagnosesForRecord.filter(d => d.id !== diagnoseId);
-    if (this.diagnosesPage > 1 && this.diagnosesPage > this.totalDiagnosesPages) {
-      this.diagnosesPage = this.totalDiagnosesPages;
-    }
-  }
-
   private isTempId(id: string): boolean {
     return id.startsWith('temp_');
   }
@@ -1042,14 +968,9 @@ export class PatientsComponent implements OnInit {
     this.medicalRecordFormError = null;
     this.editingMedicalRecord = null;
     this.notesForRecord = [];
-    this.diagnosesForRecord = [];
     this.viewMedicalRecordFiles = []; // Limpiar archivos al cerrar
     this.newNoteDescription = '';
-    this.newDiagnoseDescription = '';
-    this.newDiagnosePrescription = '';
-    this.newDiagnoseConduct = '';
     this.noteError = null;
-    this.diagnoseError = null;
   }
 
   /**
@@ -1458,21 +1379,6 @@ export class PatientsComponent implements OnInit {
     this.contentPopupText = '';
   }
 
-  /**
-   * Abrir popup con detalles completos del diagnóstico
-   */
-  openDiagnoseDetailsPopup(diagnose: Diagnose): void {
-    this.diagnoseDetailsData = diagnose;
-    this.showDiagnoseDetailsPopup = true;
-  }
-
-  /**
-   * Cerrar popup de detalles del diagnóstico
-   */
-  closeDiagnoseDetailsPopup(): void {
-    this.showDiagnoseDetailsPopup = false;
-    this.diagnoseDetailsData = null;
-  }
 
   /**
    * Obtener validación de campo
@@ -1718,15 +1624,6 @@ export class PatientsComponent implements OnInit {
     return Math.ceil(this.notesForRecord.length / this.recordPageSize);
   }
 
-  get paginatedDiagnosesForRecord(): Diagnose[] {
-    const start = (this.diagnosesPage - 1) * this.recordPageSize;
-    return this.diagnosesForRecord.slice(start, start + this.recordPageSize);
-  }
-
-  get totalDiagnosesPages(): number {
-    return Math.ceil(this.diagnosesForRecord.length / this.recordPageSize);
-  }
-
   get paginatedViewNotes(): Note[] {
     const start = (this.notesPage - 1) * this.recordPageSize;
     return this.viewMedicalRecordNotes.slice(start, start + this.recordPageSize);
@@ -1734,19 +1631,6 @@ export class PatientsComponent implements OnInit {
 
   get totalViewNotesPages(): number {
     return Math.ceil(this.viewMedicalRecordNotes.length / this.recordPageSize);
-  }
-
-  get paginatedViewDiagnoses(): Diagnose[] {
-    const start = (this.diagnosesPage - 1) * this.recordPageSize;
-    return this.viewMedicalRecordDiagnoses.slice(start, start + this.recordPageSize);
-  }
-
-  get totalViewDiagnosesPages(): number {
-    return Math.ceil(this.viewMedicalRecordDiagnoses.length / this.recordPageSize);
-  }
-
-  toggleDiagnosePopup(diagnose: Diagnose | null): void {
-    this.selectedDiagnose = diagnose;
   }
 
   get paginatedViewFiles(): BaseFile[] {
@@ -1778,14 +1662,6 @@ export class PatientsComponent implements OnInit {
     const totalPages = this.showMedicalRecordModal ? this.totalNotesPages : this.totalViewNotesPages;
     if (newPage >= 1 && newPage <= totalPages) {
       this.notesPage = newPage;
-    }
-  }
-
-  changeDiagnosesPage(delta: number): void {
-    const newPage = this.diagnosesPage + delta;
-    const totalPages = this.showMedicalRecordModal ? this.totalDiagnosesPages : this.totalViewDiagnosesPages;
-    if (newPage >= 1 && newPage <= totalPages) {
-      this.diagnosesPage = newPage;
     }
   }
 
@@ -1856,13 +1732,9 @@ export class PatientsComponent implements OnInit {
     this.pdfLoading = true;
     this.generatedPdf = null;
 
-    // 1. Identify selected medical record IDs
     const selectedMedicalIds = Array.from(this.selectedMedicalRecords);
-
-    // 2. Fetch full details for these records (to get notes/diagnoses)
     const observables = selectedMedicalIds.map(id => this.medicalRecordService.getMedicalRecordById(id));
 
-    // Handle empty selection or actual fetching
     const medicalRecordsSource$ = selectedMedicalIds.length > 0 ? forkJoin(observables) : new Observable<MedicalRecordDto[]>(sub => {
       sub.next([]);
       sub.complete();
@@ -1870,30 +1742,25 @@ export class PatientsComponent implements OnInit {
 
     medicalRecordsSource$.subscribe({
       next: (fullMedicalRecords) => {
-        // Filter previous records (already full details in list DTO usually enough for description, or we fetch if needed. ListDto has description.)
         const previousRecordsToPrint = this.previousRecords.filter(r => this.selectedPreviousRecords.has(r.id));
 
-        try {
-          this.generatedPdf = this.pdfService.generatePatientPdf(
-            this.selectedPatient!,
-            fullMedicalRecords,
-            previousRecordsToPrint
-          );
-          this.generatedPdfBlob = this.generatedPdf.output('blob');
-          this.pdfLoading = false;
-
-          // Scroll to the bottom to show the buttons
-          setTimeout(() => {
-            const modalBody = document.querySelector('.modal-body.scrollable');
-            if (modalBody) {
-              modalBody.scrollTop = modalBody.scrollHeight;
-            }
-          }, 100);
-        } catch (error) {
-          console.error('Error generating PDF:', error);
-          this.pdfLoading = false;
-          alert('Error al generar el PDF');
+        // Load tracings for each medical record, then generate PDF
+        if (fullMedicalRecords.length === 0) {
+          this.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
+          return;
         }
+
+        const tracingRequests = fullMedicalRecords.map(r =>
+          this.tracingService.getTracingsByMedicalRecordId(r.id)
+        );
+
+        forkJoin(tracingRequests).subscribe({
+          next: (tracingsPerRecord) => {
+            fullMedicalRecords.forEach((r, i) => { r.tracings = tracingsPerRecord[i] || []; });
+            this.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
+          },
+          error: () => this.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint)
+        });
       },
       error: (err) => {
         console.error('Error fetching full medical records for PDF:', err);
@@ -1901,6 +1768,29 @@ export class PatientsComponent implements OnInit {
         alert('Error al obtener los detalles de las historias clínicas');
       }
     });
+  }
+
+  private buildAndShowPdf(fullMedicalRecords: MedicalRecordDto[], previousRecordsToPrint: PreviousRecordListDto[]): void {
+    try {
+      this.generatedPdf = this.pdfService.generatePatientPdf(
+        this.selectedPatient!,
+        fullMedicalRecords,
+        previousRecordsToPrint
+      );
+      this.generatedPdfBlob = this.generatedPdf.output('blob');
+      this.pdfLoading = false;
+
+      setTimeout(() => {
+        const modalBody = document.querySelector('.modal-body.scrollable');
+        if (modalBody) {
+          modalBody.scrollTop = modalBody.scrollHeight;
+        }
+      }, 100);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      this.pdfLoading = false;
+      alert('Error al generar el PDF');
+    }
   }
 
   /**

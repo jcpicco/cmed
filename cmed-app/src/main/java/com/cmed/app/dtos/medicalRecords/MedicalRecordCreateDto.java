@@ -21,5 +21,14 @@ public class MedicalRecordCreateDto {
 
     @Size(max = 10000)
     String background;
+
+    @Size(max = 1000)
+    String diagnose;
+
+    @Size(max = 1000)
+    String protocol;
+
+    @Size(max = 1000)
+    String prescription;
 }
 
