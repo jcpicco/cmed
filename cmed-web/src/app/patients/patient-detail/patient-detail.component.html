@@ -23,7 +23,7 @@
       </div>
       <div class="detail-item">
         <span class="detail-label">DNI:</span>
-        <span class="detail-value">{{ selectedPatient.dni }}</span>
+        <span class="detail-value">{{ selectedPatient.dni || 'No proporcionado' }}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Nacimiento:</span>
@@ -274,12 +274,12 @@
             <div *ngIf="showAddNoteInput" class="form-group"
               style="margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
               <textarea id="newNoteDescriptionInline" [(ngModel)]="newNoteDescription"
-                [ngModelOptions]="{standalone: true}" class="form-control" rows="3" maxlength="255"
+                [ngModelOptions]="{standalone: true}" class="form-control" rows="3" maxlength="10000"
                 placeholder="Escriba la valoración aquí...">
               </textarea>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
                 <div class="char-counter" style="margin-top: 0;">
-                  {{ newNoteDescription?.length || 0 }} / 255
+                  {{ newNoteDescription?.length || 0 }} / 10000
                 </div>
                 <button type="button" class="btn btn-sm btn-primary" (click)="addNoteToRecord()"
                   [disabled]="!newNoteDescription || newNoteDescription.length < 5">
@@ -368,12 +368,12 @@
             <div *ngIf="showAddTracingInput" class="form-group"
               style="margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
               <textarea id="newTracingDescriptionInline" [(ngModel)]="newTracingDescription"
-                [ngModelOptions]="{standalone: true}" class="form-control" rows="3" maxlength="255"
+                [ngModelOptions]="{standalone: true}" class="form-control" rows="3" maxlength="10000"
                 placeholder="Escriba el seguimiento aquí...">
               </textarea>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
                 <div class="char-counter" style="margin-top: 0;">
-                  {{ newTracingDescription?.length || 0 }} / 255
+                  {{ newTracingDescription?.length || 0 }} / 10000
                 </div>
                 <button type="button" class="btn btn-sm btn-primary" (click)="addTracingToRecord()"
                   [disabled]="!newTracingDescription || newTracingDescription.length < 5">
@@ -1056,7 +1056,7 @@
 
           <!-- Previous Records Selection -->
           <div class="form-section">
-            <h3>Antecedentes</h3>
+            <h3>Antecedentes Generales</h3>
             <div *ngIf="previousRecords.length === 0" class="empty-item">
               No hay antecedentes disponibles.
             </div>
@@ -1089,7 +1089,7 @@
         <div *ngIf="generatedPdf" class="pdf-actions">
           <div class="alert alert-success">PDF Generado correctamente</div>
           <div class="pdf-buttons">
-            <button class="btn btn-primary" (click)="openPdf()">Descargar PDF</button>
+            <button class="btn btn-primary" (click)="openPdf()">Vista previa</button>
             <button type="button" class="btn btn-secondary" (click)="prepareEmail()">
               <span *ngIf="!emailSending">Enviar por Email</span>
               <span *ngIf="emailSending" class="spinner-small"></span>
@@ -1223,7 +1223,7 @@
           <!-- Row 3: DNI & Birth Date -->
           <div class="form-row">
             <div class="form-group">
-              <label for="dni">DNI *</label>
+              <label for="dni">DNI</label>
               <input type="text" id="dni" formControlName="dni" class="form-control" maxlength="20"
                 [class.is-invalid]="(formSubmitted || patientForm.get('dni')?.touched) && patientForm.get('dni')?.invalid" />
               <span class="error-message"

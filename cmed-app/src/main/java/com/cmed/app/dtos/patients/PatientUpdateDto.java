@@ -1,6 +1,7 @@
 package com.cmed.app.dtos.patients;
 
 import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +23,7 @@ public class PatientUpdateDto {
     @Size(min = 3, max = 20)
     String phone;
 
-    @Size(min = 3, max = 20)
+    @Size(max = 20)
     String dni;
 
     @Past

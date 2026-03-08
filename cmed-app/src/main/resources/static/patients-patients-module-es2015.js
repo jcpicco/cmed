@@ -5182,7 +5182,7 @@ function PatientDetailComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r35.selectedPatient.phone || "No proporcionado");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r35.selectedPatient.dni);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r35.selectedPatient.dni || "No proporcionado");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r35.formatDate(ctx_r35.selectedPatient.birthDate));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
@@ -5246,7 +5246,7 @@ function PatientDetailComponent_div_2_div_31_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r116.newNoteDescription)("ngModelOptions", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](4, _c0));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r116.newNoteDescription == null ? null : ctx_r116.newNoteDescription.length) || 0, " / 255 ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r116.newNoteDescription == null ? null : ctx_r116.newNoteDescription.length) || 0, " / 10000 ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", !ctx_r116.newNoteDescription || ctx_r116.newNoteDescription.length < 5);
 } }
@@ -5364,7 +5364,7 @@ function PatientDetailComponent_div_2_div_63_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r122.newTracingDescription)("ngModelOptions", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](4, _c0));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r122.newTracingDescription == null ? null : ctx_r122.newTracingDescription.length) || 0, " / 255 ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r122.newTracingDescription == null ? null : ctx_r122.newTracingDescription.length) || 0, " / 10000 ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", !ctx_r122.newTracingDescription || ctx_r122.newTracingDescription.length < 5);
 } }
@@ -7095,7 +7095,7 @@ function PatientDetailComponent_div_10_div_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 46);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "h3");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "Antecedentes");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "Antecedentes Generales");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](9, PatientDetailComponent_div_10_div_9_div_9_Template, 2, 0, "div", 56);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](10, PatientDetailComponent_div_10_div_9_div_10_Template, 3, 2, "div", 107);
@@ -7129,7 +7129,7 @@ function PatientDetailComponent_div_10_div_10_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 140);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "button", 11);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function PatientDetailComponent_div_10_div_10_Template_button_click_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r365); const ctx_r364 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r364.openPdf(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "Descargar PDF");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "Vista previa");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "button", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function PatientDetailComponent_div_10_div_10_Template_button_click_6_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r365); const ctx_r366 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r366.prepareEmail(); });
@@ -7432,7 +7432,7 @@ function PatientDetailComponent_div_12_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](32, "div", 149);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](33, "div", 47);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "label", 158);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](35, "DNI *");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](35, "DNI");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](36, "input", 159);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](37, PatientDetailComponent_div_12_span_37_Template, 2, 1, "span", 50);
@@ -7600,7 +7600,7 @@ class PatientDetailComponent {
         this.patientNotes = [];
         this.patientNotesLoading = true;
         this.patientNotesPage = 1;
-        this.patientNoteSort = { field: 'createdAt', direction: 'asc' };
+        this.patientNoteSort = { field: 'createdAt', direction: 'desc' };
         this.showPatientNoteModal = false;
         this.showViewPatientNoteModal = false;
         this.patientNoteFormLoading = false;
@@ -7677,7 +7677,7 @@ class PatientDetailComponent {
             lastName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(100)]],
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
-            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
+            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
             birthDate: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             allergies: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(255)]]
         });
@@ -7832,7 +7832,7 @@ class PatientDetailComponent {
             lastName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(100)]],
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
-            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
+            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
             birthDate: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             allergies: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(255)]]
         });
@@ -7884,7 +7884,7 @@ class PatientDetailComponent {
         // Cargar notas y diagnósticos del registro
         this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
             next: (fullRecord) => {
-                this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 this.showViewMedicalRecordModal = true;
             },
             error: (err) => {
@@ -7894,7 +7894,7 @@ class PatientDetailComponent {
         // Cargar seguimientos del registro
         this.tracingService.getTracingsByMedicalRecordId(record.id).subscribe({
             next: (tracings) => {
-                this.viewMedicalRecordTracings = tracings.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                this.viewMedicalRecordTracings = tracings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             },
             error: (err) => {
                 console.error('Error al cargar seguimientos del registro:', err);
@@ -8033,7 +8033,7 @@ class PatientDetailComponent {
     refreshMedicalRecordNotes(recordId) {
         this.medicalRecordService.getMedicalRecordById(recordId).subscribe({
             next: (fullRecord) => {
-                this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 const totalPages = Math.ceil(this.viewMedicalRecordNotes.length / this.modalPageSize) || 1;
                 if (this.notesPage > totalPages) {
                     this.notesPage = totalPages;
@@ -8118,7 +8118,7 @@ class PatientDetailComponent {
                     protocol: fullRecord.protocol,
                     background: fullRecord.background
                 });
-                this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 this.showMedicalRecordModal = true;
                 this.medicalRecordFormLoading = false;
                 // Cargar archivos para el modo edición
@@ -8126,7 +8126,7 @@ class PatientDetailComponent {
                 // Cargar seguimientos para el modo edición
                 this.tracingService.getTracingsByMedicalRecordId(record.id).subscribe({
                     next: (tracings) => {
-                        this.tracingsForRecord = tracings.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                        this.tracingsForRecord = tracings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                     },
                     error: () => { this.tracingsForRecord = []; }
                 });
@@ -8319,8 +8319,8 @@ class PatientDetailComponent {
             this.tracingError = 'El seguimiento debe tener al menos 5 caracteres';
             return;
         }
-        if (this.newTracingDescription.length > 255) {
-            this.tracingError = 'El seguimiento no puede exceder los 255 caracteres';
+        if (this.newTracingDescription.length > 10000) {
+            this.tracingError = 'El seguimiento no puede exceder los 10000 caracteres';
             return;
         }
         this.tracingError = null;
@@ -8331,6 +8331,7 @@ class PatientDetailComponent {
             createdAt: new Date()
         };
         this.tracingsForRecord.push(newTracing);
+        this.tracingsForRecord.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.newTracingDescription = '';
         this.showAddTracingInput = false;
     }
@@ -8439,8 +8440,8 @@ class PatientDetailComponent {
             this.noteError = 'La nota debe tener al menos 5 caracteres';
             return;
         }
-        if (this.newNoteDescription.length > 255) {
-            this.noteError = 'La nota no puede exceder los 255 caracteres';
+        if (this.newNoteDescription.length > 10000) {
+            this.noteError = 'La nota no puede exceder los 10000 caracteres';
             return;
         }
         this.noteError = null;
@@ -8451,6 +8452,7 @@ class PatientDetailComponent {
             createdAt: new Date()
         };
         this.notesForRecord.push(newNote);
+        this.notesForRecord.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.newNoteDescription = '';
     }
     /**
@@ -8881,7 +8883,7 @@ class PatientDetailComponent {
     /**
      * Verificar si el texto necesita ser truncado
      */
-    needsTruncation(text, maxLength = 255) {
+    needsTruncation(text, maxLength = 10000) {
         if (!text) {
             return false;
         }
@@ -9197,10 +9199,9 @@ class PatientDetailComponent {
         }
     }
     openPdf() {
-        var _a;
         if (!this.generatedPdf)
             return;
-        this.generatedPdf.save(`historia_clinica_${((_a = this.selectedPatient) === null || _a === void 0 ? void 0 : _a.lastName) || 'paciente'}.pdf`);
+        window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
     }
     prepareEmail() {
         if (this.selectedPatient) {
@@ -9213,12 +9214,14 @@ class PatientDetailComponent {
         this.showEmailModal = false;
     }
     executeEmail() {
-        var _a, _b;
+        var _a, _b, _c;
+        if (!this.generatedPdf)
+            return;
         // Download the PDF first
-        this.openPdf();
+        this.generatedPdf.save(`historia_clinica_${((_a = this.selectedPatient) === null || _a === void 0 ? void 0 : _a.lastName) || 'paciente'}.pdf`);
         // Then open the mailto
         const subject = encodeURIComponent(this.emailSubject);
-        const body = encodeURIComponent(`Estimado/a,\n\nAdjunto encontrará el informe clínico del paciente ${(_a = this.selectedPatient) === null || _a === void 0 ? void 0 : _a.name} ${(_b = this.selectedPatient) === null || _b === void 0 ? void 0 : _b.lastName}.\n\nSaludos.`);
+        const body = encodeURIComponent(`Estimado/a,\n\nAdjunto encontrará el informe clínico del paciente ${(_b = this.selectedPatient) === null || _b === void 0 ? void 0 : _b.name} ${(_c = this.selectedPatient) === null || _c === void 0 ? void 0 : _c.lastName}.\n\nSaludos.`);
         window.location.href = `mailto:${this.emailRecipient}?subject=${subject}&body=${body}`;
         this.showEmailModal = false;
     }
@@ -9306,7 +9309,7 @@ class PatientDetailComponent {
     }
 }
 PatientDetailComponent.ɵfac = function PatientDetailComponent_Factory(t) { return new (t || PatientDetailComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_patient_service__WEBPACK_IMPORTED_MODULE_5__["PatientService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_medical_record_service__WEBPACK_IMPORTED_MODULE_6__["MedicalRecordService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_previous_record_service__WEBPACK_IMPORTED_MODULE_7__["PreviousRecordService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_note_service__WEBPACK_IMPORTED_MODULE_8__["NoteService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_tracing_service__WEBPACK_IMPORTED_MODULE_9__["TracingService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_medical_record_file_service__WEBPACK_IMPORTED_MODULE_10__["MedicalRecordFileService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_previous_record_file_service__WEBPACK_IMPORTED_MODULE_11__["PreviousRecordFileService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_pdf_service__WEBPACK_IMPORTED_MODULE_12__["PdfService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_email_service__WEBPACK_IMPORTED_MODULE_13__["EmailService"])); };
-PatientDetailComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PatientDetailComponent, selectors: [["app-patient-detail"]], decls: 13, vars: 12, consts: [[1, "patients-container"], ["class", "details-section", 4, "ngIf"], ["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "details-section"], [1, "details-header"], ["routerLink", "/patients", 1, "btn", "btn-secondary"], [1, "details-content"], [1, "detail-item"], [1, "detail-label"], [1, "detail-value"], [1, "details-actions"], [1, "btn", "btn-primary", 3, "click"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-info", 3, "disabled", "click"], [4, "ngIf"], ["class", "spinner-small", 4, "ngIf"], [1, "records-tabs"], [1, "tab-button", 3, "click"], ["class", "records-section", 4, "ngIf"], [1, "spinner-small"], [1, "records-section"], [1, "records-header"], [3, "click"], ["class", "loading", 4, "ngIf"], ["class", "empty-state", 4, "ngIf"], ["class", "records-list", 4, "ngIf"], ["class", "pagination", 4, "ngIf"], [1, "loading"], [1, "spinner"], [1, "empty-state"], [1, "records-list"], [1, "records-table-header"], [1, "header-item", "sortable", 3, "click"], ["class", "record-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "record-item", "clickable", 3, "click"], [1, "record-column", "description"], [1, "record-column", "date"], [1, "pagination"], [1, "btn", "btn-sm", 3, "disabled", "click"], [1, "page-info"], [1, "modal-overlay", 3, "click"], [1, "modal-content", "modal-large", 3, "click"], [1, "modal-header"], [1, "btn-close", 3, "click"], [1, "modal-body", "scrollable"], [3, "formGroup"], [1, "form-section"], [1, "form-group"], ["id", "medicalRecordDescription", "formControlName", "description", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la enfermedad actual...", 1, "form-control"], [1, "char-counter"], ["class", "error-message", 4, "ngIf"], ["id", "medicalRecordBackground", "formControlName", "background", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese los antecedentes espec\u00EDficos...", 1, "form-control"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-bottom", "1rem"], ["type", "button", 1, "btn", "btn-sm", "btn-info", 3, "click"], ["class", "form-group", "style", "margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);", 4, "ngIf"], ["class", "notes-list", "style", "margin-bottom: 1rem;", 4, "ngIf"], ["class", "empty-item", 4, "ngIf"], ["id", "medicalRecordDiagnose", "formControlName", "diagnose", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el diagn\u00F3stico...", 1, "form-control"], ["id", "medicalRecordProtocol", "formControlName", "protocol", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la conducta...", 1, "form-control"], ["id", "medicalRecordPrescription", "formControlName", "prescription", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el tratamiento...", 1, "form-control"], ["class", "form-section", 4, "ngIf"], ["class", "form-section destructive-zone", 4, "ngIf"], [1, "modal-footer"], [1, "btn", "btn-secondary", 3, "disabled", "click"], [1, "spacer"], [1, "btn", "btn-primary", 3, "disabled", "click"], [1, "error-message"], [1, "form-group", 2, "margin-bottom", "1.5rem", "background-color", "var(--surface-color)", "padding", "1rem", "border-radius", "8px", "border", "1px solid var(--border-color)"], ["id", "newNoteDescriptionInline", "rows", "3", "maxlength", "255", "placeholder", "Escriba la valoraci\u00F3n aqu\u00ED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-top", "0.5rem"], [1, "char-counter", 2, "margin-top", "0"], ["type", "button", 1, "btn", "btn-sm", "btn-primary", 3, "disabled", "click"], [1, "notes-list", 2, "margin-bottom", "1rem"], ["class", "note-item", 4, "ngFor", "ngForOf"], ["class", "modal-pagination", 4, "ngIf"], [1, "note-item"], [1, "note-content", 2, "flex", "1"], [1, "note-description", 3, "click"], ["class", "read-more-hint-inline", 4, "ngIf"], [1, "item-actions"], ["type", "button", "title", "Editar", 1, "btn", "btn-xs", "btn-ghost", 3, "click"], [1, "read-more-hint-inline"], [1, "modal-pagination"], ["type", "button", 3, "disabled", "click"], [1, "empty-item"], ["id", "newTracingDescriptionInline", "rows", "3", "maxlength", "255", "placeholder", "Escriba el seguimiento aqu\u00ED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [1, "file-upload-section", 2, "margin-bottom", "1.5rem"], ["type", "file", "id", "editRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editRecordFileInput", 1, "btn", "btn-sm", "btn-info"], ["class", "selected-file-name", 4, "ngIf"], ["type", "button", "class", "btn btn-sm btn-success", 3, "disabled", "click", 4, "ngIf"], ["class", "files-list", 4, "ngIf"], [1, "selected-file-name"], ["type", "button", 1, "btn", "btn-sm", "btn-success", 3, "disabled", "click"], [1, "files-list"], ["class", "file-item", 4, "ngFor", "ngForOf"], [1, "file-item"], [1, "file-icon"], [1, "file-info", "clickable", 3, "click"], [1, "file-name"], [1, "file-meta"], ["type", "button", "title", "Eliminar", 1, "btn-delete-small", 3, "click"], [1, "form-section", "destructive-zone"], ["type", "button", 1, "btn", "btn-danger", "btn-full", 3, "click"], [1, "view-content", 3, "click"], ["class", "read-more-hint", 4, "ngIf"], ["class", "view-content", 3, "clickable-text", "click", 4, "ngIf"], ["class", "notes-list", 4, "ngIf"], ["style", "margin-bottom: 1rem;", 4, "ngIf"], [1, "btn", "btn-secondary", 3, "click"], [1, "read-more-hint"], [1, "notes-list"], [1, "note-date"], [2, "margin-bottom", "1rem"], [1, "diagnose-label", 2, "font-weight", "bold", "margin-bottom", "4px", "color", "var(--text-color)"], ["id", "previousRecordDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\u00F3n de los antecedentes...", 1, "form-control"], ["type", "file", "id", "editPreviousRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editPreviousRecordFileInput", 1, "btn", "btn-sm", "btn-info"], [1, "modal-content", 3, "click"], [1, "modal-body"], ["for", "patientNoteDescription"], ["id", "patientNoteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\u00F3n de la nota...", 1, "form-control"], ["class", "alert alert-danger", 4, "ngIf"], [1, "alert", "alert-danger"], ["for", "noteDescription"], ["id", "noteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\u00F3n de la valoraci\u00F3n...", 1, "form-control"], ["type", "button", "class", "btn btn-danger btn-full", 3, "click", 4, "ngIf"], [1, "view-content", "formatted-content"], ["class", "loading-state", 4, "ngIf"], ["class", "pdf-actions", 4, "ngIf"], ["class", "btn btn-primary", 3, "disabled", "click", 4, "ngIf"], [1, "loading-state"], ["class", "note-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "note-item", "clickable", 3, "click"], [2, "display", "flex", "align-items", "center", "margin-right", "15px"], ["type", "checkbox", 2, "cursor", "pointer", "transform", "scale(1.2)", 3, "checked"], [1, "note-content"], [1, "note-description"], [1, "pdf-actions"], [1, "alert", "alert-success"], [1, "pdf-buttons"], ["type", "button", 1, "btn", "btn-secondary", 3, "click"], [1, "email-instruction"], [1, "email-steps"], ["for", "emailRecipient"], ["type", "email", "id", "emailRecipient", "placeholder", "ejemplo@correo.com", 1, "form-control", 3, "ngModel", "ngModelChange"], ["for", "emailSubject"], ["type", "text", "id", "emailSubject", 1, "form-control", 3, "ngModel", "ngModelChange"], [1, "patient-form", 3, "formGroup"], [1, "form-row"], ["for", "name"], ["type", "text", "id", "name", "formControlName", "name", "maxlength", "50", 1, "form-control"], ["for", "lastName"], ["type", "text", "id", "lastName", "formControlName", "lastName", "maxlength", "50", 1, "form-control"], ["for", "email"], ["type", "email", "id", "email", "formControlName", "email", "maxlength", "100", 1, "form-control"], ["for", "phone"], ["type", "tel", "id", "phone", "formControlName", "phone", "maxlength", "20", 1, "form-control"], ["for", "dni"], ["type", "text", "id", "dni", "formControlName", "dni", "maxlength", "20", 1, "form-control"], ["for", "birthDate"], ["type", "date", "id", "birthDate", "formControlName", "birthDate", 1, "form-control"], [1, "form-group", "full-width"], ["for", "allergies"], ["id", "allergies", "formControlName", "allergies", "maxlength", "255", "rows", "2", 1, "form-control"]], template: function PatientDetailComponent_Template(rf, ctx) { if (rf & 1) {
+PatientDetailComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PatientDetailComponent, selectors: [["app-patient-detail"]], decls: 13, vars: 12, consts: [[1, "patients-container"], ["class", "details-section", 4, "ngIf"], ["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "details-section"], [1, "details-header"], ["routerLink", "/patients", 1, "btn", "btn-secondary"], [1, "details-content"], [1, "detail-item"], [1, "detail-label"], [1, "detail-value"], [1, "details-actions"], [1, "btn", "btn-primary", 3, "click"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-info", 3, "disabled", "click"], [4, "ngIf"], ["class", "spinner-small", 4, "ngIf"], [1, "records-tabs"], [1, "tab-button", 3, "click"], ["class", "records-section", 4, "ngIf"], [1, "spinner-small"], [1, "records-section"], [1, "records-header"], [3, "click"], ["class", "loading", 4, "ngIf"], ["class", "empty-state", 4, "ngIf"], ["class", "records-list", 4, "ngIf"], ["class", "pagination", 4, "ngIf"], [1, "loading"], [1, "spinner"], [1, "empty-state"], [1, "records-list"], [1, "records-table-header"], [1, "header-item", "sortable", 3, "click"], ["class", "record-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "record-item", "clickable", 3, "click"], [1, "record-column", "description"], [1, "record-column", "date"], [1, "pagination"], [1, "btn", "btn-sm", 3, "disabled", "click"], [1, "page-info"], [1, "modal-overlay", 3, "click"], [1, "modal-content", "modal-large", 3, "click"], [1, "modal-header"], [1, "btn-close", 3, "click"], [1, "modal-body", "scrollable"], [3, "formGroup"], [1, "form-section"], [1, "form-group"], ["id", "medicalRecordDescription", "formControlName", "description", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la enfermedad actual...", 1, "form-control"], [1, "char-counter"], ["class", "error-message", 4, "ngIf"], ["id", "medicalRecordBackground", "formControlName", "background", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese los antecedentes espec\u00EDficos...", 1, "form-control"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-bottom", "1rem"], ["type", "button", 1, "btn", "btn-sm", "btn-info", 3, "click"], ["class", "form-group", "style", "margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);", 4, "ngIf"], ["class", "notes-list", "style", "margin-bottom: 1rem;", 4, "ngIf"], ["class", "empty-item", 4, "ngIf"], ["id", "medicalRecordDiagnose", "formControlName", "diagnose", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el diagn\u00F3stico...", 1, "form-control"], ["id", "medicalRecordProtocol", "formControlName", "protocol", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la conducta...", 1, "form-control"], ["id", "medicalRecordPrescription", "formControlName", "prescription", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el tratamiento...", 1, "form-control"], ["class", "form-section", 4, "ngIf"], ["class", "form-section destructive-zone", 4, "ngIf"], [1, "modal-footer"], [1, "btn", "btn-secondary", 3, "disabled", "click"], [1, "spacer"], [1, "btn", "btn-primary", 3, "disabled", "click"], [1, "error-message"], [1, "form-group", 2, "margin-bottom", "1.5rem", "background-color", "var(--surface-color)", "padding", "1rem", "border-radius", "8px", "border", "1px solid var(--border-color)"], ["id", "newNoteDescriptionInline", "rows", "3", "maxlength", "10000", "placeholder", "Escriba la valoraci\u00F3n aqu\u00ED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-top", "0.5rem"], [1, "char-counter", 2, "margin-top", "0"], ["type", "button", 1, "btn", "btn-sm", "btn-primary", 3, "disabled", "click"], [1, "notes-list", 2, "margin-bottom", "1rem"], ["class", "note-item", 4, "ngFor", "ngForOf"], ["class", "modal-pagination", 4, "ngIf"], [1, "note-item"], [1, "note-content", 2, "flex", "1"], [1, "note-description", 3, "click"], ["class", "read-more-hint-inline", 4, "ngIf"], [1, "item-actions"], ["type", "button", "title", "Editar", 1, "btn", "btn-xs", "btn-ghost", 3, "click"], [1, "read-more-hint-inline"], [1, "modal-pagination"], ["type", "button", 3, "disabled", "click"], [1, "empty-item"], ["id", "newTracingDescriptionInline", "rows", "3", "maxlength", "10000", "placeholder", "Escriba el seguimiento aqu\u00ED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [1, "file-upload-section", 2, "margin-bottom", "1.5rem"], ["type", "file", "id", "editRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editRecordFileInput", 1, "btn", "btn-sm", "btn-info"], ["class", "selected-file-name", 4, "ngIf"], ["type", "button", "class", "btn btn-sm btn-success", 3, "disabled", "click", 4, "ngIf"], ["class", "files-list", 4, "ngIf"], [1, "selected-file-name"], ["type", "button", 1, "btn", "btn-sm", "btn-success", 3, "disabled", "click"], [1, "files-list"], ["class", "file-item", 4, "ngFor", "ngForOf"], [1, "file-item"], [1, "file-icon"], [1, "file-info", "clickable", 3, "click"], [1, "file-name"], [1, "file-meta"], ["type", "button", "title", "Eliminar", 1, "btn-delete-small", 3, "click"], [1, "form-section", "destructive-zone"], ["type", "button", 1, "btn", "btn-danger", "btn-full", 3, "click"], [1, "view-content", 3, "click"], ["class", "read-more-hint", 4, "ngIf"], ["class", "view-content", 3, "clickable-text", "click", 4, "ngIf"], ["class", "notes-list", 4, "ngIf"], ["style", "margin-bottom: 1rem;", 4, "ngIf"], [1, "btn", "btn-secondary", 3, "click"], [1, "read-more-hint"], [1, "notes-list"], [1, "note-date"], [2, "margin-bottom", "1rem"], [1, "diagnose-label", 2, "font-weight", "bold", "margin-bottom", "4px", "color", "var(--text-color)"], ["id", "previousRecordDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\u00F3n de los antecedentes...", 1, "form-control"], ["type", "file", "id", "editPreviousRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editPreviousRecordFileInput", 1, "btn", "btn-sm", "btn-info"], [1, "modal-content", 3, "click"], [1, "modal-body"], ["for", "patientNoteDescription"], ["id", "patientNoteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\u00F3n de la nota...", 1, "form-control"], ["class", "alert alert-danger", 4, "ngIf"], [1, "alert", "alert-danger"], ["for", "noteDescription"], ["id", "noteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\u00F3n de la valoraci\u00F3n...", 1, "form-control"], ["type", "button", "class", "btn btn-danger btn-full", 3, "click", 4, "ngIf"], [1, "view-content", "formatted-content"], ["class", "loading-state", 4, "ngIf"], ["class", "pdf-actions", 4, "ngIf"], ["class", "btn btn-primary", 3, "disabled", "click", 4, "ngIf"], [1, "loading-state"], ["class", "note-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "note-item", "clickable", 3, "click"], [2, "display", "flex", "align-items", "center", "margin-right", "15px"], ["type", "checkbox", 2, "cursor", "pointer", "transform", "scale(1.2)", 3, "checked"], [1, "note-content"], [1, "note-description"], [1, "pdf-actions"], [1, "alert", "alert-success"], [1, "pdf-buttons"], ["type", "button", 1, "btn", "btn-secondary", 3, "click"], [1, "email-instruction"], [1, "email-steps"], ["for", "emailRecipient"], ["type", "email", "id", "emailRecipient", "placeholder", "ejemplo@correo.com", 1, "form-control", 3, "ngModel", "ngModelChange"], ["for", "emailSubject"], ["type", "text", "id", "emailSubject", 1, "form-control", 3, "ngModel", "ngModelChange"], [1, "patient-form", 3, "formGroup"], [1, "form-row"], ["for", "name"], ["type", "text", "id", "name", "formControlName", "name", "maxlength", "50", 1, "form-control"], ["for", "lastName"], ["type", "text", "id", "lastName", "formControlName", "lastName", "maxlength", "50", 1, "form-control"], ["for", "email"], ["type", "email", "id", "email", "formControlName", "email", "maxlength", "100", 1, "form-control"], ["for", "phone"], ["type", "tel", "id", "phone", "formControlName", "phone", "maxlength", "20", 1, "form-control"], ["for", "dni"], ["type", "text", "id", "dni", "formControlName", "dni", "maxlength", "20", 1, "form-control"], ["for", "birthDate"], ["type", "date", "id", "birthDate", "formControlName", "birthDate", 1, "form-control"], [1, "form-group", "full-width"], ["for", "allergies"], ["id", "allergies", "formControlName", "allergies", "maxlength", "255", "rows", "2", 1, "form-control"]], template: function PatientDetailComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, PatientDetailComponent_div_1_Template, 60, 20, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, PatientDetailComponent_div_2_Template, 76, 26, "div", 2);
@@ -9578,7 +9581,7 @@ function PatientsComponent_div_14_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](30, "div", 19);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](31, "div", 20);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](32, "label", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](33, "DNI *");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](33, "DNI");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](34, "input", 31);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](35, PatientsComponent_div_14_span_35_Template, 2, 1, "span", 23);
@@ -9927,7 +9930,7 @@ class PatientsComponent {
         this.patientNotes = [];
         this.patientNotesLoading = false;
         this.patientNotesPage = 1;
-        this.patientNoteSort = { field: 'createdAt', direction: 'asc' };
+        this.patientNoteSort = { field: 'createdAt', direction: 'desc' };
         this.showPatientNoteModal = false;
         this.showViewPatientNoteModal = false;
         this.patientNoteFormLoading = false;
@@ -10022,7 +10025,7 @@ class PatientsComponent {
             lastName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(100)]],
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
-            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
+            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
             birthDate: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             allergies: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(255)]]
         });
@@ -10048,10 +10051,11 @@ class PatientsComponent {
      * Filtrar pacientes por búsqueda
      */
     applyFilters() {
-        this.filteredPatients = this.patients.filter(patient => patient.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            patient.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            patient.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-            patient.dni.includes(this.searchTerm));
+        const term = this.searchTerm.toLowerCase();
+        this.filteredPatients = this.patients.filter(patient => (patient.name || '').toLowerCase().includes(term) ||
+            (patient.lastName || '').toLowerCase().includes(term) ||
+            (patient.email || '').toLowerCase().includes(term) ||
+            (patient.dni || '').toLowerCase().includes(term));
         this.sortPatientsList();
         this.currentPage = 1;
     }
@@ -10345,7 +10349,7 @@ class PatientsComponent {
         // Cargar notas del registro
         this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
             next: (fullRecord) => {
-                this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 this.showViewMedicalRecordModal = true;
             },
             error: (err) => {
@@ -10426,7 +10430,7 @@ class PatientsComponent {
                     protocol: fullRecord.protocol,
                     background: fullRecord.background
                 });
-                this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 this.medicalRecordFormError = null;
                 this.showMedicalRecordModal = true;
                 this.medicalRecordFormLoading = false;
@@ -10646,8 +10650,8 @@ class PatientsComponent {
             this.noteError = 'La nota debe tener al menos 5 caracteres';
             return;
         }
-        if (this.newNoteDescription.length > 255) {
-            this.noteError = 'La nota no puede exceder los 255 caracteres';
+        if (this.newNoteDescription.length > 10000) {
+            this.noteError = 'La nota no puede exceder los 10000 caracteres';
             return;
         }
         this.noteError = null;
@@ -11084,7 +11088,7 @@ class PatientsComponent {
     /**
      * Verificar si el texto necesita ser truncado
      */
-    needsTruncation(text, maxLength = 255) {
+    needsTruncation(text, maxLength = 10000) {
         if (!text) {
             return false;
         }
@@ -11487,8 +11491,7 @@ class PatientsComponent {
      */
     openPdf() {
         if (this.generatedPdf) {
-            // User requested specific filename format, so we use save() to enforce it
-            this.generatedPdf.save(this.getPdfFileName());
+            window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
         }
     }
     /**
@@ -12185,14 +12188,6 @@ class PdfService {
                     { content: 'ANTECEDENTES', styles: { fontStyle: 'bold' } },
                     { content: record.background || placeholderText, styles: record.background ? {} : empty }
                 ]);
-                // Seguimiento
-                const seguimientos = (record.tracings && record.tracings.length > 0)
-                    ? record.tracings.map(t => `• ${t.description}`).join('\n')
-                    : null;
-                tableBody.push([
-                    { content: 'SEGUIMIENTO', styles: { fontStyle: 'bold' } },
-                    { content: seguimientos || placeholderText, styles: seguimientos ? {} : empty }
-                ]);
                 // Valoraciones
                 const valoraciones = (record.notes && record.notes.length > 0)
                     ? record.notes.map(n => `• ${n.description}`).join('\n')
@@ -12221,6 +12216,20 @@ class PdfService {
                 tableBody.push([
                     { content: 'TRATAMIENTO', styles: { fontStyle: 'bold' } },
                     { content: record.prescription || placeholderText, styles: record.prescription ? {} : { fontStyle: 'italic', textColor: [150, 150, 150] } }
+                ]);
+                // Fila separadora en blanco antes de seguimiento
+                tableBody.push([{
+                        content: '',
+                        colSpan: 2,
+                        styles: { cellPadding: 0, minCellHeight: 4, fillColor: [255, 255, 255] }
+                    }]);
+                // Seguimiento
+                const seguimientos = (record.tracings && record.tracings.length > 0)
+                    ? record.tracings.map(t => `• ${t.description}`).join('\n')
+                    : null;
+                tableBody.push([
+                    { content: 'SEGUIMIENTO', styles: { fontStyle: 'bold' } },
+                    { content: seguimientos || placeholderText, styles: seguimientos ? {} : empty }
                 ]);
                 jspdf_autotable__WEBPACK_IMPORTED_MODULE_2___default()(doc, {
                     startY: yPos,

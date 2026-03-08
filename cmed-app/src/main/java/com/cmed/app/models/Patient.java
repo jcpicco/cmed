@@ -53,7 +53,7 @@ public class Patient {
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true)
     private String dni;
 
     @Column(nullable = false)

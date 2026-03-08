@@ -77,7 +77,7 @@ export class PatientDetailComponent implements OnInit {
   patientNotes: Note[] = [];
   patientNotesLoading = true;
   patientNotesPage = 1;
-  patientNoteSort = { field: 'createdAt', direction: 'asc' };
+  patientNoteSort = { field: 'createdAt', direction: 'desc' };
   showPatientNoteModal = false;
   showViewPatientNoteModal = false;
   patientNoteForm: FormGroup;
@@ -184,7 +184,7 @@ export class PatientDetailComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      dni: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      dni: ['', [Validators.minLength(3), Validators.maxLength(20)]],
       birthDate: ['', Validators.required],
       allergies: ['', [Validators.maxLength(255)]]
     });
@@ -345,7 +345,7 @@ export class PatientDetailComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      dni: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      dni: ['', [Validators.minLength(3), Validators.maxLength(20)]],
       birthDate: ['', Validators.required],
       allergies: ['', [Validators.maxLength(255)]]
     });
@@ -402,7 +402,7 @@ export class PatientDetailComponent implements OnInit {
     // Cargar notas y diagnósticos del registro
     this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
       next: (fullRecord) => {
-        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.showViewMedicalRecordModal = true;
       },
       error: (err) => {
@@ -412,7 +412,7 @@ export class PatientDetailComponent implements OnInit {
     // Cargar seguimientos del registro
     this.tracingService.getTracingsByMedicalRecordId(record.id).subscribe({
       next: (tracings) => {
-        this.viewMedicalRecordTracings = tracings.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.viewMedicalRecordTracings = tracings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       },
       error: (err) => {
         console.error('Error al cargar seguimientos del registro:', err);
@@ -563,7 +563,7 @@ export class PatientDetailComponent implements OnInit {
   private refreshMedicalRecordNotes(recordId: string): void {
     this.medicalRecordService.getMedicalRecordById(recordId).subscribe({
       next: (fullRecord) => {
-        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         const totalPages = Math.ceil(this.viewMedicalRecordNotes.length / this.modalPageSize) || 1;
         if (this.notesPage > totalPages) {
           this.notesPage = totalPages;
@@ -658,7 +658,7 @@ export class PatientDetailComponent implements OnInit {
           protocol: fullRecord.protocol,
           background: fullRecord.background
         });
-        this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
         this.showMedicalRecordModal = true;
         this.medicalRecordFormLoading = false;
@@ -669,7 +669,7 @@ export class PatientDetailComponent implements OnInit {
         // Cargar seguimientos para el modo edición
         this.tracingService.getTracingsByMedicalRecordId(record.id).subscribe({
           next: (tracings) => {
-            this.tracingsForRecord = tracings.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+            this.tracingsForRecord = tracings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
           },
           error: () => { this.tracingsForRecord = []; }
         });
@@ -874,8 +874,8 @@ export class PatientDetailComponent implements OnInit {
       this.tracingError = 'El seguimiento debe tener al menos 5 caracteres';
       return;
     }
-    if (this.newTracingDescription.length > 255) {
-      this.tracingError = 'El seguimiento no puede exceder los 255 caracteres';
+    if (this.newTracingDescription.length > 10000) {
+      this.tracingError = 'El seguimiento no puede exceder los 10000 caracteres';
       return;
     }
 
@@ -888,6 +888,7 @@ export class PatientDetailComponent implements OnInit {
     };
 
     this.tracingsForRecord.push(newTracing);
+    this.tracingsForRecord.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     this.newTracingDescription = '';
     this.showAddTracingInput = false;
   }
@@ -1005,8 +1006,8 @@ export class PatientDetailComponent implements OnInit {
       this.noteError = 'La nota debe tener al menos 5 caracteres';
       return;
     }
-    if (this.newNoteDescription.length > 255) {
-      this.noteError = 'La nota no puede exceder los 255 caracteres';
+    if (this.newNoteDescription.length > 10000) {
+      this.noteError = 'La nota no puede exceder los 10000 caracteres';
       return;
     }
 
@@ -1019,6 +1020,7 @@ export class PatientDetailComponent implements OnInit {
     };
 
     this.notesForRecord.push(newNote);
+    this.notesForRecord.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     this.newNoteDescription = '';
   }
 
@@ -1487,7 +1489,7 @@ export class PatientDetailComponent implements OnInit {
   /**
    * Verificar si el texto necesita ser truncado
    */
-  public needsTruncation(text: string | null | undefined, maxLength: number = 255): boolean {
+  public needsTruncation(text: string | null | undefined, maxLength: number = 10000): boolean {
     if (!text) {
       return false;
     }
@@ -1830,7 +1832,7 @@ export class PatientDetailComponent implements OnInit {
 
   openPdf(): void {
     if (!this.generatedPdf) return;
-    this.generatedPdf.save(`historia_clinica_${this.selectedPatient?.lastName || 'paciente'}.pdf`);
+    window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
   }
 
   prepareEmail(): void {
@@ -1846,8 +1848,9 @@ export class PatientDetailComponent implements OnInit {
   }
 
   executeEmail(): void {
+    if (!this.generatedPdf) return;
     // Download the PDF first
-    this.openPdf();
+    this.generatedPdf.save(`historia_clinica_${this.selectedPatient?.lastName || 'paciente'}.pdf`);
     // Then open the mailto
     const subject = encodeURIComponent(this.emailSubject);
     const body = encodeURIComponent(
