@@ -28,8 +28,6 @@ public class DataIntegrityExceptionHandler {
         // Extract field name from known constraints
         if (message.contains("uka370hmxgv0l5c9panryr1ji7d")) {
             field = "email";
-        } else if (message.contains("uk_patients_dni")) {
-            field = "dni";
         } else if (message.contains("uk_") || message.contains("unique")) {
             // Try to extract constraint name from error message
             int ukIndex = message.indexOf("uk_");

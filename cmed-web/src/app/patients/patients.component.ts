@@ -72,7 +72,7 @@ export class PatientsComponent implements OnInit {
   patientNotes: Note[] = [];
   patientNotesLoading = false;
   patientNotesPage = 1;
-  patientNoteSort = { field: 'createdAt', direction: 'asc' };
+  patientNoteSort = { field: 'createdAt', direction: 'desc' };
   showPatientNoteModal = false;
   showViewPatientNoteModal = false;
   patientNoteForm: FormGroup;
@@ -199,7 +199,7 @@ export class PatientsComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      dni: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      dni: ['', [Validators.minLength(3), Validators.maxLength(20)]],
       birthDate: ['', Validators.required],
       allergies: ['', [Validators.maxLength(255)]]
     });
@@ -227,11 +227,12 @@ export class PatientsComponent implements OnInit {
    * Filtrar pacientes por búsqueda
    */
   applyFilters(): void {
+    const term = this.searchTerm.toLowerCase();
     this.filteredPatients = this.patients.filter(patient =>
-      patient.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      patient.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      patient.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      patient.dni.includes(this.searchTerm)
+      (patient.name || '').toLowerCase().includes(term) ||
+      (patient.lastName || '').toLowerCase().includes(term) ||
+      (patient.email || '').toLowerCase().includes(term) ||
+      (patient.dni || '').toLowerCase().includes(term)
     );
     this.sortPatientsList();
     this.currentPage = 1;
@@ -548,7 +549,7 @@ export class PatientsComponent implements OnInit {
     // Cargar notas del registro
     this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
       next: (fullRecord) => {
-        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.showViewMedicalRecordModal = true;
       },
       error: (err) => {
@@ -637,7 +638,7 @@ export class PatientsComponent implements OnInit {
           protocol: fullRecord.protocol,
           background: fullRecord.background
         });
-        this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         this.medicalRecordFormError = null;
         this.showMedicalRecordModal = true;
         this.medicalRecordFormLoading = false;
@@ -877,8 +878,8 @@ export class PatientsComponent implements OnInit {
       this.noteError = 'La nota debe tener al menos 5 caracteres';
       return;
     }
-    if (this.newNoteDescription.length > 255) {
-      this.noteError = 'La nota no puede exceder los 255 caracteres';
+    if (this.newNoteDescription.length > 10000) {
+      this.noteError = 'La nota no puede exceder los 10000 caracteres';
       return;
     }
 
@@ -1354,7 +1355,7 @@ export class PatientsComponent implements OnInit {
   /**
    * Verificar si el texto necesita ser truncado
    */
-  public needsTruncation(text: string | null | undefined, maxLength: number = 255): boolean {
+  public needsTruncation(text: string | null | undefined, maxLength: number = 10000): boolean {
     if (!text) {
       return false;
     }
@@ -1811,8 +1812,7 @@ export class PatientsComponent implements OnInit {
    */
   openPdf(): void {
     if (this.generatedPdf) {
-      // User requested specific filename format, so we use save() to enforce it
-      this.generatedPdf.save(this.getPdfFileName());
+      window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
     }
   }
   /**

@@ -20712,7 +20712,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r35.selectedPatient.dni);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r35.selectedPatient.dni || "No proporcionado");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
 
@@ -20856,7 +20856,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r116.newNoteDescription == null ? null : ctx_r116.newNoteDescription.length) || 0, " / 255 ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r116.newNoteDescription == null ? null : ctx_r116.newNoteDescription.length) || 0, " / 10000 ");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
@@ -21132,7 +21132,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r122.newTracingDescription == null ? null : ctx_r122.newTracingDescription.length) || 0, " / 255 ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", (ctx_r122.newTracingDescription == null ? null : ctx_r122.newTracingDescription.length) || 0, " / 10000 ");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
@@ -25112,7 +25112,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "h3");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "Antecedentes");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "Antecedentes Generales");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -25186,7 +25186,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           return ctx_r364.openPdf();
         });
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "Descargar PDF");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "Vista previa");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -25882,7 +25882,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "label", 158);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](35, "DNI *");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](35, "DNI");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -26164,7 +26164,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
         this.patientNotesPage = 1;
         this.patientNoteSort = {
           field: 'createdAt',
-          direction: 'asc'
+          direction: 'desc'
         };
         this.showPatientNoteModal = false;
         this.showViewPatientNoteModal = false;
@@ -26247,7 +26247,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             lastName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(100)]],
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
-            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
+            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
             birthDate: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             allergies: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(255)]]
           });
@@ -26410,7 +26410,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             lastName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(100)]],
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
-            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
+            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
             birthDate: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             allergies: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(255)]]
           });
@@ -26482,7 +26482,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
             next: function next(fullRecord) {
               _this5.viewMedicalRecordNotes = (fullRecord.notes || []).sort(function (a, b) {
-                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
               });
               _this5.showViewMedicalRecordModal = true;
             },
@@ -26494,7 +26494,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           this.tracingService.getTracingsByMedicalRecordId(record.id).subscribe({
             next: function next(tracings) {
               _this5.viewMedicalRecordTracings = tracings.sort(function (a, b) {
-                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
               });
             },
             error: function error(err) {
@@ -26688,7 +26688,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           this.medicalRecordService.getMedicalRecordById(recordId).subscribe({
             next: function next(fullRecord) {
               _this8.viewMedicalRecordNotes = (fullRecord.notes || []).sort(function (a, b) {
-                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
               });
               var totalPages = Math.ceil(_this8.viewMedicalRecordNotes.length / _this8.modalPageSize) || 1;
 
@@ -26795,7 +26795,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
               });
 
               _this9.notesForRecord = _toConsumableArray(fullRecord.notes || []).sort(function (a, b) {
-                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
               });
               _this9.showMedicalRecordModal = true;
               _this9.medicalRecordFormLoading = false; // Cargar archivos para el modo edición
@@ -26806,7 +26806,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
               _this9.tracingService.getTracingsByMedicalRecordId(record.id).subscribe({
                 next: function next(tracings) {
                   _this9.tracingsForRecord = tracings.sort(function (a, b) {
-                    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
                   });
                 },
                 error: function error() {
@@ -27047,8 +27047,8 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             return;
           }
 
-          if (this.newTracingDescription.length > 255) {
-            this.tracingError = 'El seguimiento no puede exceder los 255 caracteres';
+          if (this.newTracingDescription.length > 10000) {
+            this.tracingError = 'El seguimiento no puede exceder los 10000 caracteres';
             return;
           }
 
@@ -27060,6 +27060,9 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             createdAt: new Date()
           };
           this.tracingsForRecord.push(newTracing);
+          this.tracingsForRecord.sort(function (a, b) {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
           this.newTracingDescription = '';
           this.showAddTracingInput = false;
         }
@@ -27204,8 +27207,8 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             return;
           }
 
-          if (this.newNoteDescription.length > 255) {
-            this.noteError = 'La nota no puede exceder los 255 caracteres';
+          if (this.newNoteDescription.length > 10000) {
+            this.noteError = 'La nota no puede exceder los 10000 caracteres';
             return;
           }
 
@@ -27217,6 +27220,9 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             createdAt: new Date()
           };
           this.notesForRecord.push(newNote);
+          this.notesForRecord.sort(function (a, b) {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
           this.newNoteDescription = '';
         }
         /**
@@ -27776,7 +27782,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "needsTruncation",
         value: function needsTruncation(text) {
-          var maxLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 255;
+          var maxLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10000;
 
           if (!text) {
             return false;
@@ -28198,10 +28204,8 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "openPdf",
         value: function openPdf() {
-          var _a;
-
           if (!this.generatedPdf) return;
-          this.generatedPdf.save("historia_clinica_".concat(((_a = this.selectedPatient) === null || _a === void 0 ? void 0 : _a.lastName) || 'paciente', ".pdf"));
+          window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
         }
       }, {
         key: "prepareEmail",
@@ -28221,13 +28225,14 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "executeEmail",
         value: function executeEmail() {
-          var _a, _b; // Download the PDF first
+          var _a, _b, _c;
 
+          if (!this.generatedPdf) return; // Download the PDF first
 
-          this.openPdf(); // Then open the mailto
+          this.generatedPdf.save("historia_clinica_".concat(((_a = this.selectedPatient) === null || _a === void 0 ? void 0 : _a.lastName) || 'paciente', ".pdf")); // Then open the mailto
 
           var subject = encodeURIComponent(this.emailSubject);
-          var body = encodeURIComponent("Estimado/a,\n\nAdjunto encontrar\xE1 el informe cl\xEDnico del paciente ".concat((_a = this.selectedPatient) === null || _a === void 0 ? void 0 : _a.name, " ").concat((_b = this.selectedPatient) === null || _b === void 0 ? void 0 : _b.lastName, ".\n\nSaludos."));
+          var body = encodeURIComponent("Estimado/a,\n\nAdjunto encontrar\xE1 el informe cl\xEDnico del paciente ".concat((_b = this.selectedPatient) === null || _b === void 0 ? void 0 : _b.name, " ").concat((_c = this.selectedPatient) === null || _c === void 0 ? void 0 : _c.lastName, ".\n\nSaludos."));
           window.location.href = "mailto:".concat(this.emailRecipient, "?subject=").concat(subject, "&body=").concat(body);
           this.showEmailModal = false;
         }
@@ -28470,7 +28475,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       selectors: [["app-patient-detail"]],
       decls: 13,
       vars: 12,
-      consts: [[1, "patients-container"], ["class", "details-section", 4, "ngIf"], ["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "details-section"], [1, "details-header"], ["routerLink", "/patients", 1, "btn", "btn-secondary"], [1, "details-content"], [1, "detail-item"], [1, "detail-label"], [1, "detail-value"], [1, "details-actions"], [1, "btn", "btn-primary", 3, "click"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-info", 3, "disabled", "click"], [4, "ngIf"], ["class", "spinner-small", 4, "ngIf"], [1, "records-tabs"], [1, "tab-button", 3, "click"], ["class", "records-section", 4, "ngIf"], [1, "spinner-small"], [1, "records-section"], [1, "records-header"], [3, "click"], ["class", "loading", 4, "ngIf"], ["class", "empty-state", 4, "ngIf"], ["class", "records-list", 4, "ngIf"], ["class", "pagination", 4, "ngIf"], [1, "loading"], [1, "spinner"], [1, "empty-state"], [1, "records-list"], [1, "records-table-header"], [1, "header-item", "sortable", 3, "click"], ["class", "record-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "record-item", "clickable", 3, "click"], [1, "record-column", "description"], [1, "record-column", "date"], [1, "pagination"], [1, "btn", "btn-sm", 3, "disabled", "click"], [1, "page-info"], [1, "modal-overlay", 3, "click"], [1, "modal-content", "modal-large", 3, "click"], [1, "modal-header"], [1, "btn-close", 3, "click"], [1, "modal-body", "scrollable"], [3, "formGroup"], [1, "form-section"], [1, "form-group"], ["id", "medicalRecordDescription", "formControlName", "description", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la enfermedad actual...", 1, "form-control"], [1, "char-counter"], ["class", "error-message", 4, "ngIf"], ["id", "medicalRecordBackground", "formControlName", "background", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese los antecedentes espec\xEDficos...", 1, "form-control"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-bottom", "1rem"], ["type", "button", 1, "btn", "btn-sm", "btn-info", 3, "click"], ["class", "form-group", "style", "margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);", 4, "ngIf"], ["class", "notes-list", "style", "margin-bottom: 1rem;", 4, "ngIf"], ["class", "empty-item", 4, "ngIf"], ["id", "medicalRecordDiagnose", "formControlName", "diagnose", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el diagn\xF3stico...", 1, "form-control"], ["id", "medicalRecordProtocol", "formControlName", "protocol", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la conducta...", 1, "form-control"], ["id", "medicalRecordPrescription", "formControlName", "prescription", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el tratamiento...", 1, "form-control"], ["class", "form-section", 4, "ngIf"], ["class", "form-section destructive-zone", 4, "ngIf"], [1, "modal-footer"], [1, "btn", "btn-secondary", 3, "disabled", "click"], [1, "spacer"], [1, "btn", "btn-primary", 3, "disabled", "click"], [1, "error-message"], [1, "form-group", 2, "margin-bottom", "1.5rem", "background-color", "var(--surface-color)", "padding", "1rem", "border-radius", "8px", "border", "1px solid var(--border-color)"], ["id", "newNoteDescriptionInline", "rows", "3", "maxlength", "255", "placeholder", "Escriba la valoraci\xF3n aqu\xED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-top", "0.5rem"], [1, "char-counter", 2, "margin-top", "0"], ["type", "button", 1, "btn", "btn-sm", "btn-primary", 3, "disabled", "click"], [1, "notes-list", 2, "margin-bottom", "1rem"], ["class", "note-item", 4, "ngFor", "ngForOf"], ["class", "modal-pagination", 4, "ngIf"], [1, "note-item"], [1, "note-content", 2, "flex", "1"], [1, "note-description", 3, "click"], ["class", "read-more-hint-inline", 4, "ngIf"], [1, "item-actions"], ["type", "button", "title", "Editar", 1, "btn", "btn-xs", "btn-ghost", 3, "click"], [1, "read-more-hint-inline"], [1, "modal-pagination"], ["type", "button", 3, "disabled", "click"], [1, "empty-item"], ["id", "newTracingDescriptionInline", "rows", "3", "maxlength", "255", "placeholder", "Escriba el seguimiento aqu\xED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [1, "file-upload-section", 2, "margin-bottom", "1.5rem"], ["type", "file", "id", "editRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editRecordFileInput", 1, "btn", "btn-sm", "btn-info"], ["class", "selected-file-name", 4, "ngIf"], ["type", "button", "class", "btn btn-sm btn-success", 3, "disabled", "click", 4, "ngIf"], ["class", "files-list", 4, "ngIf"], [1, "selected-file-name"], ["type", "button", 1, "btn", "btn-sm", "btn-success", 3, "disabled", "click"], [1, "files-list"], ["class", "file-item", 4, "ngFor", "ngForOf"], [1, "file-item"], [1, "file-icon"], [1, "file-info", "clickable", 3, "click"], [1, "file-name"], [1, "file-meta"], ["type", "button", "title", "Eliminar", 1, "btn-delete-small", 3, "click"], [1, "form-section", "destructive-zone"], ["type", "button", 1, "btn", "btn-danger", "btn-full", 3, "click"], [1, "view-content", 3, "click"], ["class", "read-more-hint", 4, "ngIf"], ["class", "view-content", 3, "clickable-text", "click", 4, "ngIf"], ["class", "notes-list", 4, "ngIf"], ["style", "margin-bottom: 1rem;", 4, "ngIf"], [1, "btn", "btn-secondary", 3, "click"], [1, "read-more-hint"], [1, "notes-list"], [1, "note-date"], [2, "margin-bottom", "1rem"], [1, "diagnose-label", 2, "font-weight", "bold", "margin-bottom", "4px", "color", "var(--text-color)"], ["id", "previousRecordDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\xF3n de los antecedentes...", 1, "form-control"], ["type", "file", "id", "editPreviousRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editPreviousRecordFileInput", 1, "btn", "btn-sm", "btn-info"], [1, "modal-content", 3, "click"], [1, "modal-body"], ["for", "patientNoteDescription"], ["id", "patientNoteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\xF3n de la nota...", 1, "form-control"], ["class", "alert alert-danger", 4, "ngIf"], [1, "alert", "alert-danger"], ["for", "noteDescription"], ["id", "noteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\xF3n de la valoraci\xF3n...", 1, "form-control"], ["type", "button", "class", "btn btn-danger btn-full", 3, "click", 4, "ngIf"], [1, "view-content", "formatted-content"], ["class", "loading-state", 4, "ngIf"], ["class", "pdf-actions", 4, "ngIf"], ["class", "btn btn-primary", 3, "disabled", "click", 4, "ngIf"], [1, "loading-state"], ["class", "note-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "note-item", "clickable", 3, "click"], [2, "display", "flex", "align-items", "center", "margin-right", "15px"], ["type", "checkbox", 2, "cursor", "pointer", "transform", "scale(1.2)", 3, "checked"], [1, "note-content"], [1, "note-description"], [1, "pdf-actions"], [1, "alert", "alert-success"], [1, "pdf-buttons"], ["type", "button", 1, "btn", "btn-secondary", 3, "click"], [1, "email-instruction"], [1, "email-steps"], ["for", "emailRecipient"], ["type", "email", "id", "emailRecipient", "placeholder", "ejemplo@correo.com", 1, "form-control", 3, "ngModel", "ngModelChange"], ["for", "emailSubject"], ["type", "text", "id", "emailSubject", 1, "form-control", 3, "ngModel", "ngModelChange"], [1, "patient-form", 3, "formGroup"], [1, "form-row"], ["for", "name"], ["type", "text", "id", "name", "formControlName", "name", "maxlength", "50", 1, "form-control"], ["for", "lastName"], ["type", "text", "id", "lastName", "formControlName", "lastName", "maxlength", "50", 1, "form-control"], ["for", "email"], ["type", "email", "id", "email", "formControlName", "email", "maxlength", "100", 1, "form-control"], ["for", "phone"], ["type", "tel", "id", "phone", "formControlName", "phone", "maxlength", "20", 1, "form-control"], ["for", "dni"], ["type", "text", "id", "dni", "formControlName", "dni", "maxlength", "20", 1, "form-control"], ["for", "birthDate"], ["type", "date", "id", "birthDate", "formControlName", "birthDate", 1, "form-control"], [1, "form-group", "full-width"], ["for", "allergies"], ["id", "allergies", "formControlName", "allergies", "maxlength", "255", "rows", "2", 1, "form-control"]],
+      consts: [[1, "patients-container"], ["class", "details-section", 4, "ngIf"], ["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "details-section"], [1, "details-header"], ["routerLink", "/patients", 1, "btn", "btn-secondary"], [1, "details-content"], [1, "detail-item"], [1, "detail-label"], [1, "detail-value"], [1, "details-actions"], [1, "btn", "btn-primary", 3, "click"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-info", 3, "disabled", "click"], [4, "ngIf"], ["class", "spinner-small", 4, "ngIf"], [1, "records-tabs"], [1, "tab-button", 3, "click"], ["class", "records-section", 4, "ngIf"], [1, "spinner-small"], [1, "records-section"], [1, "records-header"], [3, "click"], ["class", "loading", 4, "ngIf"], ["class", "empty-state", 4, "ngIf"], ["class", "records-list", 4, "ngIf"], ["class", "pagination", 4, "ngIf"], [1, "loading"], [1, "spinner"], [1, "empty-state"], [1, "records-list"], [1, "records-table-header"], [1, "header-item", "sortable", 3, "click"], ["class", "record-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "record-item", "clickable", 3, "click"], [1, "record-column", "description"], [1, "record-column", "date"], [1, "pagination"], [1, "btn", "btn-sm", 3, "disabled", "click"], [1, "page-info"], [1, "modal-overlay", 3, "click"], [1, "modal-content", "modal-large", 3, "click"], [1, "modal-header"], [1, "btn-close", 3, "click"], [1, "modal-body", "scrollable"], [3, "formGroup"], [1, "form-section"], [1, "form-group"], ["id", "medicalRecordDescription", "formControlName", "description", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la enfermedad actual...", 1, "form-control"], [1, "char-counter"], ["class", "error-message", 4, "ngIf"], ["id", "medicalRecordBackground", "formControlName", "background", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese los antecedentes espec\xEDficos...", 1, "form-control"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-bottom", "1rem"], ["type", "button", 1, "btn", "btn-sm", "btn-info", 3, "click"], ["class", "form-group", "style", "margin-bottom: 1.5rem; background-color: var(--surface-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);", 4, "ngIf"], ["class", "notes-list", "style", "margin-bottom: 1rem;", 4, "ngIf"], ["class", "empty-item", 4, "ngIf"], ["id", "medicalRecordDiagnose", "formControlName", "diagnose", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el diagn\xF3stico...", 1, "form-control"], ["id", "medicalRecordProtocol", "formControlName", "protocol", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese la conducta...", 1, "form-control"], ["id", "medicalRecordPrescription", "formControlName", "prescription", "rows", "4", "maxlength", "10000", "placeholder", "Ingrese el tratamiento...", 1, "form-control"], ["class", "form-section", 4, "ngIf"], ["class", "form-section destructive-zone", 4, "ngIf"], [1, "modal-footer"], [1, "btn", "btn-secondary", 3, "disabled", "click"], [1, "spacer"], [1, "btn", "btn-primary", 3, "disabled", "click"], [1, "error-message"], [1, "form-group", 2, "margin-bottom", "1.5rem", "background-color", "var(--surface-color)", "padding", "1rem", "border-radius", "8px", "border", "1px solid var(--border-color)"], ["id", "newNoteDescriptionInline", "rows", "3", "maxlength", "10000", "placeholder", "Escriba la valoraci\xF3n aqu\xED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [2, "display", "flex", "justify-content", "space-between", "align-items", "center", "margin-top", "0.5rem"], [1, "char-counter", 2, "margin-top", "0"], ["type", "button", 1, "btn", "btn-sm", "btn-primary", 3, "disabled", "click"], [1, "notes-list", 2, "margin-bottom", "1rem"], ["class", "note-item", 4, "ngFor", "ngForOf"], ["class", "modal-pagination", 4, "ngIf"], [1, "note-item"], [1, "note-content", 2, "flex", "1"], [1, "note-description", 3, "click"], ["class", "read-more-hint-inline", 4, "ngIf"], [1, "item-actions"], ["type", "button", "title", "Editar", 1, "btn", "btn-xs", "btn-ghost", 3, "click"], [1, "read-more-hint-inline"], [1, "modal-pagination"], ["type", "button", 3, "disabled", "click"], [1, "empty-item"], ["id", "newTracingDescriptionInline", "rows", "3", "maxlength", "10000", "placeholder", "Escriba el seguimiento aqu\xED...", 1, "form-control", 3, "ngModel", "ngModelOptions", "ngModelChange"], [1, "file-upload-section", 2, "margin-bottom", "1.5rem"], ["type", "file", "id", "editRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editRecordFileInput", 1, "btn", "btn-sm", "btn-info"], ["class", "selected-file-name", 4, "ngIf"], ["type", "button", "class", "btn btn-sm btn-success", 3, "disabled", "click", 4, "ngIf"], ["class", "files-list", 4, "ngIf"], [1, "selected-file-name"], ["type", "button", 1, "btn", "btn-sm", "btn-success", 3, "disabled", "click"], [1, "files-list"], ["class", "file-item", 4, "ngFor", "ngForOf"], [1, "file-item"], [1, "file-icon"], [1, "file-info", "clickable", 3, "click"], [1, "file-name"], [1, "file-meta"], ["type", "button", "title", "Eliminar", 1, "btn-delete-small", 3, "click"], [1, "form-section", "destructive-zone"], ["type", "button", 1, "btn", "btn-danger", "btn-full", 3, "click"], [1, "view-content", 3, "click"], ["class", "read-more-hint", 4, "ngIf"], ["class", "view-content", 3, "clickable-text", "click", 4, "ngIf"], ["class", "notes-list", 4, "ngIf"], ["style", "margin-bottom: 1rem;", 4, "ngIf"], [1, "btn", "btn-secondary", 3, "click"], [1, "read-more-hint"], [1, "notes-list"], [1, "note-date"], [2, "margin-bottom", "1rem"], [1, "diagnose-label", 2, "font-weight", "bold", "margin-bottom", "4px", "color", "var(--text-color)"], ["id", "previousRecordDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\xF3n de los antecedentes...", 1, "form-control"], ["type", "file", "id", "editPreviousRecordFileInput", 2, "display", "none", 3, "change"], ["for", "editPreviousRecordFileInput", 1, "btn", "btn-sm", "btn-info"], [1, "modal-content", 3, "click"], [1, "modal-body"], ["for", "patientNoteDescription"], ["id", "patientNoteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\xF3n de la nota...", 1, "form-control"], ["class", "alert alert-danger", 4, "ngIf"], [1, "alert", "alert-danger"], ["for", "noteDescription"], ["id", "noteDescription", "formControlName", "description", "rows", "6", "maxlength", "10000", "placeholder", "Ingrese la descripci\xF3n de la valoraci\xF3n...", 1, "form-control"], ["type", "button", "class", "btn btn-danger btn-full", 3, "click", 4, "ngIf"], [1, "view-content", "formatted-content"], ["class", "loading-state", 4, "ngIf"], ["class", "pdf-actions", 4, "ngIf"], ["class", "btn btn-primary", 3, "disabled", "click", 4, "ngIf"], [1, "loading-state"], ["class", "note-item clickable", 3, "click", 4, "ngFor", "ngForOf"], [1, "note-item", "clickable", 3, "click"], [2, "display", "flex", "align-items", "center", "margin-right", "15px"], ["type", "checkbox", 2, "cursor", "pointer", "transform", "scale(1.2)", 3, "checked"], [1, "note-content"], [1, "note-description"], [1, "pdf-actions"], [1, "alert", "alert-success"], [1, "pdf-buttons"], ["type", "button", 1, "btn", "btn-secondary", 3, "click"], [1, "email-instruction"], [1, "email-steps"], ["for", "emailRecipient"], ["type", "email", "id", "emailRecipient", "placeholder", "ejemplo@correo.com", 1, "form-control", 3, "ngModel", "ngModelChange"], ["for", "emailSubject"], ["type", "text", "id", "emailSubject", 1, "form-control", 3, "ngModel", "ngModelChange"], [1, "patient-form", 3, "formGroup"], [1, "form-row"], ["for", "name"], ["type", "text", "id", "name", "formControlName", "name", "maxlength", "50", 1, "form-control"], ["for", "lastName"], ["type", "text", "id", "lastName", "formControlName", "lastName", "maxlength", "50", 1, "form-control"], ["for", "email"], ["type", "email", "id", "email", "formControlName", "email", "maxlength", "100", 1, "form-control"], ["for", "phone"], ["type", "tel", "id", "phone", "formControlName", "phone", "maxlength", "20", 1, "form-control"], ["for", "dni"], ["type", "text", "id", "dni", "formControlName", "dni", "maxlength", "20", 1, "form-control"], ["for", "birthDate"], ["type", "date", "id", "birthDate", "formControlName", "birthDate", 1, "form-control"], [1, "form-group", "full-width"], ["for", "allergies"], ["id", "allergies", "formControlName", "allergies", "maxlength", "255", "rows", "2", 1, "form-control"]],
       template: function PatientDetailComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
@@ -29067,7 +29072,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](32, "label", 30);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](33, "DNI *");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](33, "DNI");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -29757,7 +29762,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
         this.patientNotesPage = 1;
         this.patientNoteSort = {
           field: 'createdAt',
-          direction: 'asc'
+          direction: 'desc'
         };
         this.showPatientNoteModal = false;
         this.showViewPatientNoteModal = false;
@@ -29868,7 +29873,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             lastName: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(50)]],
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(100)]],
             phone: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
-            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
+            dni: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(3), _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(20)]],
             birthDate: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             allergies: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(255)]]
           });
@@ -29904,10 +29909,9 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "applyFilters",
         value: function applyFilters() {
-          var _this29 = this;
-
+          var term = this.searchTerm.toLowerCase();
           this.filteredPatients = this.patients.filter(function (patient) {
-            return patient.name.toLowerCase().includes(_this29.searchTerm.toLowerCase()) || patient.lastName.toLowerCase().includes(_this29.searchTerm.toLowerCase()) || patient.email.toLowerCase().includes(_this29.searchTerm.toLowerCase()) || patient.dni.includes(_this29.searchTerm);
+            return (patient.name || '').toLowerCase().includes(term) || (patient.lastName || '').toLowerCase().includes(term) || (patient.email || '').toLowerCase().includes(term) || (patient.dni || '').toLowerCase().includes(term);
           });
           this.sortPatientsList();
           this.currentPage = 1;
@@ -29931,11 +29935,11 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "sortPatientsList",
         value: function sortPatientsList() {
-          var _this30 = this;
+          var _this29 = this;
 
           this.filteredPatients.sort(function (a, b) {
-            var direction = _this30.patientSort.direction === 'asc' ? 1 : -1;
-            var field = _this30.patientSort.field;
+            var direction = _this29.patientSort.direction === 'asc' ? 1 : -1;
+            var field = _this29.patientSort.field;
             var valA = a[field];
             var valB = b[field];
             if (typeof valA === 'string') valA = valA.toLowerCase();
@@ -30037,23 +30041,23 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "openEditForm",
         value: function openEditForm(patient) {
-          var _this31 = this;
+          var _this30 = this;
 
           this.isEditMode = true;
           this.selectedPatient = patient;
           this.patientService.getPatientById(patient.id).subscribe({
             next: function next(fullPatient) {
-              _this31.patientForm.patchValue({
+              _this30.patientForm.patchValue({
                 name: fullPatient.name,
                 lastName: fullPatient.lastName,
                 email: fullPatient.email,
                 phone: fullPatient.phone,
                 dni: fullPatient.dni,
-                birthDate: _this31.formatDateForInput(fullPatient.birthDate),
+                birthDate: _this30.formatDateForInput(fullPatient.birthDate),
                 allergies: fullPatient.allergies
               });
 
-              _this31.showForm = true;
+              _this30.showForm = true;
             },
             error: function error(err) {
               return console.error('Error al cargar paciente:', err);
@@ -30067,7 +30071,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "savePatient",
         value: function savePatient() {
-          var _this32 = this;
+          var _this31 = this;
 
           if (this.patientForm.invalid) {
             this.formSubmitted = true;
@@ -30092,18 +30096,18 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             console.log('PATCH DTO:', updateDto);
             this.patientService.updatePatient(this.selectedPatient.id, updateDto).subscribe({
               next: function next() {
-                _this32.loadPatients();
+                _this31.loadPatients();
 
-                _this32.closeForm();
+                _this31.closeForm();
 
-                _this32.formLoading = false;
+                _this31.formLoading = false;
               },
               error: function error(err) {
                 var _a;
 
                 console.error('Error PATCH:', err);
-                _this32.formError = 'Error al actualizar paciente: ' + (((_a = err.error) === null || _a === void 0 ? void 0 : _a.message) || err.message || 'Error desconocido');
-                _this32.formLoading = false;
+                _this31.formError = 'Error al actualizar paciente: ' + (((_a = err.error) === null || _a === void 0 ? void 0 : _a.message) || err.message || 'Error desconocido');
+                _this31.formLoading = false;
               }
             });
           } else {
@@ -30120,18 +30124,18 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             console.log('POST DTO:', createDto);
             this.patientService.createPatient(createDto).subscribe({
               next: function next() {
-                _this32.loadPatients();
+                _this31.loadPatients();
 
-                _this32.closeForm();
+                _this31.closeForm();
 
-                _this32.formLoading = false;
+                _this31.formLoading = false;
               },
               error: function error(err) {
                 var _a;
 
                 console.error('Error POST:', err);
-                _this32.formError = 'Error al crear paciente: ' + (((_a = err.error) === null || _a === void 0 ? void 0 : _a.message) || err.message || 'Error desconocido');
-                _this32.formLoading = false;
+                _this31.formError = 'Error al crear paciente: ' + (((_a = err.error) === null || _a === void 0 ? void 0 : _a.message) || err.message || 'Error desconocido');
+                _this31.formLoading = false;
               }
             });
           }
@@ -30143,12 +30147,12 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "deletePatient",
         value: function deletePatient(patient) {
-          var _this33 = this;
+          var _this32 = this;
 
           if (confirm("\xBFEst\xE1s seguro de que deseas eliminar a ".concat(patient.name, " ").concat(patient.lastName, "?"))) {
             this.patientService.deletePatient(patient.id).subscribe({
               next: function next() {
-                _this33.loadPatients();
+                _this32.loadPatients();
               },
               error: function error(err) {
                 return console.error('Error al eliminar paciente:', err);
@@ -30163,7 +30167,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "viewPatientDetails",
         value: function viewPatientDetails(patient) {
-          var _this34 = this;
+          var _this33 = this;
 
           this.selectedPatient = patient;
           this.showForm = false;
@@ -30171,7 +30175,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
           this.patientService.getPatientById(patient.id).subscribe({
             next: function next(fullPatient) {
-              _this34.selectedPatient = fullPatient;
+              _this33.selectedPatient = fullPatient;
             },
             error: function error(err) {
               return console.error('Error al cargar detalles del paciente:', err);
@@ -30188,21 +30192,21 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "loadMedicalRecords",
         value: function loadMedicalRecords(patientId) {
-          var _this35 = this;
+          var _this34 = this;
 
           this.medicalRecordsLoading = true;
           this.patientService.getMedicalRecordsByPatientId(patientId).subscribe({
             next: function next(data) {
-              _this35.medicalRecords = data;
+              _this34.medicalRecords = data;
 
-              _this35.sortRecordsList(_this35.medicalRecords, _this35.medicalRecordSort);
+              _this34.sortRecordsList(_this34.medicalRecords, _this34.medicalRecordSort);
 
-              _this35.medicalPage = 1;
-              _this35.medicalRecordsLoading = false;
+              _this34.medicalPage = 1;
+              _this34.medicalRecordsLoading = false;
             },
             error: function error(err) {
               console.error('Error al cargar registros médicos:', err);
-              _this35.medicalRecordsLoading = false;
+              _this34.medicalRecordsLoading = false;
             }
           });
         }
@@ -30213,21 +30217,21 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "loadPreviousRecords",
         value: function loadPreviousRecords(patientId) {
-          var _this36 = this;
+          var _this35 = this;
 
           this.previousRecordsLoading = true;
           this.patientService.getPreviousRecordsByPatientId(patientId).subscribe({
             next: function next(data) {
-              _this36.previousRecords = data;
+              _this35.previousRecords = data;
 
-              _this36.sortRecordsList(_this36.previousRecords, _this36.previousRecordSort);
+              _this35.sortRecordsList(_this35.previousRecords, _this35.previousRecordSort);
 
-              _this36.previousRecordsPage = 1;
-              _this36.previousRecordsLoading = false;
+              _this35.previousRecordsPage = 1;
+              _this35.previousRecordsLoading = false;
             },
             error: function error(err) {
               console.error('Error al cargar registros previos:', err);
-              _this36.previousRecordsLoading = false;
+              _this35.previousRecordsLoading = false;
             }
           });
         }
@@ -30238,7 +30242,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "viewMedicalRecordDetails",
         value: function viewMedicalRecordDetails(record) {
-          var _this37 = this;
+          var _this36 = this;
 
           this.viewingMedicalRecord = record;
           this.notesPage = 1;
@@ -30246,10 +30250,10 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
           this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
             next: function next(fullRecord) {
-              _this37.viewMedicalRecordNotes = (fullRecord.notes || []).sort(function (a, b) {
-                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+              _this36.viewMedicalRecordNotes = (fullRecord.notes || []).sort(function (a, b) {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
               });
-              _this37.showViewMedicalRecordModal = true;
+              _this36.showViewMedicalRecordModal = true;
             },
             error: function error(err) {
               console.error('Error al cargar detalles del registro:', err);
@@ -30329,7 +30333,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "editMedicalRecord",
         value: function editMedicalRecord(record) {
-          var _this38 = this;
+          var _this37 = this;
 
           this.closeViewMedicalRecordModal(); // Reset modal pagination and deletion tracking
 
@@ -30342,9 +30346,9 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           this.medicalRecordFormLoading = true;
           this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
             next: function next(fullRecord) {
-              _this38.editingMedicalRecord = fullRecord;
+              _this37.editingMedicalRecord = fullRecord;
 
-              _this38.medicalRecordForm.patchValue({
+              _this37.medicalRecordForm.patchValue({
                 description: fullRecord.description,
                 diagnose: fullRecord.diagnose,
                 prescription: fullRecord.prescription,
@@ -30352,21 +30356,21 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
                 background: fullRecord.background
               });
 
-              _this38.notesForRecord = _toConsumableArray(fullRecord.notes || []).sort(function (a, b) {
-                return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+              _this37.notesForRecord = _toConsumableArray(fullRecord.notes || []).sort(function (a, b) {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
               });
-              _this38.medicalRecordFormError = null;
-              _this38.showMedicalRecordModal = true;
-              _this38.medicalRecordFormLoading = false; // Cargar archivos para el modo edición
+              _this37.medicalRecordFormError = null;
+              _this37.showMedicalRecordModal = true;
+              _this37.medicalRecordFormLoading = false; // Cargar archivos para el modo edición
 
-              _this38.loadMedicalRecordFiles(record.id);
+              _this37.loadMedicalRecordFiles(record.id);
             },
             error: function error(err) {
               console.error('Error loading record details for edit:', err); // Fallback to basic info if fetch fails
 
-              _this38.editingMedicalRecord = record;
+              _this37.editingMedicalRecord = record;
 
-              _this38.medicalRecordForm.patchValue({
+              _this37.medicalRecordForm.patchValue({
                 description: record.description,
                 diagnose: record.diagnose,
                 prescription: record.prescription,
@@ -30374,11 +30378,11 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
                 background: record.background
               });
 
-              _this38.notesForRecord = [];
-              _this38.showMedicalRecordModal = true;
-              _this38.medicalRecordFormLoading = false; // Cargar archivos para el modo edición
+              _this37.notesForRecord = [];
+              _this37.showMedicalRecordModal = true;
+              _this37.medicalRecordFormLoading = false; // Cargar archivos para el modo edición
 
-              _this38.loadMedicalRecordFiles(record.id);
+              _this37.loadMedicalRecordFiles(record.id);
             }
           });
         }
@@ -30410,7 +30414,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "saveMedicalRecord",
         value: function saveMedicalRecord() {
-          var _this39 = this;
+          var _this38 = this;
 
           var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
 
@@ -30435,12 +30439,12 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             this.medicalRecordService.updateMedicalRecord(editingRecordId, updateDto).subscribe({
               next: function next() {
                 // Guardar notas y diagnósticos
-                _this39.saveNotes(editingRecordId);
+                _this38.saveNotes(editingRecordId);
               },
               error: function error(err) {
-                _this39.medicalRecordFormError = 'Error al actualizar registro médico';
+                _this38.medicalRecordFormError = 'Error al actualizar registro médico';
                 console.error('Error:', err);
-                _this39.medicalRecordFormLoading = false;
+                _this38.medicalRecordFormLoading = false;
               }
             });
           } else {
@@ -30456,12 +30460,12 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             this.medicalRecordService.createMedicalRecord(createDto).subscribe({
               next: function next(createdRecord) {
                 // Guardar notas del nuevo registro
-                _this39.saveNotes(createdRecord.id);
+                _this38.saveNotes(createdRecord.id);
               },
               error: function error(err) {
-                _this39.medicalRecordFormError = 'Error al crear registro médico';
+                _this38.medicalRecordFormError = 'Error al crear registro médico';
                 console.error('Error:', err);
-                _this39.medicalRecordFormLoading = false;
+                _this38.medicalRecordFormLoading = false;
               }
             });
           }
@@ -30473,19 +30477,19 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "saveNotes",
         value: function saveNotes(medicalRecordId) {
-          var _this40 = this;
+          var _this39 = this;
 
           var deleteOps = [];
           var createOps = []; // Operaciones de eliminación
 
           this.notesToDelete.forEach(function (id) {
-            return deleteOps.push(_this40.noteService.deleteMedicalRecordNote(medicalRecordId, id));
+            return deleteOps.push(_this39.noteService.deleteMedicalRecordNote(medicalRecordId, id));
           }); // Operaciones de creación (solo para IDs temporales)
 
           this.notesForRecord.filter(function (n) {
-            return _this40.isTempId(n.id);
+            return _this39.isTempId(n.id);
           }).forEach(function (note) {
-            createOps.push(_this40.noteService.createMedicalRecordNote(medicalRecordId, {
+            createOps.push(_this39.noteService.createMedicalRecordNote(medicalRecordId, {
               description: note.description
             }));
           });
@@ -30498,15 +30502,15 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 
           Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["forkJoin"])(allOps).subscribe({
             next: function next() {
-              _this40.notesToDelete = [];
+              _this39.notesToDelete = [];
 
-              _this40.finishMedicalRecordSave();
+              _this39.finishMedicalRecordSave();
             },
             error: function error(err) {
               console.error('Error al sincronizar notas/diagnósticos:', err);
-              _this40.medicalRecordFormError = 'Error al sincronizar algunos elementos';
+              _this39.medicalRecordFormError = 'Error al sincronizar algunos elementos';
 
-              _this40.finishMedicalRecordSave();
+              _this39.finishMedicalRecordSave();
             }
           });
         }
@@ -30544,7 +30548,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "savePreviousRecord",
         value: function savePreviousRecord() {
-          var _this41 = this;
+          var _this40 = this;
 
           var _a, _b;
 
@@ -30565,26 +30569,26 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
               next: function next() {
                 var _a;
 
-                _this41.loadPreviousRecords(selectedPatientId);
+                _this40.loadPreviousRecords(selectedPatientId);
 
-                var recordToView = _this41.editingPreviousRecord; // Update the local record with form values so the view is up to date immediately
-
-                if (recordToView) {
-                  recordToView.description = (_a = _this41.previousRecordForm.get('description')) === null || _a === void 0 ? void 0 : _a.value;
-                }
-
-                _this41.closePreviousRecordModal();
+                var recordToView = _this40.editingPreviousRecord; // Update the local record with form values so the view is up to date immediately
 
                 if (recordToView) {
-                  _this41.viewPreviousRecordDetails(recordToView);
+                  recordToView.description = (_a = _this40.previousRecordForm.get('description')) === null || _a === void 0 ? void 0 : _a.value;
                 }
 
-                _this41.previousRecordFormLoading = false;
+                _this40.closePreviousRecordModal();
+
+                if (recordToView) {
+                  _this40.viewPreviousRecordDetails(recordToView);
+                }
+
+                _this40.previousRecordFormLoading = false;
               },
               error: function error(err) {
-                _this41.previousRecordFormError = 'Error al actualizar registro previo';
+                _this40.previousRecordFormError = 'Error al actualizar registro previo';
                 console.error('Error:', err);
-                _this41.previousRecordFormLoading = false;
+                _this40.previousRecordFormLoading = false;
               }
             });
           } else {
@@ -30595,16 +30599,16 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             };
             this.previousRecordService.createPreviousRecord(createDto).subscribe({
               next: function next() {
-                _this41.loadPreviousRecords(selectedPatientId);
+                _this40.loadPreviousRecords(selectedPatientId);
 
-                _this41.closePreviousRecordModal();
+                _this40.closePreviousRecordModal();
 
-                _this41.previousRecordFormLoading = false;
+                _this40.previousRecordFormLoading = false;
               },
               error: function error(err) {
-                _this41.previousRecordFormError = 'Error al crear registro previo';
+                _this40.previousRecordFormError = 'Error al crear registro previo';
                 console.error('Error:', err);
-                _this41.previousRecordFormLoading = false;
+                _this40.previousRecordFormLoading = false;
               }
             });
           }
@@ -30628,8 +30632,8 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             return;
           }
 
-          if (this.newNoteDescription.length > 255) {
-            this.noteError = 'La nota no puede exceder los 255 caracteres';
+          if (this.newNoteDescription.length > 10000) {
+            this.noteError = 'La nota no puede exceder los 10000 caracteres';
             return;
           }
 
@@ -30669,7 +30673,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "addPatientNote",
         value: function addPatientNote() {
-          var _this42 = this;
+          var _this41 = this;
 
           if (!this.newPatientNoteDescription.trim()) {
             this.patientNoteError = 'La nota no puede estar vacía';
@@ -30683,12 +30687,12 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             description: description
           }).subscribe({
             next: function next(note) {
-              _this42.patientNotes = [note].concat(_toConsumableArray(_this42.patientNotes));
-              _this42.newPatientNoteDescription = '';
+              _this41.patientNotes = [note].concat(_toConsumableArray(_this41.patientNotes));
+              _this41.newPatientNoteDescription = '';
             },
             error: function error(err) {
               console.error('Error al crear nota de paciente:', err);
-              _this42.patientNoteError = 'Error al crear la nota';
+              _this41.patientNoteError = 'Error al crear la nota';
             }
           });
         }
@@ -30699,24 +30703,24 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "deletePatientNote",
         value: function deletePatientNote(noteId) {
-          var _this43 = this;
+          var _this42 = this;
 
           if (!this.selectedPatient) return;
 
           if (confirm('¿Está seguro de que desea eliminar esta nota?')) {
             this.noteService.deletePatientNote(this.selectedPatient.id, noteId).subscribe({
               next: function next() {
-                _this43.patientNotes = _this43.patientNotes.filter(function (n) {
+                _this42.patientNotes = _this42.patientNotes.filter(function (n) {
                   return n.id !== noteId;
                 });
 
-                if (_this43.patientNotesPage > 1 && _this43.patientNotesPage > _this43.totalPatientNotesPages) {
-                  _this43.patientNotesPage = _this43.totalPatientNotesPages;
+                if (_this42.patientNotesPage > 1 && _this42.patientNotesPage > _this42.totalPatientNotesPages) {
+                  _this42.patientNotesPage = _this42.totalPatientNotesPages;
                 }
               },
               error: function error(err) {
                 console.error('Error al eliminar nota de paciente:', err);
-                _this43.patientNoteError = 'Error al eliminar la nota';
+                _this42.patientNoteError = 'Error al eliminar la nota';
               }
             });
           }
@@ -30791,16 +30795,16 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "deleteMedicalRecord",
         value: function deleteMedicalRecord(recordId) {
-          var _this44 = this;
+          var _this43 = this;
 
           if (confirm('¿Está seguro de que desea eliminar este registro médico?')) {
             this.medicalRecordService.deleteMedicalRecord(recordId).subscribe({
               next: function next() {
-                if (_this44.selectedPatient) {
-                  _this44.loadMedicalRecords(_this44.selectedPatient.id);
+                if (_this43.selectedPatient) {
+                  _this43.loadMedicalRecords(_this43.selectedPatient.id);
                 }
 
-                _this44.closeMedicalRecordModal();
+                _this43.closeMedicalRecordModal();
               },
               error: function error(err) {
                 return console.error('Error al eliminar registro médico:', err);
@@ -30815,16 +30819,16 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "deletePreviousRecord",
         value: function deletePreviousRecord(recordId) {
-          var _this45 = this;
+          var _this44 = this;
 
           if (confirm('¿Está seguro de que desea eliminar este registro previo?')) {
             this.previousRecordService.deletePreviousRecord(recordId).subscribe({
               next: function next() {
-                if (_this45.selectedPatient) {
-                  _this45.loadPreviousRecords(_this45.selectedPatient.id);
+                if (_this44.selectedPatient) {
+                  _this44.loadPreviousRecords(_this44.selectedPatient.id);
                 }
 
-                _this45.closePreviousRecordModal();
+                _this44.closePreviousRecordModal();
               },
               error: function error(err) {
                 return console.error('Error al eliminar registro previo:', err);
@@ -30840,20 +30844,20 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "loadPatientNotes",
         value: function loadPatientNotes(patientId) {
-          var _this46 = this;
+          var _this45 = this;
 
           this.patientNotesLoading = true;
           this.noteService.getPatientNotes(patientId).subscribe({
             next: function next(notes) {
-              _this46.patientNotes = notes;
+              _this45.patientNotes = notes;
 
-              _this46.sortPatientNotesList();
+              _this45.sortPatientNotesList();
 
-              _this46.patientNotesLoading = false;
+              _this45.patientNotesLoading = false;
             },
             error: function error(err) {
               console.error('Error al cargar notas del paciente:', err);
-              _this46.patientNotesLoading = false;
+              _this45.patientNotesLoading = false;
             }
           });
         }
@@ -30922,7 +30926,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "savePatientNote",
         value: function savePatientNote() {
-          var _this47 = this;
+          var _this46 = this;
 
           var _a, _b;
 
@@ -30945,28 +30949,28 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
                 var _a; // Capture note to view before closing modal resets it
 
 
-                var noteToView = _this47.editingPatientNote;
-                var updatedDescription = (_a = _this47.patientNoteForm.get('description')) === null || _a === void 0 ? void 0 : _a.value;
+                var noteToView = _this46.editingPatientNote;
+                var updatedDescription = (_a = _this46.patientNoteForm.get('description')) === null || _a === void 0 ? void 0 : _a.value;
 
                 if (noteToView) {
                   noteToView.description = updatedDescription;
                 } // Close edit modal and show details immediately
 
 
-                _this47.closePatientNoteModal();
+                _this46.closePatientNoteModal();
 
-                _this47.patientNoteFormLoading = false;
+                _this46.patientNoteFormLoading = false;
 
                 if (noteToView) {
-                  _this47.viewPatientNoteDetails(noteToView);
+                  _this46.viewPatientNoteDetails(noteToView);
                 } // Refresh list in background
 
 
-                _this47.noteService.getPatientNotes(selectedPatientId).subscribe({
+                _this46.noteService.getPatientNotes(selectedPatientId).subscribe({
                   next: function next(notes) {
-                    _this47.patientNotes = notes;
+                    _this46.patientNotes = notes;
 
-                    _this47.sortPatientNotesList();
+                    _this46.sortPatientNotesList();
                   },
                   error: function error(err) {
                     console.error('Error al recargar notas:', err);
@@ -30974,9 +30978,9 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
                 });
               },
               error: function error(err) {
-                _this47.patientNoteFormError = 'Error al actualizar nota';
+                _this46.patientNoteFormError = 'Error al actualizar nota';
                 console.error('Error:', err);
-                _this47.patientNoteFormLoading = false;
+                _this46.patientNoteFormLoading = false;
               }
             });
           } else {
@@ -30986,16 +30990,16 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
             };
             this.noteService.createPatientNote(selectedPatientId, createDto).subscribe({
               next: function next() {
-                _this47.loadPatientNotes(selectedPatientId);
+                _this46.loadPatientNotes(selectedPatientId);
 
-                _this47.closePatientNoteModal();
+                _this46.closePatientNoteModal();
 
-                _this47.patientNoteFormLoading = false;
+                _this46.patientNoteFormLoading = false;
               },
               error: function error(err) {
-                _this47.patientNoteFormError = 'Error al crear nota';
+                _this46.patientNoteFormError = 'Error al crear nota';
                 console.error('Error:', err);
-                _this47.patientNoteFormLoading = false;
+                _this46.patientNoteFormLoading = false;
               }
             });
           }
@@ -31007,22 +31011,22 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "deletePatientNoteFromModal",
         value: function deletePatientNoteFromModal(noteId) {
-          var _this48 = this;
+          var _this47 = this;
 
           if (!this.selectedPatient) return;
 
           if (confirm('¿Está seguro de que desea eliminar esta nota?')) {
             this.noteService.deletePatientNote(this.selectedPatient.id, noteId).subscribe({
               next: function next() {
-                if (_this48.selectedPatient) {
-                  _this48.loadPatientNotes(_this48.selectedPatient.id);
+                if (_this47.selectedPatient) {
+                  _this47.loadPatientNotes(_this47.selectedPatient.id);
                 }
 
-                _this48.closePatientNoteModal();
+                _this47.closePatientNoteModal();
               },
               error: function error(err) {
                 console.error('Error al eliminar nota:', err);
-                _this48.patientNoteFormError = 'Error al eliminar la nota';
+                _this47.patientNoteFormError = 'Error al eliminar la nota';
               }
             });
           }
@@ -31202,7 +31206,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "needsTruncation",
         value: function needsTruncation(text) {
-          var maxLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 255;
+          var maxLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10000;
 
           if (!text) {
             return false;
@@ -31293,11 +31297,11 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "loadMedicalRecordFiles",
         value: function loadMedicalRecordFiles(medicalRecordId) {
-          var _this49 = this;
+          var _this48 = this;
 
           this.medicalRecordFileService.getAllByMedicalRecordId(medicalRecordId).subscribe({
             next: function next(files) {
-              _this49.viewMedicalRecordFiles = files;
+              _this48.viewMedicalRecordFiles = files;
             },
             error: function error(err) {
               console.error('Error al cargar archivos del registro médico:', err);
@@ -31311,13 +31315,13 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "loadPreviousRecordFiles",
         value: function loadPreviousRecordFiles(previousRecordId) {
-          var _this50 = this;
+          var _this49 = this;
 
           console.log('Loading files for previous record:', previousRecordId);
           this.previousRecordFileService.getAllByPreviousRecordId(previousRecordId).subscribe({
             next: function next(files) {
               console.log('Files loaded:', files.length);
-              _this50.viewPreviousRecordFiles = files;
+              _this49.viewPreviousRecordFiles = files;
             },
             error: function error(err) {
               console.error('Error al cargar archivos del registro previo:', err);
@@ -31345,7 +31349,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "uploadMedicalRecordFile",
         value: function uploadMedicalRecordFile(medicalRecordId) {
-          var _this51 = this;
+          var _this50 = this;
 
           if (!this.selectedFile) {
             this.fileError = 'Por favor seleccione un archivo';
@@ -31357,11 +31361,49 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           this.medicalRecordFileService.uploadFile(medicalRecordId, this.selectedFile).subscribe({
             next: function next(uploadedFile) {
               // Use spreading for immutable update to trigger change detection
-              _this51.viewMedicalRecordFiles = [].concat(_toConsumableArray(_this51.viewMedicalRecordFiles), [uploadedFile]);
+              _this50.viewMedicalRecordFiles = [].concat(_toConsumableArray(_this50.viewMedicalRecordFiles), [uploadedFile]);
+              _this50.selectedFile = null;
+              _this50.uploadingFile = false; // Resetear el input de archivo
+
+              var fileInput = document.getElementById('editRecordFileInput');
+
+              if (fileInput) {
+                fileInput.value = '';
+              }
+            },
+            error: function error(err) {
+              var _a;
+
+              console.error('Error al subir archivo:', err);
+              _this50.fileError = 'Error al subir el archivo: ' + (((_a = err.error) === null || _a === void 0 ? void 0 : _a.message) || err.message || 'Error desconocido');
+              _this50.uploadingFile = false;
+            }
+          });
+        }
+        /**
+         * Subir archivo a un registro previo
+         */
+
+      }, {
+        key: "uploadPreviousRecordFile",
+        value: function uploadPreviousRecordFile(previousRecordId) {
+          var _this51 = this;
+
+          if (!this.selectedFile) {
+            this.fileError = 'Por favor seleccione un archivo';
+            return;
+          }
+
+          this.uploadingFile = true;
+          this.fileError = null;
+          this.previousRecordFileService.uploadFile(previousRecordId, this.selectedFile).subscribe({
+            next: function next(uploadedFile) {
+              // Use spreading for immutable update to trigger change detection
+              _this51.viewPreviousRecordFiles = [].concat(_toConsumableArray(_this51.viewPreviousRecordFiles), [uploadedFile]);
               _this51.selectedFile = null;
               _this51.uploadingFile = false; // Resetear el input de archivo
 
-              var fileInput = document.getElementById('editRecordFileInput');
+              var fileInput = document.getElementById('editPreviousRecordFileInput');
 
               if (fileInput) {
                 fileInput.value = '';
@@ -31377,66 +31419,28 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           });
         }
         /**
-         * Subir archivo a un registro previo
-         */
-
-      }, {
-        key: "uploadPreviousRecordFile",
-        value: function uploadPreviousRecordFile(previousRecordId) {
-          var _this52 = this;
-
-          if (!this.selectedFile) {
-            this.fileError = 'Por favor seleccione un archivo';
-            return;
-          }
-
-          this.uploadingFile = true;
-          this.fileError = null;
-          this.previousRecordFileService.uploadFile(previousRecordId, this.selectedFile).subscribe({
-            next: function next(uploadedFile) {
-              // Use spreading for immutable update to trigger change detection
-              _this52.viewPreviousRecordFiles = [].concat(_toConsumableArray(_this52.viewPreviousRecordFiles), [uploadedFile]);
-              _this52.selectedFile = null;
-              _this52.uploadingFile = false; // Resetear el input de archivo
-
-              var fileInput = document.getElementById('editPreviousRecordFileInput');
-
-              if (fileInput) {
-                fileInput.value = '';
-              }
-            },
-            error: function error(err) {
-              var _a;
-
-              console.error('Error al subir archivo:', err);
-              _this52.fileError = 'Error al subir el archivo: ' + (((_a = err.error) === null || _a === void 0 ? void 0 : _a.message) || err.message || 'Error desconocido');
-              _this52.uploadingFile = false;
-            }
-          });
-        }
-        /**
          * Eliminar archivo de un registro médico
          */
 
       }, {
         key: "deleteMedicalRecordFile",
         value: function deleteMedicalRecordFile(medicalRecordId, fileId) {
-          var _this53 = this;
+          var _this52 = this;
 
           if (confirm('¿Está seguro de que desea eliminar este archivo?')) {
             this.medicalRecordFileService.deleteFile(medicalRecordId, fileId).subscribe({
               next: function next() {
-                _this53.viewMedicalRecordFiles = _this53.viewMedicalRecordFiles.filter(function (f) {
+                _this52.viewMedicalRecordFiles = _this52.viewMedicalRecordFiles.filter(function (f) {
                   return f.id !== fileId;
                 });
 
-                if (_this53.filesPage > 1 && _this53.filesPage > _this53.totalFilesPages) {
-                  _this53.filesPage = _this53.totalFilesPages;
+                if (_this52.filesPage > 1 && _this52.filesPage > _this52.totalFilesPages) {
+                  _this52.filesPage = _this52.totalFilesPages;
                 }
               },
               error: function error(err) {
                 console.error('Error al eliminar archivo:', err);
-                _this53.fileError = 'Error al eliminar el archivo';
+                _this52.fileError = 'Error al eliminar el archivo';
               }
             });
           }
@@ -31448,22 +31452,22 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "deletePreviousRecordFile",
         value: function deletePreviousRecordFile(previousRecordId, fileId) {
-          var _this54 = this;
+          var _this53 = this;
 
           if (confirm('¿Está seguro de que desea eliminar este archivo?')) {
             this.previousRecordFileService.deleteFile(previousRecordId, fileId).subscribe({
               next: function next() {
-                _this54.viewPreviousRecordFiles = _this54.viewPreviousRecordFiles.filter(function (f) {
+                _this53.viewPreviousRecordFiles = _this53.viewPreviousRecordFiles.filter(function (f) {
                   return f.id !== fileId;
                 });
 
-                if (_this54.filesPage > 1 && _this54.filesPage > _this54.totalFilesPages) {
-                  _this54.filesPage = _this54.totalFilesPages;
+                if (_this53.filesPage > 1 && _this53.filesPage > _this53.totalFilesPages) {
+                  _this53.filesPage = _this53.totalFilesPages;
                 }
               },
               error: function error(err) {
                 console.error('Error al eliminar archivo:', err);
-                _this54.fileError = 'Error al eliminar el archivo';
+                _this53.fileError = 'Error al eliminar el archivo';
               }
             });
           }
@@ -31604,14 +31608,14 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "confirmPdfGeneration",
         value: function confirmPdfGeneration() {
-          var _this55 = this;
+          var _this54 = this;
 
           if (!this.selectedPatient) return;
           this.pdfLoading = true;
           this.generatedPdf = null;
           var selectedMedicalIds = Array.from(this.selectedMedicalRecords);
           var observables = selectedMedicalIds.map(function (id) {
-            return _this55.medicalRecordService.getMedicalRecordById(id);
+            return _this54.medicalRecordService.getMedicalRecordById(id);
           });
           var medicalRecordsSource$ = selectedMedicalIds.length > 0 ? Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["forkJoin"])(observables) : new rxjs__WEBPACK_IMPORTED_MODULE_1__["Observable"](function (sub) {
             sub.next([]);
@@ -31619,19 +31623,19 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
           });
           medicalRecordsSource$.subscribe({
             next: function next(fullMedicalRecords) {
-              var previousRecordsToPrint = _this55.previousRecords.filter(function (r) {
-                return _this55.selectedPreviousRecords.has(r.id);
+              var previousRecordsToPrint = _this54.previousRecords.filter(function (r) {
+                return _this54.selectedPreviousRecords.has(r.id);
               }); // Load tracings for each medical record, then generate PDF
 
 
               if (fullMedicalRecords.length === 0) {
-                _this55.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
+                _this54.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
 
                 return;
               }
 
               var tracingRequests = fullMedicalRecords.map(function (r) {
-                return _this55.tracingService.getTracingsByMedicalRecordId(r.id);
+                return _this54.tracingService.getTracingsByMedicalRecordId(r.id);
               });
               Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["forkJoin"])(tracingRequests).subscribe({
                 next: function next(tracingsPerRecord) {
@@ -31639,16 +31643,16 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
                     r.tracings = tracingsPerRecord[i] || [];
                   });
 
-                  _this55.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
+                  _this54.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
                 },
                 error: function error() {
-                  return _this55.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
+                  return _this54.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
                 }
               });
             },
             error: function error(err) {
               console.error('Error fetching full medical records for PDF:', err);
-              _this55.pdfLoading = false;
+              _this54.pdfLoading = false;
               alert('Error al obtener los detalles de las historias clínicas');
             }
           });
@@ -31696,8 +31700,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
         key: "openPdf",
         value: function openPdf() {
           if (this.generatedPdf) {
-            // User requested specific filename format, so we use save() to enforce it
-            this.generatedPdf.save(this.getPdfFileName());
+            window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
           }
         }
         /**
@@ -31825,26 +31828,26 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
       }, {
         key: "generatePdf_OLD",
         value: function generatePdf_OLD() {
-          var _this56 = this;
+          var _this55 = this;
 
           if (!this.selectedPatient) return;
           this.pdfLoading = true;
           this.generatedPdf = null; // Filter records
 
           var medicalRecordsToPrint = this.medicalRecords.filter(function (r) {
-            return _this56.selectedMedicalRecords.has(r.id);
+            return _this55.selectedMedicalRecords.has(r.id);
           });
           var previousRecordsToPrint = this.previousRecords.filter(function (r) {
-            return _this56.selectedPreviousRecords.has(r.id);
+            return _this55.selectedPreviousRecords.has(r.id);
           }); // Wait a bit to show loading state (simulate async if needed, or just immediate)
 
           setTimeout(function () {
             try {
-              _this56.generatedPdf = _this56.pdfService.generatePatientPdf(_this56.selectedPatient, medicalRecordsToPrint, previousRecordsToPrint);
-              _this56.pdfLoading = false;
+              _this55.generatedPdf = _this55.pdfService.generatePatientPdf(_this55.selectedPatient, medicalRecordsToPrint, previousRecordsToPrint);
+              _this55.pdfLoading = false;
             } catch (error) {
               console.error('Error generating PDF:', error);
-              _this56.pdfLoading = false;
+              _this55.pdfLoading = false;
               alert('Error al generar el PDF');
             }
           }, 500);
@@ -32997,19 +33000,6 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
               }, {
                 content: record.background || placeholderText,
                 styles: record.background ? {} : empty
-              }]); // Seguimiento
-
-              var seguimientos = record.tracings && record.tracings.length > 0 ? record.tracings.map(function (t) {
-                return "\u2022 ".concat(t.description);
-              }).join('\n') : null;
-              tableBody.push([{
-                content: 'SEGUIMIENTO',
-                styles: {
-                  fontStyle: 'bold'
-                }
-              }, {
-                content: seguimientos || placeholderText,
-                styles: seguimientos ? {} : empty
               }]); // Valoraciones
 
               var valoraciones = record.notes && record.notes.length > 0 ? record.notes.map(function (n) {
@@ -33066,6 +33056,29 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
                   fontStyle: 'italic',
                   textColor: [150, 150, 150]
                 }
+              }]); // Fila separadora en blanco antes de seguimiento
+
+              tableBody.push([{
+                content: '',
+                colSpan: 2,
+                styles: {
+                  cellPadding: 0,
+                  minCellHeight: 4,
+                  fillColor: [255, 255, 255]
+                }
+              }]); // Seguimiento
+
+              var seguimientos = record.tracings && record.tracings.length > 0 ? record.tracings.map(function (t) {
+                return "\u2022 ".concat(t.description);
+              }).join('\n') : null;
+              tableBody.push([{
+                content: 'SEGUIMIENTO',
+                styles: {
+                  fontStyle: 'bold'
+                }
+              }, {
+                content: seguimientos || placeholderText,
+                styles: seguimientos ? {} : empty
               }]);
               jspdf_autotable__WEBPACK_IMPORTED_MODULE_2___default()(doc, {
                 startY: yPos,

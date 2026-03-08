@@ -185,14 +185,7 @@ export class PdfService {
                     { content: record.background || placeholderText, styles: record.background ? {} : empty }
                 ]);
 
-                // Seguimiento
-                const seguimientos = (record.tracings && record.tracings.length > 0)
-                    ? record.tracings.map(t => `• ${t.description}`).join('\n')
-                    : null;
-                tableBody.push([
-                    { content: 'SEGUIMIENTO', styles: { fontStyle: 'bold' } },
-                    { content: seguimientos || placeholderText, styles: seguimientos ? {} : empty }
-                ]);
+
 
                 // Valoraciones
                 const valoraciones = (record.notes && record.notes.length > 0)
@@ -226,6 +219,22 @@ export class PdfService {
                 tableBody.push([
                     { content: 'TRATAMIENTO', styles: { fontStyle: 'bold' } },
                     { content: record.prescription || placeholderText, styles: record.prescription ? {} : { fontStyle: 'italic' as const, textColor: [150, 150, 150] as [number, number, number] } }
+                ]);
+
+                // Fila separadora en blanco antes de seguimiento
+                tableBody.push([{
+                    content: '',
+                    colSpan: 2,
+                    styles: { cellPadding: 0, minCellHeight: 4, fillColor: [255, 255, 255] }
+                }]);
+
+                // Seguimiento
+                const seguimientos = (record.tracings && record.tracings.length > 0)
+                    ? record.tracings.map(t => `• ${t.description}`).join('\n')
+                    : null;
+                tableBody.push([
+                    { content: 'SEGUIMIENTO', styles: { fontStyle: 'bold' } },
+                    { content: seguimientos || placeholderText, styles: seguimientos ? {} : empty }
                 ]);
 
                 autoTable(doc, {

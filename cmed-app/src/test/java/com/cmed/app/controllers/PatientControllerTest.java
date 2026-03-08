@@ -321,6 +321,35 @@ class PatientControllerTest {
         }
 
         @Test
+        @DisplayName("Should create patient without DNI")
+        void createPatient_withoutDni_returnsCreatedPatient() throws Exception {
+            PatientCreateDto noDniDto = PatientCreateDto.builder()
+                    .name("Jane")
+                    .lastName("Doe")
+                    .phone("123456789")
+                    .birthDate(LocalDate.of(1990, 1, 1))
+                    .build();
+
+            Patient noDniPatient = new Patient();
+            noDniPatient.setId(UUID.randomUUID());
+            noDniPatient.setName("Jane");
+            noDniPatient.setLastName("Doe");
+            noDniPatient.setPhone("123456789");
+            noDniPatient.setBirthDate(LocalDate.of(1990, 1, 1));
+
+            when(patientService.create(any(PatientCreateDto.class))).thenReturn(patientDtoMapper.toDto(noDniPatient));
+
+            mockMvc.perform(post("/api/patients")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(noDniDto)))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.dni").doesNotExist())
+                    .andExpect(jsonPath("$.name").value("Jane"));
+
+            verify(patientService, times(1)).create(any(PatientCreateDto.class));
+        }
+
+        @Test
         @DisplayName("Should return 400 when phone has less than 3 characters")
         void createPatient_withShortPhone_returns400() throws Exception {
             PatientCreateDto invalidDto = PatientCreateDto.builder()
