@@ -20,7 +20,7 @@
                 antecedentes, gestionar notas y adjuntar documentación digital de forma segura y eficiente.
             </p>
             <div class="version-badge">
-                <strong>Versión 1.1.0</strong> - Actualizado el 26/02/2026
+                <strong>Versión 1.2.2</strong> - Actualizado el 20/03/2026
             </div>
         </section>
 
@@ -56,7 +56,7 @@
                             <li>DNI</li>
                             <li>Correo electrónico</li>
                         </ul>
-                        <p class="note">Los resultados se filtran automáticamente mientras escribes.</p>
+                        <p class="note">Los resultados se filtran automáticamente mientras escribes y ahora <strong>ignoran acentos y mayúsculas/minúsculas</strong>.</p>
                     </div>
                     <div class="feature-item">
                         <h3>🌙 Modo Oscuro</h3>
@@ -83,6 +83,10 @@
                             <li>Indicador "Página X de Y"</li>
                             <li>Botones deshabilitados en límites</li>
                         </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🆕 Apertura de Fichas <span class="badge badge-warning" style="font-size: 0.6em">NEW v1.2</span></h3>
+                        <p>Los pacientes cuentan con un botón en su listado para <strong>abrir la ficha en una pestaña nueva</strong> (en segundo plano), permitiendo revisar historial sin perder la navegación de la lista.</p>
                     </div>
                     <div class="feature-item">
                         <h3>✏️ Edición de Datos</h3>
@@ -435,19 +439,19 @@
                 <h3>📝 Formato del Documento</h3>
                 <div class="feature-grid">
                     <div class="feature-item">
-                        <h4>Encabezado Profesional</h4>
-                        <p>Logo oficial y fecha de emisión (dd/mm/aaaa) sin hora.</p>
+                        <h4>Encabezado y Pie de Página</h4>
+                        <p>Logo oficial de la clínica, información de contacto web/email. Pie de página corporativo con firma médica y títulos profesionales.</p>
                     </div>
                     <div class="feature-item">
                         <h4>Datos del Paciente</h4>
-                        <p>Incluye Nombre (con prefijo "Nombre: "), DNI y Alergias destacadas.</p>
+                        <p>Diseño centrado con título en colSpan. <strong>¡Limpieza automática!</strong> Los datos no informados (tanto de cabecera como de historial clínico) se ocultan completamente del PDF.</p>
                     </div>
                     <div class="feature-item">
                         <h4>Detalle Completo</h4>
-                        <p>Registros con descripciones completas, incluyendo:</p>
+                        <p>Registros sin cuadros vacíos, incluyendo:</p>
                         <ul>
                             <li><strong>VALORACIONES:</strong> Notas de evolución.</li>
-                            <li><strong>DIAGNÓSTICOS:</strong> Con tratamiento y conducta.</li>
+                            <li><strong>DIAGNÓSTICOS:</strong> Tratamiento y conducta.</li>
                         </ul>
                     </div>
                 </div>
@@ -521,9 +525,20 @@
         <section class="doc-section">
             <div class="section-header">
                 <span class="icon">📦</span>
-                <h2>Changelog (Versión 1.1)</h2>
+                <h2>Changelog (Historial de Cambios)</h2>
             </div>
             <div class="section-body">
+                <h3>Versión 1.2.2 <span class="badge badge-success" style="font-size: 0.6em; vertical-align: middle;">ACTUAL</span></h3>
+                <ul>
+                    <li><strong>Feature:</strong> Apertura de pacientes en nueva pestaña en segundo plano desde el listado.</li>
+                    <li><strong>Mejora:</strong> Buscador de pacientes normalizado (insensible a mayúsculas y acentos).</li>
+                    <li><strong>Mejora PDF:</strong> Rediseño total de la estructura de tablas PDF. Cabecera clínica y pie de página de Dr. Consigliere.</li>
+                    <li><strong>Mejora PDF:</strong> Diseño dinámico inteligente que oculta campos o filas de antecedentes y clínica que estén vacíos en el documento PDF para un informe limpio.</li>
+                    <li><strong>UI/UX:</strong> Indicadores visuales en letra itálica para los campos que no hayan sido cubiertos en la ficha web del paciente (Mostrando "No proporcionado").</li>
+                    <li><strong>Bugfix:</strong> Corrección de los espaciados, bordes y paginación en el generador de PDF (jspdf-autotable).</li>
+                </ul>
+                
+                <h3 style="margin-top: 2rem;">Versión 1.1</h3>
                 <ul>
                     <li><strong>Feature:</strong> Documentación interactiva de la API Backend integrada usando
                         Swagger/OpenAPI 3.</li>
@@ -601,8 +616,8 @@
         <!-- Footer -->
         <footer class="doc-footer">
             <p>
-                <strong>Sistema CMED-WEB v1.1.0</strong> - Desarrollado para la gestión médica integral<br>
-                Última actualización: 26/02/2026 08:30
+                <strong>Sistema CMED-WEB v1.2.2</strong> - Desarrollado para la gestión médica integral<br>
+                Última actualización: 20/03/2026
             </p>
             <button class="btn btn-primary" routerLink="/">
                 ← Volver al Inicio

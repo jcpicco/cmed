@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { PatientService } from '../services/patient.service';
@@ -147,7 +148,8 @@ export class PatientsComponent implements OnInit {
     private previousRecordFileService: PreviousRecordFileService,
     private formBuilder: FormBuilder,
     private pdfService: PdfService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private router: Router
   ) {
     this.patientForm = this.createForm();
     this.medicalRecordForm = this.createMedicalRecordForm();
@@ -224,15 +226,24 @@ export class PatientsComponent implements OnInit {
   }
 
   /**
+   * Normalizar texto para búsqueda (elimina tildes y pasa a minúsculas)
+   */
+  private normalizeSearchText(text: string | null | undefined): string {
+    if (!text) return '';
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  /**
    * Filtrar pacientes por búsqueda
    */
   applyFilters(): void {
-    const term = this.searchTerm.toLowerCase();
+    const term = this.normalizeSearchText(this.searchTerm);
     this.filteredPatients = this.patients.filter(patient =>
-      (patient.name || '').toLowerCase().includes(term) ||
-      (patient.lastName || '').toLowerCase().includes(term) ||
-      (patient.email || '').toLowerCase().includes(term) ||
-      (patient.dni || '').toLowerCase().includes(term)
+      this.normalizeSearchText(patient.name).includes(term) ||
+      this.normalizeSearchText(patient.lastName).includes(term) ||
+      this.normalizeSearchText(patient.secondLastName).includes(term) ||
+      this.normalizeSearchText(patient.email).includes(term) ||
+      this.normalizeSearchText(patient.dni).includes(term)
     );
     this.sortPatientsList();
     this.currentPage = 1;
@@ -385,6 +396,7 @@ export class PatientsComponent implements OnInit {
         this.patientForm.patchValue({
           name: fullPatient.name,
           lastName: fullPatient.lastName,
+          secondLastName: fullPatient.secondLastName,
           email: fullPatient.email,
           phone: fullPatient.phone,
           dni: fullPatient.dni,
@@ -416,6 +428,7 @@ export class PatientsComponent implements OnInit {
       const updateDto: PatientUpdateDto = {
         name: patientData.name,
         lastName: patientData.lastName,
+        secondLastName: patientData.secondLastName,
         email: patientData.email,
         phone: patientData.phone,
         dni: patientData.dni,
@@ -442,6 +455,7 @@ export class PatientsComponent implements OnInit {
       const createDto: PatientCreateDto = {
         name: patientData.name,
         lastName: patientData.lastName,
+        secondLastName: patientData.secondLastName,
         email: patientData.email,
         phone: patientData.phone,
         dni: patientData.dni,
@@ -477,6 +491,33 @@ export class PatientsComponent implements OnInit {
         },
         error: (err) => console.error('Error al eliminar paciente:', err)
       });
+    }
+  }
+
+  /**
+   * Obtener URL reltiva del paciente
+   */
+  getPatientUrl(patientId: string): string {
+    return this.router.serializeUrl(this.router.createUrlTree(['/patients', patientId]));
+  }
+
+  /**
+   * Abrir en nueva pestaña y devolver foco a la actual (simular background tab)
+   */
+  openInBackgroundTab(event: MouseEvent, patientId: string): void {
+    event.stopPropagation();
+    
+    // Si el usuario hace Ctrl+Click, Cmd+Click o clic central, el navegador lo abre nativamente en 2do plano.
+    if (event.ctrlKey || event.metaKey || event.button === 1) {
+      return;
+    }
+
+    event.preventDefault();
+    const url = this.getPatientUrl(patientId);
+    
+    const newWindow = window.open(url, '_blank');
+    if (newWindow) {
+      window.focus(); // Intentar devolver el foco a la ventana actual
     }
   }
 

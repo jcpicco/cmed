@@ -29,17 +29,22 @@ export class PdfService {
 
         // --- Header Section ---
         try {
+
             // Logo
             doc.addImage('assets/logo.png', 'PNG', 15, 10, 30, 0);
         } catch (e) {
             console.error('Error loading logo', e);
         }
 
-        // Title
-        doc.setFontSize(22);
+        // Clinic Info Header
+        doc.setFontSize(10);
         doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-        doc.setFont('helvetica', 'bold');
-        doc.text('INFORME CLÍNICO', 60, 25);
+        doc.setFont('helvetica', 'normal');
+        
+        doc.text('www.tratamiento-dolor.es', 55, 15);
+        doc.text('contacto@tratamiento-dolor.es', 55, 20);
+        doc.text('Pasaje Alminares del Genil, 13', 55, 25);
+        doc.text('18006 Granada', 55, 30);
 
         // Date
         doc.setFontSize(10);
@@ -56,17 +61,18 @@ export class PdfService {
         let yPos = 45;
         const margin = 15;
 
+        const patientDataRows = [];
+        patientDataRows.push(['Nombre Completo', `${patient.lastName}${patient.secondLastName ? ' ' + patient.secondLastName : ''}, ${patient.name}`]);
+        if (patient.dni) patientDataRows.push(['DNI', `${patient.dni}`]);
+        if (patient.birthDate) patientDataRows.push(['Fecha de Nacimiento', `${formatDate(patient.birthDate, 'dd/MM/yyyy', 'en-US')}`]);
+        if (patient.phone) patientDataRows.push(['Teléfono', `${patient.phone}`]);
+        if (patient.allergies) patientDataRows.push(['Alergias', `${patient.allergies}`]);
+
         // --- Patient Info Section ---
         autoTable(doc, {
             startY: yPos,
-            head: [['DATOS DEL PACIENTE', '']],
-            body: [
-                ['Nombre Completo', `${patient.lastName}, ${patient.name}`],
-                ['DNI', `${patient.dni}`],
-                ['Fecha de Nacimiento', `${formatDate(patient.birthDate, 'dd/MM/yyyy', 'en-US')}`],
-                ['Teléfono', `${patient.phone || 'No indicado'}`],
-                ['Alergias', `${patient.allergies || 'Sin alergias registradas'}`]
-            ],
+            head: [[{ content: 'DATOS DEL PACIENTE', colSpan: 2, styles: { halign: 'center' as const } }]],
+            body: patientDataRows,
             theme: 'grid',
             headStyles: {
                 fillColor: [255, 255, 255],
@@ -84,7 +90,8 @@ export class PdfService {
                 lineWidth: 0.1,
                 fontSize: 10,
                 textColor: [0, 0, 0]
-            }
+            },
+            margin: { left: margin, right: margin, bottom: 35 }
         });
 
         // @ts-ignore
@@ -116,10 +123,12 @@ export class PdfService {
                     { content: formatDate(record.createdAt, 'dd/MM/yyyy', 'en-US'), styles: { fontStyle: 'bold', fillColor: [255, 255, 255] } }
                 ]);
 
-                prevRecordsTableBody.push([
-                    { content: 'DESCRIPCIÓN', styles: { fontStyle: 'bold' } },
-                    { content: record.description }
-                ]);
+                if (record.description) {
+                    prevRecordsTableBody.push([
+                        { content: 'DESCRIPCIÓN', styles: { fontStyle: 'bold' } },
+                        { content: record.description }
+                    ]);
+                }
             });
 
             autoTable(doc, {
@@ -140,7 +149,7 @@ export class PdfService {
                     0: { cellWidth: 50, textColor: [0, 0, 0] },
                     1: { cellWidth: 'auto', textColor: [0, 0, 0] }
                 },
-                margin: { left: margin, right: margin }
+                margin: { left: margin, right: margin, bottom: 35 }
             });
 
             // @ts-ignore
@@ -171,71 +180,66 @@ export class PdfService {
                 ]);
 
                 // Enfermedad Actual / Descripción
-                tableBody.push([
-                    { content: 'DESCRIPCIÓN', styles: { fontStyle: 'bold' } },
-                    { content: record.description }
-                ]);
-
-                const empty = { fontStyle: 'italic' as const, textColor: [150, 150, 150] as [number, number, number] };
-                const placeholderText = 'Sin datos indicados';
+                if (record.description) {
+                    tableBody.push([
+                        { content: 'DESCRIPCIÓN', styles: { fontStyle: 'bold' } },
+                        { content: record.description }
+                    ]);
+                }
 
                 // Antecedentes específicos
-                tableBody.push([
-                    { content: 'ANTECEDENTES', styles: { fontStyle: 'bold' } },
-                    { content: record.background || placeholderText, styles: record.background ? {} : empty }
-                ]);
-
-
+                if (record.background) {
+                    tableBody.push([
+                        { content: 'ANTECEDENTES', styles: { fontStyle: 'bold' } },
+                        { content: record.background }
+                    ]);
+                }
 
                 // Valoraciones
                 const valoraciones = (record.notes && record.notes.length > 0)
                     ? record.notes.map(n => `• ${n.description}`).join('\n')
                     : null;
-                tableBody.push([
-                    { content: 'VALORACIONES', styles: { fontStyle: 'bold' } },
-                    { content: valoraciones || placeholderText, styles: valoraciones ? {} : empty }
-                ]);
-
-                // Fila separadora en blanco antes del bloque de diagnóstico
-                tableBody.push([{
-                    content: '',
-                    colSpan: 2,
-                    styles: { cellPadding: 0, minCellHeight: 4, fillColor: [255, 255, 255] }
-                }]);
+                if (valoraciones) {
+                    tableBody.push([
+                        { content: 'VALORACIONES', styles: { fontStyle: 'bold' } },
+                        { content: valoraciones }
+                    ]);
+                }
 
                 // Diagnóstico
-                tableBody.push([
-                    { content: 'DIAGNÓSTICO', styles: { fontStyle: 'bold' } },
-                    { content: record.diagnose || placeholderText, styles: record.diagnose ? {} : empty }
-                ]);
+                if (record.diagnose) {
+                    tableBody.push([
+                        { content: 'DIAGNÓSTICO', styles: { fontStyle: 'bold' } },
+                        { content: record.diagnose }
+                    ]);
+                }
 
                 // Conducta
-                tableBody.push([
-                    { content: 'CONDUCTA', styles: { fontStyle: 'bold' } },
-                    { content: record.protocol || placeholderText, styles: record.protocol ? {} : empty }
-                ]);
+                if (record.protocol) {
+                    tableBody.push([
+                        { content: 'CONDUCTA', styles: { fontStyle: 'bold' } },
+                        { content: record.protocol }
+                    ]);
+                }
 
                 // Tratamiento
-                tableBody.push([
-                    { content: 'TRATAMIENTO', styles: { fontStyle: 'bold' } },
-                    { content: record.prescription || placeholderText, styles: record.prescription ? {} : { fontStyle: 'italic' as const, textColor: [150, 150, 150] as [number, number, number] } }
-                ]);
-
-                // Fila separadora en blanco antes de seguimiento
-                tableBody.push([{
-                    content: '',
-                    colSpan: 2,
-                    styles: { cellPadding: 0, minCellHeight: 4, fillColor: [255, 255, 255] }
-                }]);
+                if (record.prescription) {
+                    tableBody.push([
+                        { content: 'TRATAMIENTO', styles: { fontStyle: 'bold' } },
+                        { content: record.prescription }
+                    ]);
+                }
 
                 // Seguimiento
                 const seguimientos = (record.tracings && record.tracings.length > 0)
                     ? record.tracings.map(t => `• ${t.description}`).join('\n')
                     : null;
-                tableBody.push([
-                    { content: 'SEGUIMIENTO', styles: { fontStyle: 'bold' } },
-                    { content: seguimientos || placeholderText, styles: seguimientos ? {} : empty }
-                ]);
+                if (seguimientos) {
+                    tableBody.push([
+                        { content: 'SEGUIMIENTO', styles: { fontStyle: 'bold' } },
+                        { content: seguimientos }
+                    ]);
+                }
 
                 autoTable(doc, {
                     startY: yPos,
@@ -255,7 +259,7 @@ export class PdfService {
                         0: { cellWidth: 50, textColor: [0, 0, 0] },
                         1: { cellWidth: 'auto', textColor: [0, 0, 0] }
                     },
-                    margin: { left: margin, right: margin }
+                    margin: { left: margin, right: margin, bottom: 35 }
                 });
 
                 // @ts-ignore
@@ -267,9 +271,22 @@ export class PdfService {
         const pageCount = doc.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
             doc.setPage(i);
-            doc.setFontSize(8);
+            
+            // Doctor Info (Left aligned)
             doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-            doc.text(`Página ${i} de ${pageCount}`, pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.text('Dr Pablo A. Consigliere Rodríguez', 15, doc.internal.pageSize.height - 22);
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.text('Máster en Diagnóstico y Tratamiento del Dolor', 15, doc.internal.pageSize.height - 17);
+            doc.text('Lesiones Deportivas', 15, doc.internal.pageSize.height - 13);
+            doc.text('Enfermedades Articulares y Muscoloesqueléticas', 15, doc.internal.pageSize.height - 9);
+
+            // Page numbers
+            doc.setFontSize(8);
+            doc.text(`${i}`, pageWidth - 15, doc.internal.pageSize.height - 10, { align: 'right' });
         }
 
         return doc;

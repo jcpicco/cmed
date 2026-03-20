@@ -20,6 +20,10 @@ public class PatientUpdateDto {
     @Size(min = 3, max = 50)
     String lastName;
 
+    @Size(max = 50)
+    @Schema(description = "Segundo apellido del paciente", example = "Pérez")
+    String secondLastName;
+
     @Size(min = 3, max = 20)
     String phone;
 
