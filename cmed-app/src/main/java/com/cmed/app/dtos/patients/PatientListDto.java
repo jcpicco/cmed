@@ -8,6 +8,7 @@ public record PatientListDto(
         UUID id,
         String name,
         String lastName,
+        String secondLastName,
         String dni,
         String email,
         LocalDate birthDate,
