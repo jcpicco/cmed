@@ -134,6 +134,14 @@
           grid-template-columns: 1fr;
         }
 
+        &.three-cols {
+          grid-template-columns: 1fr 1fr 1fr;
+
+          @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+          }
+        }
+
         .full-width {
           grid-column: 1 / -1;
         }
@@ -825,15 +833,15 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-xl);
     width: 100%;
-    max-width: 500px;
-    max-height: 90vh;
+    max-width: 1400px;
+    max-height: 95vh;
     display: flex;
     flex-direction: column;
     animation: slideUp 0.3s;
     z-index: var(--z-modal);
 
     &.modal-large {
-      max-width: 700px;
+      max-width: 1400px;
     }
 
     .modal-header {
@@ -873,7 +881,7 @@
       overflow-y: auto;
 
       &.scrollable {
-        max-height: calc(90vh - 140px);
+        max-height: calc(95vh - 140px);
       }
 
       .form-section {
@@ -1370,11 +1378,11 @@
     }
 
     .modal-content {
-      max-width: 95%;
-      max-height: 95vh;
+      max-width: 98vw;
+      max-height: 98vh;
 
       .modal-body {
-        max-height: calc(95vh - 140px);
+        max-height: calc(98vh - 140px);
       }
     }
   }

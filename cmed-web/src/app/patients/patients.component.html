@@ -38,7 +38,7 @@
       </div>
 
       <!-- Row 1: First Name & Last Name -->
-      <div class="form-row">
+      <div class="form-row three-cols">
         <div class="form-group">
           <label for="name">Nombre *</label>
           <input type="text" id="name" formControlName="name" class="form-control" maxlength="50"
@@ -56,6 +56,16 @@
           <span class="error-message"
             *ngIf="(formSubmitted || patientForm.get('lastName')?.touched) && patientForm.get('lastName')?.invalid">
             {{ getFieldError('lastName') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="secondLastName">Segundo Apellido</label>
+          <input type="text" id="secondLastName" formControlName="secondLastName" class="form-control" maxlength="50"
+            [class.is-invalid]="(formSubmitted || patientForm.get('secondLastName')?.touched) && patientForm.get('secondLastName')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('secondLastName')?.touched) && patientForm.get('secondLastName')?.invalid">
+            {{ getFieldError('secondLastName') }}
           </span>
         </div>
       </div>
@@ -162,17 +172,26 @@
             Creado <span *ngIf="patientSort.field === 'createdAt'">{{ patientSort.direction === 'asc' ? '↑' : '↓'
               }}</span>
           </th>
+          <th class="actions-col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let patient of paginatedPatients" class="patient-row clickable"
           [routerLink]="['/patients', patient.id]">
           <td>{{ patient.name }}</td>
-          <td>{{ patient.lastName }}</td>
+          <td>{{ patient.lastName }} {{ patient.secondLastName }}</td>
           <td>{{ patient.email }}</td>
           <td>{{ patient.dni }}</td>
           <td>{{ formatDate(patient.birthDate) }}</td>
           <td>{{ formatDateTime(patient.createdAt) }}</td>
+          <td class="actions-cell">
+            <a [href]="getPatientUrl(patient.id)" target="_blank" (click)="openInBackgroundTab($event, patient.id)" class="new-tab-btn" title="Abrir en nueva pestaña">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+              </svg>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>

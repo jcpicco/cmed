@@ -182,6 +182,7 @@ export class PatientDetailComponent implements OnInit {
     return this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      secondLastName: ['', [Validators.maxLength(50)]],
       email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       dni: ['', [Validators.minLength(3), Validators.maxLength(20)]],
@@ -343,6 +344,7 @@ export class PatientDetailComponent implements OnInit {
     return this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      secondLastName: ['', [Validators.maxLength(50)]],
       email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       dni: ['', [Validators.minLength(3), Validators.maxLength(20)]],
@@ -1887,6 +1889,7 @@ export class PatientDetailComponent implements OnInit {
     this.patientForm.patchValue({
       name: this.selectedPatient.name,
       lastName: this.selectedPatient.lastName,
+      secondLastName: this.selectedPatient.secondLastName,
       email: this.selectedPatient.email,
       phone: this.selectedPatient.phone,
       dni: this.selectedPatient.dni,
@@ -1916,6 +1919,7 @@ export class PatientDetailComponent implements OnInit {
     const updateDto: PatientUpdateDto = {
       name: formVal.name,
       lastName: formVal.lastName,
+      secondLastName: formVal.secondLastName,
       email: formVal.email,
       phone: formVal.phone,
       dni: formVal.dni,

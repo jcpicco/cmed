@@ -84,6 +84,7 @@ class PatientControllerTest {
                 .email("johndoe@example.com")
                 .name("John")
                 .lastName("Doe")
+                .secondLastName("Smith")
                 .phone("123456789")
                 .dni("12345678A")
                 .birthDate(LocalDate.of(1990, 1, 1))
@@ -101,6 +102,7 @@ class PatientControllerTest {
                 .email("janedoe@example.com")
                 .name("Jane")
                 .lastName("Doe")
+                .secondLastName("Johnson")
                 .phone("987654321")
                 .dni("98765432B")
                 .birthDate(LocalDate.of(1992, 1, 1))
@@ -128,10 +130,12 @@ class PatientControllerTest {
                     .andExpect(jsonPath("$[0].email").value(patient.getEmail()))
                     .andExpect(jsonPath("$[0].name").value(patient.getName()))
                     .andExpect(jsonPath("$[0].lastName").value(patient.getLastName()))
+                    .andExpect(jsonPath("$[0].secondLastName").value(patient.getSecondLastName()))
                     .andExpect(jsonPath("$[1].id").value(patient2.getId().toString()))
                     .andExpect(jsonPath("$[1].email").value(patient2.getEmail()))
                     .andExpect(jsonPath("$[1].name").value(patient2.getName()))
-                    .andExpect(jsonPath("$[1].lastName").value(patient2.getLastName()));
+                    .andExpect(jsonPath("$[1].lastName").value(patient2.getLastName()))
+                    .andExpect(jsonPath("$[1].secondLastName").value(patient2.getSecondLastName()));
 
             verify(patientService, times(1)).getAll();
         }
@@ -209,6 +213,7 @@ class PatientControllerTest {
                     .email("johndoe@example.com")
                     .name("John")
                     .lastName("Doe")
+                    .secondLastName("Smith")
                     .phone("123456789")
                     .dni("12345678A")
                     .birthDate(LocalDate.of(1990, 1, 1))
@@ -263,6 +268,7 @@ class PatientControllerTest {
             minimalPatient.setEmail("minimal@example.com");
             minimalPatient.setName("Minimal");
             minimalPatient.setLastName("Patient");
+            minimalPatient.setSecondLastName("Tester");
             minimalPatient.setPhone("123456789");
             minimalPatient.setDni("12345678A");
             minimalPatient.setBirthDate(LocalDate.of(1990, 1, 1));
@@ -271,6 +277,7 @@ class PatientControllerTest {
                     .email(minimalPatient.getEmail())
                     .name(minimalPatient.getName())
                     .lastName(minimalPatient.getLastName())
+                    .secondLastName(minimalPatient.getSecondLastName())
                     .phone(minimalPatient.getPhone())
                     .dni(minimalPatient.getDni())
                     .birthDate(minimalPatient.getBirthDate())
@@ -284,7 +291,8 @@ class PatientControllerTest {
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.email").value("minimal@example.com"))
                     .andExpect(jsonPath("$.name").value("Minimal"))
-                    .andExpect(jsonPath("$.lastName").value("Patient"));
+                    .andExpect(jsonPath("$.lastName").value("Patient"))
+                    .andExpect(jsonPath("$.secondLastName").value("Tester"));
 
             verify(patientService, times(1)).create(any(PatientCreateDto.class));
         }
@@ -401,6 +409,7 @@ class PatientControllerTest {
                     .email("updated@example.com")
                     .name("Updated")
                     .lastName("Name")
+                    .secondLastName("NewSecond")
                     .phone("987654321")
                     .birthDate(LocalDate.of(1995, 1, 1))
                     .allergies("Shellfish")
@@ -410,6 +419,7 @@ class PatientControllerTest {
                     .email(updatedPatient.getEmail())
                     .name(updatedPatient.getName())
                     .lastName(updatedPatient.getLastName())
+                    .secondLastName(updatedPatient.getSecondLastName())
                     .phone(updatedPatient.getPhone())
                     .birthDate(updatedPatient.getBirthDate())
                     .allergies(updatedPatient.getAllergies())
@@ -426,6 +436,7 @@ class PatientControllerTest {
                     .andExpect(jsonPath("$.email").value(updatedPatient.getEmail()))
                     .andExpect(jsonPath("$.name").value(updatedPatient.getName()))
                     .andExpect(jsonPath("$.lastName").value(updatedPatient.getLastName()))
+                    .andExpect(jsonPath("$.secondLastName").value(updatedPatient.getSecondLastName()))
                     .andExpect(jsonPath("$.phone").value(updatedPatient.getPhone()))
                     .andExpect(jsonPath("$.birthDate").value(updatedPatient.getBirthDate().toString()))
                     .andExpect(jsonPath("$.allergies").value(updatedPatient.getAllergies()));
@@ -480,6 +491,7 @@ class PatientControllerTest {
                     .email("updated@example.com")
                     .name(null)
                     .lastName(null)
+                    .secondLastName(null)
                     .phone(null)
                     .dni(null)
                     .birthDate(null)
@@ -493,6 +505,7 @@ class PatientControllerTest {
                     .email(updateDto.getEmail())
                     .name(patient.getName())
                     .lastName(patient.getLastName())
+                    .secondLastName(patient.getSecondLastName())
                     .phone(patient.getPhone())
                     .dni(patient.getDni())
                     .birthDate(patient.getBirthDate())

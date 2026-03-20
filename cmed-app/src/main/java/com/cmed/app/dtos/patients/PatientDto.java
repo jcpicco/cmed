@@ -14,6 +14,7 @@ public record PatientDto(
         String email,
         String name,
         String lastName,
+        String secondLastName,
         String phone,
         String dni,
         LocalDate birthDate,
