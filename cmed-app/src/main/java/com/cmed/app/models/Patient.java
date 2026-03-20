@@ -50,6 +50,9 @@ public class Patient {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "second_last_name")
+    private String secondLastName;
+
     @Column(nullable = false)
     private String phone;
 

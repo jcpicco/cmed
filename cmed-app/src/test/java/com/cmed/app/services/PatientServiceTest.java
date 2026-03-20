@@ -55,6 +55,7 @@ class PatientServiceTest {
                 .email("johndoe@example.com")
                 .name("John")
                 .lastName("Doe")
+                .secondLastName("Smith")
                 .phone("123456789")
                 .dni("12345678A")
                 .birthDate(LocalDate.of(1990, 1, 1))
@@ -68,6 +69,7 @@ class PatientServiceTest {
                 patient.getId(),
                 patient.getName(),
                 patient.getLastName(),
+                patient.getSecondLastName(),
                 patient.getDni(),
                 patient.getEmail(),
                 patient.getBirthDate(),
@@ -102,6 +104,7 @@ class PatientServiceTest {
                 patient.getEmail(),
                 patient.getName(),
                 patient.getLastName(),
+                patient.getSecondLastName(),
                 patient.getPhone(),
                 patient.getDni(),
                 patient.getBirthDate(),
@@ -119,6 +122,7 @@ class PatientServiceTest {
         assertEquals(patient.getEmail(), result.email());
         assertEquals(patient.getName(), result.name());
         assertEquals(patient.getLastName(), result.lastName());
+        assertEquals(patient.getSecondLastName(), result.secondLastName());
         assertEquals(patient.getPhone(), result.phone());
         assertEquals(patient.getDni(), result.dni());
         assertEquals(patient.getBirthDate(), result.birthDate());
@@ -140,6 +144,7 @@ class PatientServiceTest {
                 .email(patient.getEmail())
                 .name(patient.getName())
                 .lastName(patient.getLastName())
+                .secondLastName(patient.getSecondLastName())
                 .phone(patient.getPhone())
                 .dni(patient.getDni())
                 .birthDate(patient.getBirthDate())
@@ -152,6 +157,7 @@ class PatientServiceTest {
                 patient.getEmail(),
                 patient.getName(),
                 patient.getLastName(),
+                patient.getSecondLastName(),
                 patient.getPhone(),
                 patient.getDni(),
                 patient.getBirthDate(),
@@ -169,6 +175,7 @@ class PatientServiceTest {
         assertEquals(patient.getEmail(), result.email());
         assertEquals(patient.getName(), result.name());
         assertEquals(patient.getLastName(), result.lastName());
+        assertEquals(patient.getSecondLastName(), result.secondLastName());
         assertEquals(patient.getPhone(), result.phone());
         assertEquals(patient.getDni(), result.dni());
         assertEquals(patient.getBirthDate(), result.birthDate());
@@ -185,6 +192,7 @@ class PatientServiceTest {
                 .email("updated@example.com")
                 .name("Updated")
                 .lastName("Patient")
+                .secondLastName("UpdatedOne")
                 .phone("987654321")
                 .dni(patient.getDni())
                 .birthDate(LocalDate.of(1995, 1, 1))
@@ -198,6 +206,7 @@ class PatientServiceTest {
                 updatedPatient.getEmail(),
                 updatedPatient.getName(),
                 updatedPatient.getLastName(),
+                updatedPatient.getSecondLastName(),
                 updatedPatient.getPhone(),
                 updatedPatient.getDni(),
                 updatedPatient.getBirthDate(),
@@ -209,6 +218,7 @@ class PatientServiceTest {
                 .email(updatedPatient.getEmail())
                 .name(updatedPatient.getName())
                 .lastName(updatedPatient.getLastName())
+                .secondLastName(updatedPatient.getSecondLastName())
                 .phone(updatedPatient.getPhone())
                 .birthDate(updatedPatient.getBirthDate())
                 .allergies(updatedPatient.getAllergies())
@@ -224,6 +234,7 @@ class PatientServiceTest {
         assertEquals(updatedPatient.getEmail(), result.email());
         assertEquals(updatedPatient.getName(), result.name());
         assertEquals(updatedPatient.getLastName(), result.lastName());
+        assertEquals(updatedPatient.getSecondLastName(), result.secondLastName());
         assertEquals(updatedPatient.getPhone(), result.phone());
         assertEquals(updatedPatient.getBirthDate(), result.birthDate());
         assertEquals(updatedPatient.getAllergies(), result.allergies());
@@ -259,6 +270,7 @@ class PatientServiceTest {
                 .email("newemail@example.com")
                 .name(patient.getName())
                 .lastName(patient.getLastName())
+                .secondLastName(patient.getSecondLastName())
                 .phone(patient.getPhone())
                 .dni(patient.getDni())
                 .birthDate(patient.getBirthDate())
@@ -272,6 +284,7 @@ class PatientServiceTest {
                 updatedPatient.getEmail(),
                 updatedPatient.getName(),
                 updatedPatient.getLastName(),
+                updatedPatient.getSecondLastName(),
                 updatedPatient.getPhone(),
                 updatedPatient.getDni(),
                 updatedPatient.getBirthDate(),
@@ -289,6 +302,7 @@ class PatientServiceTest {
         assertEquals("newemail@example.com", result.email());
         assertEquals(patient.getName(), result.name());
         assertEquals(patient.getLastName(), result.lastName());
+        assertEquals(patient.getSecondLastName(), result.secondLastName());
         assertEquals(patient.getPhone(), result.phone());
         assertEquals(patient.getDni(), result.dni());
         assertEquals(patient.getBirthDate(), result.birthDate());

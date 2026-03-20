@@ -11,19 +11,20 @@
     <div class="details-content">
       <div class="detail-item">
         <span class="detail-label">Nombre:</span>
-        <span class="detail-value">{{ selectedPatient.name }} {{ selectedPatient.lastName }}</span>
+        <span class="detail-value">{{ selectedPatient.name }} {{ selectedPatient.lastName }} {{
+          selectedPatient.secondLastName }}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Email:</span>
-        <span class="detail-value">{{ selectedPatient.email || 'No proporcionado' }}</span>
+        <span class="detail-value" [style.font-style]="!selectedPatient.email ? 'italic' : 'normal'">{{ selectedPatient.email || 'No proporcionado' }}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Teléfono:</span>
-        <span class="detail-value">{{ selectedPatient.phone || 'No proporcionado' }}</span>
+        <span class="detail-value" [style.font-style]="!selectedPatient.phone ? 'italic' : 'normal'">{{ selectedPatient.phone || 'No proporcionado' }}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">DNI:</span>
-        <span class="detail-value">{{ selectedPatient.dni || 'No proporcionado' }}</span>
+        <span class="detail-value" [style.font-style]="!selectedPatient.dni ? 'italic' : 'normal'">{{ selectedPatient.dni || 'No proporcionado' }}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Nacimiento:</span>
@@ -31,7 +32,7 @@
       </div>
       <div class="detail-item">
         <span class="detail-label">Alergias:</span>
-        <span class="detail-value">{{ selectedPatient.allergies || 'Ninguna / No registradas' }}</span>
+        <span class="detail-value" [style.font-style]="!selectedPatient.allergies ? 'italic' : 'normal'">{{ selectedPatient.allergies || 'Ninguna/no registradas' }}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Creado:</span>
@@ -835,7 +836,7 @@
 
   <!-- Modal para Nota de Paciente -->
   <div *ngIf="showPatientNoteModal" class="modal-overlay" (click)="closePatientNoteModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ editingPatientNote ? 'Editar Nota' : 'Agregar Nota' }}</h2>
         <button class="btn-close" (click)="closePatientNoteModal()">✕</button>
@@ -892,7 +893,7 @@
 
   <!-- Modal para Ver Detalles de Nota de Paciente (Solo Lectura) -->
   <div *ngIf="showViewPatientNoteModal" class="modal-overlay" (click)="closeViewPatientNoteModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Detalles de Nota</h2>
         <button class="btn-close" (click)="closeViewPatientNoteModal()">✕</button>
@@ -928,7 +929,7 @@
 
   <!-- Modal para Valoración / Seguimiento (Nota de Registro Médico) -->
   <div *ngIf="showNoteModal" class="modal-overlay" (click)="closeNoteModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ editingTracingInRecord ? 'Editar Seguimiento' : (editingNote ? 'Editar Valoración' : 'Agregar
           Valoración') }}</h2>
@@ -987,7 +988,7 @@
 
   <!-- Modal para Contenido Completo -->
   <div *ngIf="showContentPopup" class="modal-overlay" (click)="closeContentPopup()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ contentPopupTitle }}</h2>
         <button class="btn-close" (click)="closeContentPopup()">✕</button>
@@ -1175,7 +1176,7 @@
           </div>
 
           <!-- Row 1: First Name & Last Name -->
-          <div class="form-row">
+          <div class="form-row three-cols">
             <div class="form-group">
               <label for="name">Nombre *</label>
               <input type="text" id="name" formControlName="name" class="form-control" maxlength="50"
@@ -1193,6 +1194,17 @@
               <span class="error-message"
                 *ngIf="(formSubmitted || patientForm.get('lastName')?.touched) && patientForm.get('lastName')?.invalid">
                 {{ getFieldError('lastName') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="secondLastName">Segundo Apellido</label>
+              <input type="text" id="secondLastName" formControlName="secondLastName" class="form-control"
+                maxlength="50"
+                [class.is-invalid]="(formSubmitted || patientForm.get('secondLastName')?.touched) && patientForm.get('secondLastName')?.invalid" />
+              <span class="error-message"
+                *ngIf="(formSubmitted || patientForm.get('secondLastName')?.touched) && patientForm.get('secondLastName')?.invalid">
+                {{ getFieldError('secondLastName') }}
               </span>
             </div>
           </div>

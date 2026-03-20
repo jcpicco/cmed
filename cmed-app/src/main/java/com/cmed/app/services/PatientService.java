@@ -60,6 +60,9 @@ public class PatientService {
             if (toUpdatePatient.getLastName() != null) {
                 patient.setLastName(toUpdatePatient.getLastName());
             }
+            if (toUpdatePatient.getSecondLastName() != null) {
+                patient.setSecondLastName(toUpdatePatient.getSecondLastName());
+            }
             if (toUpdatePatient.getPhone() != null) {
                 patient.setPhone(toUpdatePatient.getPhone());
             }

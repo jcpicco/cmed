@@ -4,6 +4,7 @@ export interface PatientListDto {
   id: string;
   name: string;
   lastName: string;
+  secondLastName?: string;
   dni: string;
   email: string;
   birthDate: Date;
@@ -19,6 +20,7 @@ export interface PatientDto extends PatientListDto {
 export interface PatientCreateDto {
   name: string;
   lastName: string;
+  secondLastName?: string;
   dni: string;
   email: string;
   phone: string;
@@ -29,6 +31,7 @@ export interface PatientCreateDto {
 export interface PatientUpdateDto {
   name?: string;
   lastName?: string;
+  secondLastName?: string;
   email?: string;
   phone?: string;
   dni?: string;
