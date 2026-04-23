@@ -1012,7 +1012,7 @@
   <div class="modal-overlay" *ngIf="showPdfModal" (click)="closePdfModal()">
     <div class="modal-content modal-large" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>Generar PDF - Selección de Registros</h2>
+        <h2>Generar PDF</h2>
         <button class="btn-close" (click)="closePdfModal()">✕</button>
       </div>
 
@@ -1023,8 +1023,46 @@
           <p>Generando PDF...</p>
         </div>
 
+        <div *ngIf="!generatedPdf && !generatedTemplatePdfBlob && !pdfLoading">
+          <app-pdf-template-selector
+            [templates]="pdfTemplates"
+            [selectedValue]="selectedPdfFlowOption"
+            (flowChange)="onPdfFlowSelectionChange($event)"
+          ></app-pdf-template-selector>
+        </div>
+
+        <div *ngIf="!generatedPdf && !generatedTemplatePdfBlob && !pdfLoading && pdfFlowStep === 'template'">
+          <div class="form-section">
+            <h3>{{ selectedTemplate?.name }}</h3>
+            <form [formGroup]="templateForm">
+              <div *ngFor="let field of selectedTemplate?.fields" class="form-group">
+                <label [for]="'templateField_' + field.key">{{ field.label }} <span *ngIf="field.required">*</span></label>
+                <input
+                  *ngIf="field.inputType !== 'select'"
+                  [id]="'templateField_' + field.key"
+                  type="text"
+                  class="form-control"
+                  [formControlName]="field.key"
+                  [maxlength]="field.maxLength || 120"
+                />
+                <select
+                  *ngIf="field.inputType === 'select'"
+                  [id]="'templateField_' + field.key"
+                  class="form-control"
+                  [formControlName]="field.key"
+                >
+                  <option value="">Seleccione una opción</option>
+                  <option *ngFor="let option of field.options || []" [value]="option">
+                    {{ option }}
+                  </option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <!-- Selection Lists -->
-        <div *ngIf="!generatedPdf && !pdfLoading">
+        <div *ngIf="!generatedPdf && !generatedTemplatePdfBlob && !pdfLoading && pdfFlowStep === 'legacy'">
           <!-- Medical Records Selection -->
           <div class="form-section">
             <h3>Historia Clínica</h3>
@@ -1087,7 +1125,7 @@
         </div>
 
         <!-- Success State inside Modal -->
-        <div *ngIf="generatedPdf" class="pdf-actions">
+        <div *ngIf="generatedPdf || generatedTemplatePdfBlob" class="pdf-actions">
           <div class="alert alert-success">PDF Generado correctamente</div>
           <div class="pdf-buttons">
             <button class="btn btn-primary" (click)="openPdf()">Vista previa</button>
@@ -1103,7 +1141,12 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" (click)="closePdfModal()" [disabled]="pdfLoading">Cerrar</button>
         <div class="spacer"></div>
-        <button *ngIf="!generatedPdf" class="btn btn-primary" (click)="confirmPdfGeneration()" [disabled]="pdfLoading">
+        <button
+          *ngIf="!generatedPdf && !generatedTemplatePdfBlob"
+          class="btn btn-primary"
+          (click)="confirmPdfGeneration()"
+          [disabled]="pdfLoading || (pdfFlowStep === 'template' && templateForm.invalid)"
+        >
           <span *ngIf="!pdfLoading">Generar PDF</span>
           <span *ngIf="pdfLoading" class="spinner-small"></span>
         </button>
