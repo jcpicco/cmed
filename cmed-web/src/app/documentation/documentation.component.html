@@ -20,7 +20,7 @@
                 antecedentes, gestionar notas y adjuntar documentación digital de forma segura y eficiente.
             </p>
             <div class="version-badge">
-                <strong>Versión 1.2.2</strong> - Actualizado el 20/03/2026
+                <strong>Versión 1.3.0</strong> - Actualizado el 23/04/2026
             </div>
         </section>
 
@@ -434,6 +434,9 @@
                     <li><strong>Estilo Uniforme:</strong> Listas de selección con diseño "Valoraciones" para mejor
                         legibilidad.</li>
                     <li><strong>Paginación:</strong> Listas de selección paginadas (3 registros por página).</li>
+                    <li><strong>Nuevo v1.3.0:</strong> Selector de tipo de documento con dos flujos: <code>Historial clínico</code> o <code>Consentimientos predefinidos</code>.</li>
+                    <li><strong>Nuevo v1.3.0:</strong> Plantillas de consentimiento con formulario dinámico y validaciones por campo.</li>
+                    <li><strong>Nuevo v1.3.0:</strong> Soporte de campos tipo selector (ej: tipo de representante legal).</li>
                 </ul>
 
                 <h3>📝 Formato del Documento</h3>
@@ -458,17 +461,28 @@
 
                 <h3>🖱️ Acciones Disponibles</h3>
                 <div class="action-buttons-doc" style="display: flex; gap: 10px; margin-top: 15px;">
-                    <button class="btn btn-primary" style="pointer-events: none;">Descargar PDF</button>
+                    <button class="btn btn-primary" style="pointer-events: none;">Vista previa</button>
                     <button class="btn btn-secondary" style="pointer-events: none;">Enviar por Email</button>
                 </div>
                 <ul style="margin-top: 10px;">
-                    <li><strong>Descargar PDF:</strong> Guarda el archivo con el nombre estandarizado:
+                    <li><strong>Vista previa:</strong> Abre el PDF generado en una pestaña nueva para validarlo antes de enviarlo o descargarlo.</li>
+                    <li><strong>Descargar PDF:</strong> En el flujo clásico, se guarda con nombre estandarizado:
                         <code>nombre_apellido_dd_mm_aaaa.pdf</code>.
+                    </li>
+                    <li><strong>Descargar consentimiento:</strong> En plantillas, se descarga como:
+                        <code>plantilla_[templateId].pdf</code>.
                     </li>
                     <li><strong>Enviar por Email:</strong> Abre tu cliente de correo (Outlook, Mail, etc.) con el asunto
                         y
                         cuerpo predefinidos. <strong>Nota:</strong> El PDF se descarga automáticamente y debes
                         adjuntarlo manualmente al correo.</li>
+                </ul>
+                
+                <h3>🧾 Consentimientos Disponibles (v1.3.0)</h3>
+                <ul>
+                    <li><strong>Consentimiento Infusión de Vitamina C</strong></li>
+                    <li><strong>Consentimiento básico sin fármacos</strong></li>
+                    <li><strong>Consentimiento Autohemotransfusión con Ozono</strong></li>
                 </ul>
             </div>
         </section>
@@ -528,7 +542,18 @@
                 <h2>Changelog (Historial de Cambios)</h2>
             </div>
             <div class="section-body">
-                <h3>Versión 1.2.2 <span class="badge badge-success" style="font-size: 0.6em; vertical-align: middle;">ACTUAL</span></h3>
+                <h3>Versión 1.3.0 <span class="badge badge-success" style="font-size: 0.6em; vertical-align: middle;">ACTUAL</span></h3>
+                <ul>
+                    <li><strong>Feature:</strong> Nuevo motor de PDFs por plantilla con <code>pdf-lib</code> para rellenar consentimientos predefinidos.</li>
+                    <li><strong>Feature:</strong> Nuevo selector de tipo de documento en el modal PDF (historial clásico vs. plantillas).</li>
+                    <li><strong>Feature:</strong> Integración de 3 consentimientos en español: Vitamina C, Básico sin fármacos y Autohemotransfusión con Ozono.</li>
+                    <li><strong>Mejora:</strong> Formulario dinámico por plantilla con validaciones y autocompletado de nombre, DNI, edad y fecha.</li>
+                    <li><strong>Mejora:</strong> Nuevo tipo de campo <code>select</code> para "Tipo de representante legal" con opciones: representante legal, familiar o allegado.</li>
+                    <li><strong>Bugfix:</strong> Ajustes de posicionamiento de campos en consentimiento básico sin fármacos para alinear correctamente sobre líneas del PDF.</li>
+                    <li><strong>Bugfix:</strong> Corrección de compatibilidad al generar Blob del PDF de plantillas.</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">Versión 1.2.2</h3>
                 <ul>
                     <li><strong>Feature:</strong> Apertura de pacientes en nueva pestaña en segundo plano desde el listado.</li>
                     <li><strong>Mejora:</strong> Buscador de pacientes normalizado (insensible a mayúsculas y acentos).</li>
@@ -616,8 +641,8 @@
         <!-- Footer -->
         <footer class="doc-footer">
             <p>
-                <strong>Sistema CMED-WEB v1.2.2</strong> - Desarrollado para la gestión médica integral<br>
-                Última actualización: 20/03/2026
+                <strong>Sistema CMED-WEB v1.3.0</strong> - Desarrollado para la gestión médica integral<br>
+                Última actualización: 23/04/2026
             </p>
             <button class="btn btn-primary" routerLink="/">
                 ← Volver al Inicio

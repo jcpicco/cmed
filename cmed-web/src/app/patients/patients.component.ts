@@ -1,30 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
-import { PatientService } from '../services/patient.service';
-import { MedicalRecordService } from '../services/medical-record.service';
-import { PreviousRecordService } from '../services/previous-record.service';
-import { NoteService } from '../services/note.service';
-import { TracingService } from '../services/tracing.service';
-import { MedicalRecordFileService } from '../services/medical-record-file.service';
-import { PreviousRecordFileService } from '../services/previous-record-file.service';
-import { PatientListDto, PatientDto, PatientCreateDto, PatientUpdateDto } from '../models/patient.model';
-import { MedicalRecordListDto } from '../models/medical-record.model';
-import { PreviousRecordListDto } from '../models/previous-record.model';
-import { Note } from '../models/note.model';
-import { MedicalRecordFile, PreviousRecordFile, BaseFile } from '../models/file.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from '../../environments/environment';
-import { PdfService } from '../services/pdf.service';
-import { jsPDF } from 'jspdf';
-import { EmailService } from '../services/email.service';
-import { MedicalRecordDto } from '../models/medical-record.model';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { Observable, forkJoin } from "rxjs";
+import { PatientService } from "../services/patient.service";
+import { MedicalRecordService } from "../services/medical-record.service";
+import { PreviousRecordService } from "../services/previous-record.service";
+import { NoteService } from "../services/note.service";
+import { TracingService } from "../services/tracing.service";
+import { MedicalRecordFileService } from "../services/medical-record-file.service";
+import { PreviousRecordFileService } from "../services/previous-record-file.service";
+import {
+  PatientListDto,
+  PatientDto,
+  PatientCreateDto,
+  PatientUpdateDto,
+} from "../models/patient.model";
+import { MedicalRecordListDto } from "../models/medical-record.model";
+import { PreviousRecordListDto } from "../models/previous-record.model";
+import { Note } from "../models/note.model";
+import {
+  MedicalRecordFile,
+  PreviousRecordFile,
+  BaseFile,
+} from "../models/file.model";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { environment } from "../../environments/environment";
+import { PdfService } from "../services/pdf.service";
+import { jsPDF } from "jspdf";
+import { EmailService } from "../services/email.service";
+import { MedicalRecordDto } from "../models/medical-record.model";
 
 @Component({
-  selector: 'app-patients',
-  templateUrl: './patients.component.html',
-  styleUrls: ['./patients.component.scss']
+  selector: "app-patients",
+  templateUrl: "./patients.component.html",
+  styleUrls: ["./patients.component.scss"],
 })
 export class PatientsComponent implements OnInit {
   patients: PatientListDto[] = [];
@@ -33,7 +42,7 @@ export class PatientsComponent implements OnInit {
   showForm = false;
   isEditMode = false;
   loading = false;
-  searchTerm = '';
+  searchTerm = "";
   pageSize = 10;
   currentPage = 1;
 
@@ -42,12 +51,12 @@ export class PatientsComponent implements OnInit {
   previousRecords: PreviousRecordListDto[] = [];
   medicalRecordsLoading = false;
   previousRecordsLoading = false;
-  selectedTab: 'medical' | 'previous' | 'notes' = 'medical';
+  selectedTab: "medical" | "previous" | "notes" = "medical";
 
   // Sorting
-  patientSort = { field: 'createdAt', direction: 'desc' };
-  medicalRecordSort = { field: 'createdAt', direction: 'desc' };
-  previousRecordSort = { field: 'createdAt', direction: 'desc' };
+  patientSort = { field: "createdAt", direction: "desc" };
+  medicalRecordSort = { field: "createdAt", direction: "desc" };
+  previousRecordSort = { field: "createdAt", direction: "desc" };
 
   // Modal Forms for Records
   showMedicalRecordModal = false;
@@ -73,7 +82,7 @@ export class PatientsComponent implements OnInit {
   patientNotes: Note[] = [];
   patientNotesLoading = false;
   patientNotesPage = 1;
-  patientNoteSort = { field: 'createdAt', direction: 'desc' };
+  patientNoteSort = { field: "createdAt", direction: "desc" };
   showPatientNoteModal = false;
   showViewPatientNoteModal = false;
   patientNoteForm: FormGroup;
@@ -81,10 +90,10 @@ export class PatientsComponent implements OnInit {
   patientNoteFormError: string | null = null;
   editingPatientNote: Note | null = null;
   viewingPatientNote: Note | null = null;
-  newPatientNoteDescription = '';
+  newPatientNoteDescription = "";
   patientNoteError: string | null = null;
 
-  newNoteDescription = '';
+  newNoteDescription = "";
   noteError: string | null = null;
   notesToDelete: string[] = [];
 
@@ -97,9 +106,8 @@ export class PatientsComponent implements OnInit {
 
   // Content Popup for long descriptions
   showContentPopup = false;
-  contentPopupTitle = '';
-  contentPopupText = '';
-
+  contentPopupTitle = "";
+  contentPopupText = "";
 
   // Pagination for Modal Lists (max 3 items)
   recordPageSize = 3;
@@ -129,9 +137,8 @@ export class PatientsComponent implements OnInit {
 
   // Email functionality
   showEmailModal = false;
-  emailRecipient = '';
-  emailSubject = '';
-
+  emailRecipient = "";
+  emailSubject = "";
 
   // PDF Pagination
   pdfMedicalPage = 1;
@@ -166,11 +173,18 @@ export class PatientsComponent implements OnInit {
    */
   private createMedicalRecordForm(): FormGroup {
     return this.formBuilder.group({
-      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10000)]],
-      diagnose: ['', [Validators.maxLength(10000)]],
-      prescription: ['', [Validators.maxLength(10000)]],
-      protocol: ['', [Validators.maxLength(10000)]],
-      background: ['', [Validators.maxLength(10000)]]
+      description: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(10000),
+        ],
+      ],
+      diagnose: ["", [Validators.maxLength(10000)]],
+      prescription: ["", [Validators.maxLength(10000)]],
+      protocol: ["", [Validators.maxLength(10000)]],
+      background: ["", [Validators.maxLength(10000)]],
     });
   }
 
@@ -179,7 +193,14 @@ export class PatientsComponent implements OnInit {
    */
   private createPreviousRecordForm(): FormGroup {
     return this.formBuilder.group({
-      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10000)]]
+      description: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(10000),
+        ],
+      ],
     });
   }
 
@@ -188,7 +209,14 @@ export class PatientsComponent implements OnInit {
    */
   private createPatientNoteForm(): FormGroup {
     return this.formBuilder.group({
-      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10000)]]
+      description: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(10000),
+        ],
+      ],
     });
   }
 
@@ -197,13 +225,38 @@ export class PatientsComponent implements OnInit {
    */
   private createForm(): FormGroup {
     return this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      email: ['', [Validators.email, Validators.minLength(3), Validators.maxLength(100)]],
-      phone: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      dni: ['', [Validators.minLength(3), Validators.maxLength(20)]],
-      birthDate: ['', Validators.required],
-      allergies: ['', [Validators.maxLength(255)]]
+      name: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      lastName: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      secondLastName: ["", [Validators.maxLength(50)]],
+      email: [
+        "",
+        [Validators.email, Validators.minLength(3), Validators.maxLength(100)],
+      ],
+      phone: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(20),
+        ],
+      ],
+      dni: ["", [Validators.minLength(3), Validators.maxLength(20)]],
+      birthDate: ["", Validators.required],
+      allergies: ["", [Validators.maxLength(255)]],
     });
   }
 
@@ -219,9 +272,9 @@ export class PatientsComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar pacientes:', err);
+        console.error("Error al cargar pacientes:", err);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -229,8 +282,11 @@ export class PatientsComponent implements OnInit {
    * Normalizar texto para búsqueda (elimina tildes y pasa a minúsculas)
    */
   private normalizeSearchText(text: string | null | undefined): string {
-    if (!text) return '';
-    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    if (!text) return "";
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
   }
 
   /**
@@ -238,12 +294,13 @@ export class PatientsComponent implements OnInit {
    */
   applyFilters(): void {
     const term = this.normalizeSearchText(this.searchTerm);
-    this.filteredPatients = this.patients.filter(patient =>
-      this.normalizeSearchText(patient.name).includes(term) ||
-      this.normalizeSearchText(patient.lastName).includes(term) ||
-      this.normalizeSearchText(patient.secondLastName).includes(term) ||
-      this.normalizeSearchText(patient.email).includes(term) ||
-      this.normalizeSearchText(patient.dni).includes(term)
+    this.filteredPatients = this.patients.filter(
+      (patient) =>
+        this.normalizeSearchText(patient.name).includes(term) ||
+        this.normalizeSearchText(patient.lastName).includes(term) ||
+        this.normalizeSearchText(patient.secondLastName).includes(term) ||
+        this.normalizeSearchText(patient.email).includes(term) ||
+        this.normalizeSearchText(patient.dni).includes(term)
     );
     this.sortPatientsList();
     this.currentPage = 1;
@@ -254,24 +311,25 @@ export class PatientsComponent implements OnInit {
    */
   sortPatients(field: string): void {
     if (this.patientSort.field === field) {
-      this.patientSort.direction = this.patientSort.direction === 'asc' ? 'desc' : 'asc';
+      this.patientSort.direction =
+        this.patientSort.direction === "asc" ? "desc" : "asc";
     } else {
       this.patientSort.field = field;
-      this.patientSort.direction = 'asc';
+      this.patientSort.direction = "asc";
     }
     this.sortPatientsList();
   }
 
   private sortPatientsList(): void {
     this.filteredPatients.sort((a, b) => {
-      const direction = this.patientSort.direction === 'asc' ? 1 : -1;
+      const direction = this.patientSort.direction === "asc" ? 1 : -1;
       const field = this.patientSort.field as keyof PatientListDto;
 
       let valA = a[field];
       let valB = b[field];
 
-      if (typeof valA === 'string') valA = valA.toLowerCase();
-      if (typeof valB === 'string') valB = valB.toLowerCase();
+      if (typeof valA === "string") valA = valA.toLowerCase();
+      if (typeof valB === "string") valB = valB.toLowerCase();
 
       if (valA < valB) return -1 * direction;
       if (valA > valB) return 1 * direction;
@@ -284,10 +342,11 @@ export class PatientsComponent implements OnInit {
    */
   sortMedicalRecords(field: string): void {
     if (this.medicalRecordSort.field === field) {
-      this.medicalRecordSort.direction = this.medicalRecordSort.direction === 'asc' ? 'desc' : 'asc';
+      this.medicalRecordSort.direction =
+        this.medicalRecordSort.direction === "asc" ? "desc" : "asc";
     } else {
       this.medicalRecordSort.field = field;
-      this.medicalRecordSort.direction = 'asc';
+      this.medicalRecordSort.direction = "asc";
     }
     this.sortRecordsList(this.medicalRecords, this.medicalRecordSort);
   }
@@ -297,24 +356,28 @@ export class PatientsComponent implements OnInit {
    */
   sortPreviousRecords(field: string): void {
     if (this.previousRecordSort.field === field) {
-      this.previousRecordSort.direction = this.previousRecordSort.direction === 'asc' ? 'desc' : 'asc';
+      this.previousRecordSort.direction =
+        this.previousRecordSort.direction === "asc" ? "desc" : "asc";
     } else {
       this.previousRecordSort.field = field;
-      this.previousRecordSort.direction = 'asc';
+      this.previousRecordSort.direction = "asc";
     }
     this.sortRecordsList(this.previousRecords, this.previousRecordSort);
   }
 
-  private sortRecordsList(list: any[], sortState: { field: string, direction: string }): void {
+  private sortRecordsList(
+    list: any[],
+    sortState: { field: string; direction: string }
+  ): void {
     list.sort((a, b) => {
-      const direction = sortState.direction === 'asc' ? 1 : -1;
+      const direction = sortState.direction === "asc" ? 1 : -1;
       const field = sortState.field;
 
       let valA = a[field];
       let valB = b[field];
 
-      if (typeof valA === 'string') valA = valA.toLowerCase();
-      if (typeof valB === 'string') valB = valB.toLowerCase();
+      if (typeof valA === "string") valA = valA.toLowerCase();
+      if (typeof valB === "string") valB = valB.toLowerCase();
 
       if (valA < valB) return -1 * direction;
       if (valA > valB) return 1 * direction;
@@ -401,11 +464,11 @@ export class PatientsComponent implements OnInit {
           phone: fullPatient.phone,
           dni: fullPatient.dni,
           birthDate: this.formatDateForInput(fullPatient.birthDate),
-          allergies: fullPatient.allergies
+          allergies: fullPatient.allergies,
         });
         this.showForm = true;
       },
-      error: (err) => console.error('Error al cargar paciente:', err)
+      error: (err) => console.error("Error al cargar paciente:", err),
     });
   }
 
@@ -433,23 +496,27 @@ export class PatientsComponent implements OnInit {
         phone: patientData.phone,
         dni: patientData.dni,
         birthDate: this.convertDateToString(patientData.birthDate),
-        allergies: patientData.allergies
+        allergies: patientData.allergies,
       };
 
-      console.log('PATCH DTO:', updateDto);
+      console.log("PATCH DTO:", updateDto);
 
-      this.patientService.updatePatient(this.selectedPatient.id, updateDto).subscribe({
-        next: () => {
-          this.loadPatients();
-          this.closeForm();
-          this.formLoading = false;
-        },
-        error: (err) => {
-          console.error('Error PATCH:', err);
-          this.formError = 'Error al actualizar paciente: ' + (err.error?.message || err.message || 'Error desconocido');
-          this.formLoading = false;
-        }
-      });
+      this.patientService
+        .updatePatient(this.selectedPatient.id, updateDto)
+        .subscribe({
+          next: () => {
+            this.loadPatients();
+            this.closeForm();
+            this.formLoading = false;
+          },
+          error: (err) => {
+            console.error("Error PATCH:", err);
+            this.formError =
+              "Error al actualizar paciente: " +
+              (err.error?.message || err.message || "Error desconocido");
+            this.formLoading = false;
+          },
+        });
     } else {
       // Crear nuevo paciente
       const createDto: PatientCreateDto = {
@@ -460,10 +527,10 @@ export class PatientsComponent implements OnInit {
         phone: patientData.phone,
         dni: patientData.dni,
         birthDate: this.convertDateToString(patientData.birthDate),
-        allergies: patientData.allergies
+        allergies: patientData.allergies,
       };
 
-      console.log('POST DTO:', createDto);
+      console.log("POST DTO:", createDto);
 
       this.patientService.createPatient(createDto).subscribe({
         next: () => {
@@ -472,10 +539,12 @@ export class PatientsComponent implements OnInit {
           this.formLoading = false;
         },
         error: (err) => {
-          console.error('Error POST:', err);
-          this.formError = 'Error al crear paciente: ' + (err.error?.message || err.message || 'Error desconocido');
+          console.error("Error POST:", err);
+          this.formError =
+            "Error al crear paciente: " +
+            (err.error?.message || err.message || "Error desconocido");
           this.formLoading = false;
-        }
+        },
       });
     }
   }
@@ -484,12 +553,16 @@ export class PatientsComponent implements OnInit {
    * Eliminar paciente
    */
   deletePatient(patient: PatientListDto): void {
-    if (confirm(`¿Estás seguro de que deseas eliminar a ${patient.name} ${patient.lastName}?`)) {
+    if (
+      confirm(
+        `¿Estás seguro de que deseas eliminar a ${patient.name} ${patient.lastName}?`
+      )
+    ) {
       this.patientService.deletePatient(patient.id).subscribe({
         next: () => {
           this.loadPatients();
         },
-        error: (err) => console.error('Error al eliminar paciente:', err)
+        error: (err) => console.error("Error al eliminar paciente:", err),
       });
     }
   }
@@ -498,7 +571,9 @@ export class PatientsComponent implements OnInit {
    * Obtener URL reltiva del paciente
    */
   getPatientUrl(patientId: string): string {
-    return this.router.serializeUrl(this.router.createUrlTree(['/patients', patientId]));
+    return this.router.serializeUrl(
+      this.router.createUrlTree(["/patients", patientId])
+    );
   }
 
   /**
@@ -506,7 +581,7 @@ export class PatientsComponent implements OnInit {
    */
   openInBackgroundTab(event: MouseEvent, patientId: string): void {
     event.stopPropagation();
-    
+
     // Si el usuario hace Ctrl+Click, Cmd+Click o clic central, el navegador lo abre nativamente en 2do plano.
     if (event.ctrlKey || event.metaKey || event.button === 1) {
       return;
@@ -514,8 +589,8 @@ export class PatientsComponent implements OnInit {
 
     event.preventDefault();
     const url = this.getPatientUrl(patientId);
-    
-    const newWindow = window.open(url, '_blank');
+
+    const newWindow = window.open(url, "_blank");
     if (newWindow) {
       window.focus(); // Intentar devolver el foco a la ventana actual
     }
@@ -527,14 +602,15 @@ export class PatientsComponent implements OnInit {
   viewPatientDetails(patient: PatientListDto): void {
     this.selectedPatient = patient as PatientDto;
     this.showForm = false;
-    this.selectedTab = 'medical';
+    this.selectedTab = "medical";
 
     // Obtener detalles completos para asegurar que tenemos el teléfono y otros campos
     this.patientService.getPatientById(patient.id).subscribe({
       next: (fullPatient) => {
         this.selectedPatient = fullPatient;
       },
-      error: (err) => console.error('Error al cargar detalles del paciente:', err)
+      error: (err) =>
+        console.error("Error al cargar detalles del paciente:", err),
     });
 
     this.loadMedicalRecords(patient.id);
@@ -555,9 +631,9 @@ export class PatientsComponent implements OnInit {
         this.medicalRecordsLoading = false;
       },
       error: (err) => {
-        console.error('Error al cargar registros médicos:', err);
+        console.error("Error al cargar registros médicos:", err);
         this.medicalRecordsLoading = false;
-      }
+      },
     });
   }
 
@@ -574,9 +650,9 @@ export class PatientsComponent implements OnInit {
         this.previousRecordsLoading = false;
       },
       error: (err) => {
-        console.error('Error al cargar registros previos:', err);
+        console.error("Error al cargar registros previos:", err);
         this.previousRecordsLoading = false;
-      }
+      },
     });
   }
 
@@ -590,12 +666,15 @@ export class PatientsComponent implements OnInit {
     // Cargar notas del registro
     this.medicalRecordService.getMedicalRecordById(record.id).subscribe({
       next: (fullRecord) => {
-        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        this.viewMedicalRecordNotes = (fullRecord.notes || []).sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
         this.showViewMedicalRecordModal = true;
       },
       error: (err) => {
-        console.error('Error al cargar detalles del registro:', err);
-      }
+        console.error("Error al cargar detalles del registro:", err);
+      },
     });
     // Cargar archivos del registro
     this.loadMedicalRecordFiles(record.id);
@@ -677,9 +756,12 @@ export class PatientsComponent implements OnInit {
           diagnose: fullRecord.diagnose,
           prescription: fullRecord.prescription,
           protocol: fullRecord.protocol,
-          background: fullRecord.background
+          background: fullRecord.background,
         });
-        this.notesForRecord = [...(fullRecord.notes || [])].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        this.notesForRecord = [...(fullRecord.notes || [])].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
         this.medicalRecordFormError = null;
         this.showMedicalRecordModal = true;
         this.medicalRecordFormLoading = false;
@@ -688,7 +770,7 @@ export class PatientsComponent implements OnInit {
         this.loadMedicalRecordFiles(record.id);
       },
       error: (err) => {
-        console.error('Error loading record details for edit:', err);
+        console.error("Error loading record details for edit:", err);
         // Fallback to basic info if fetch fails
         this.editingMedicalRecord = record;
         this.medicalRecordForm.patchValue({
@@ -696,7 +778,7 @@ export class PatientsComponent implements OnInit {
           diagnose: record.diagnose,
           prescription: record.prescription,
           protocol: record.protocol,
-          background: record.background
+          background: record.background,
         });
         this.notesForRecord = [];
         this.showMedicalRecordModal = true;
@@ -704,7 +786,7 @@ export class PatientsComponent implements OnInit {
 
         // Cargar archivos para el modo edición
         this.loadMedicalRecordFiles(record.id);
-      }
+      },
     });
   }
 
@@ -719,7 +801,7 @@ export class PatientsComponent implements OnInit {
 
     this.editingPreviousRecord = record;
     this.previousRecordForm.patchValue({
-      description: record.description
+      description: record.description,
     });
     this.previousRecordFormError = null;
     this.showPreviousRecordModal = true;
@@ -746,32 +828,36 @@ export class PatientsComponent implements OnInit {
       // Editar registro médico existente
       const editingRecordId = this.editingMedicalRecord.id;
       const updateDto = {
-        description: this.medicalRecordForm.get('description')?.value,
-        diagnose: this.medicalRecordForm.get('diagnose')?.value || undefined,
-        protocol: this.medicalRecordForm.get('protocol')?.value || undefined,
-        prescription: this.medicalRecordForm.get('prescription')?.value || undefined,
-        background: this.medicalRecordForm.get('background')?.value
+        description: this.medicalRecordForm.get("description")?.value,
+        diagnose: this.medicalRecordForm.get("diagnose")?.value || undefined,
+        protocol: this.medicalRecordForm.get("protocol")?.value || undefined,
+        prescription:
+          this.medicalRecordForm.get("prescription")?.value || undefined,
+        background: this.medicalRecordForm.get("background")?.value,
       };
-      this.medicalRecordService.updateMedicalRecord(editingRecordId, updateDto).subscribe({
-        next: () => {
-          // Guardar notas y diagnósticos
-          this.saveNotes(editingRecordId);
-        },
-        error: (err) => {
-          this.medicalRecordFormError = 'Error al actualizar registro médico';
-          console.error('Error:', err);
-          this.medicalRecordFormLoading = false;
-        }
-      });
+      this.medicalRecordService
+        .updateMedicalRecord(editingRecordId, updateDto)
+        .subscribe({
+          next: () => {
+            // Guardar notas y diagnósticos
+            this.saveNotes(editingRecordId);
+          },
+          error: (err) => {
+            this.medicalRecordFormError = "Error al actualizar registro médico";
+            console.error("Error:", err);
+            this.medicalRecordFormLoading = false;
+          },
+        });
     } else {
       // Crear nuevo registro médico
       const createDto = {
         patientId: selectedPatientId,
-        description: this.medicalRecordForm.get('description')?.value,
-        diagnose: this.medicalRecordForm.get('diagnose')?.value || undefined,
-        protocol: this.medicalRecordForm.get('protocol')?.value || undefined,
-        prescription: this.medicalRecordForm.get('prescription')?.value || undefined,
-        background: this.medicalRecordForm.get('background')?.value
+        description: this.medicalRecordForm.get("description")?.value,
+        diagnose: this.medicalRecordForm.get("diagnose")?.value || undefined,
+        protocol: this.medicalRecordForm.get("protocol")?.value || undefined,
+        prescription:
+          this.medicalRecordForm.get("prescription")?.value || undefined,
+        background: this.medicalRecordForm.get("background")?.value,
       };
       this.medicalRecordService.createMedicalRecord(createDto).subscribe({
         next: (createdRecord) => {
@@ -779,10 +865,10 @@ export class PatientsComponent implements OnInit {
           this.saveNotes(createdRecord.id);
         },
         error: (err) => {
-          this.medicalRecordFormError = 'Error al crear registro médico';
-          console.error('Error:', err);
+          this.medicalRecordFormError = "Error al crear registro médico";
+          console.error("Error:", err);
           this.medicalRecordFormLoading = false;
-        }
+        },
       });
     }
   }
@@ -795,14 +881,22 @@ export class PatientsComponent implements OnInit {
     const createOps: Observable<any>[] = [];
 
     // Operaciones de eliminación
-    this.notesToDelete.forEach(id => deleteOps.push(this.noteService.deleteMedicalRecordNote(medicalRecordId, id)));
+    this.notesToDelete.forEach((id) =>
+      deleteOps.push(
+        this.noteService.deleteMedicalRecordNote(medicalRecordId, id)
+      )
+    );
 
     // Operaciones de creación (solo para IDs temporales)
-    this.notesForRecord.filter(n => this.isTempId(n.id)).forEach(note => {
-      createOps.push(this.noteService.createMedicalRecordNote(medicalRecordId, {
-        description: note.description
-      }));
-    });
+    this.notesForRecord
+      .filter((n) => this.isTempId(n.id))
+      .forEach((note) => {
+        createOps.push(
+          this.noteService.createMedicalRecordNote(medicalRecordId, {
+            description: note.description,
+          })
+        );
+      });
 
     const allOps = [...deleteOps, ...createOps];
 
@@ -817,10 +911,10 @@ export class PatientsComponent implements OnInit {
         this.finishMedicalRecordSave();
       },
       error: (err) => {
-        console.error('Error al sincronizar notas/diagnósticos:', err);
-        this.medicalRecordFormError = 'Error al sincronizar algunos elementos';
+        console.error("Error al sincronizar notas/diagnósticos:", err);
+        this.medicalRecordFormError = "Error al sincronizar algunos elementos";
         this.finishMedicalRecordSave();
-      }
+      },
     });
   }
 
@@ -834,8 +928,9 @@ export class PatientsComponent implements OnInit {
 
     // Update the local record with form values so the view is up to date immediately
     if (recordToView) {
-      recordToView.description = this.medicalRecordForm.get('description')?.value;
-      recordToView.background = this.medicalRecordForm.get('background')?.value;
+      recordToView.description =
+        this.medicalRecordForm.get("description")?.value;
+      recordToView.background = this.medicalRecordForm.get("background")?.value;
     }
 
     this.closeMedicalRecordModal();
@@ -862,35 +957,39 @@ export class PatientsComponent implements OnInit {
     if (this.editingPreviousRecord) {
       // Editar registro previo existente
       const updateDto = {
-        description: this.previousRecordForm.get('description')?.value
+        description: this.previousRecordForm.get("description")?.value,
       };
-      this.previousRecordService.updatePreviousRecord(this.editingPreviousRecord.id, updateDto).subscribe({
-        next: () => {
-          this.loadPreviousRecords(selectedPatientId);
-          const recordToView = this.editingPreviousRecord;
+      this.previousRecordService
+        .updatePreviousRecord(this.editingPreviousRecord.id, updateDto)
+        .subscribe({
+          next: () => {
+            this.loadPreviousRecords(selectedPatientId);
+            const recordToView = this.editingPreviousRecord;
 
-          // Update the local record with form values so the view is up to date immediately
-          if (recordToView) {
-            recordToView.description = this.previousRecordForm.get('description')?.value;
-          }
+            // Update the local record with form values so the view is up to date immediately
+            if (recordToView) {
+              recordToView.description =
+                this.previousRecordForm.get("description")?.value;
+            }
 
-          this.closePreviousRecordModal();
-          if (recordToView) {
-            this.viewPreviousRecordDetails(recordToView);
-          }
-          this.previousRecordFormLoading = false;
-        },
-        error: (err) => {
-          this.previousRecordFormError = 'Error al actualizar registro previo';
-          console.error('Error:', err);
-          this.previousRecordFormLoading = false;
-        }
-      });
+            this.closePreviousRecordModal();
+            if (recordToView) {
+              this.viewPreviousRecordDetails(recordToView);
+            }
+            this.previousRecordFormLoading = false;
+          },
+          error: (err) => {
+            this.previousRecordFormError =
+              "Error al actualizar registro previo";
+            console.error("Error:", err);
+            this.previousRecordFormLoading = false;
+          },
+        });
     } else {
       // Crear nuevo registro previo
       const createDto = {
         patientId: selectedPatientId,
-        description: this.previousRecordForm.get('description')?.value
+        description: this.previousRecordForm.get("description")?.value,
       };
       this.previousRecordService.createPreviousRecord(createDto).subscribe({
         next: () => {
@@ -899,10 +998,10 @@ export class PatientsComponent implements OnInit {
           this.previousRecordFormLoading = false;
         },
         error: (err) => {
-          this.previousRecordFormError = 'Error al crear registro previo';
-          console.error('Error:', err);
+          this.previousRecordFormError = "Error al crear registro previo";
+          console.error("Error:", err);
           this.previousRecordFormLoading = false;
-        }
+        },
       });
     }
   }
@@ -912,28 +1011,28 @@ export class PatientsComponent implements OnInit {
    */
   addNoteToRecord(): void {
     if (!this.newNoteDescription.trim()) {
-      this.noteError = 'La nota no puede estar vacía';
+      this.noteError = "La nota no puede estar vacía";
       return;
     }
     if (this.newNoteDescription.trim().length < 5) {
-      this.noteError = 'La nota debe tener al menos 5 caracteres';
+      this.noteError = "La nota debe tener al menos 5 caracteres";
       return;
     }
     if (this.newNoteDescription.length > 10000) {
-      this.noteError = 'La nota no puede exceder los 10000 caracteres';
+      this.noteError = "La nota no puede exceder los 10000 caracteres";
       return;
     }
 
     this.noteError = null;
     const newNote: Note = {
       id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      medicalRecordId: this.editingMedicalRecord?.id || '',
+      medicalRecordId: this.editingMedicalRecord?.id || "",
       description: this.newNoteDescription.trim(),
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     this.notesForRecord.push(newNote);
-    this.newNoteDescription = '';
+    this.newNoteDescription = "";
   }
 
   /**
@@ -943,7 +1042,9 @@ export class PatientsComponent implements OnInit {
     if (!this.isTempId(noteId)) {
       this.notesToDelete.push(noteId);
     }
-    this.notesForRecord = this.notesForRecord.filter(note => note.id !== noteId);
+    this.notesForRecord = this.notesForRecord.filter(
+      (note) => note.id !== noteId
+    );
     if (this.notesPage > 1 && this.notesPage > this.totalNotesPages) {
       this.notesPage = this.totalNotesPages;
     }
@@ -954,7 +1055,7 @@ export class PatientsComponent implements OnInit {
    */
   addPatientNote(): void {
     if (!this.newPatientNoteDescription.trim()) {
-      this.patientNoteError = 'La nota no puede estar vacía';
+      this.patientNoteError = "La nota no puede estar vacía";
       return;
     }
 
@@ -963,16 +1064,18 @@ export class PatientsComponent implements OnInit {
     this.patientNoteError = null;
     const description = this.newPatientNoteDescription.trim();
 
-    this.noteService.createPatientNote(this.selectedPatient.id, { description }).subscribe({
-      next: (note) => {
-        this.patientNotes = [note, ...this.patientNotes];
-        this.newPatientNoteDescription = '';
-      },
-      error: (err) => {
-        console.error('Error al crear nota de paciente:', err);
-        this.patientNoteError = 'Error al crear la nota';
-      }
-    });
+    this.noteService
+      .createPatientNote(this.selectedPatient.id, { description })
+      .subscribe({
+        next: (note) => {
+          this.patientNotes = [note, ...this.patientNotes];
+          this.newPatientNoteDescription = "";
+        },
+        error: (err) => {
+          console.error("Error al crear nota de paciente:", err);
+          this.patientNoteError = "Error al crear la nota";
+        },
+      });
   }
 
   /**
@@ -981,24 +1084,31 @@ export class PatientsComponent implements OnInit {
   deletePatientNote(noteId: string): void {
     if (!this.selectedPatient) return;
 
-    if (confirm('¿Está seguro de que desea eliminar esta nota?')) {
-      this.noteService.deletePatientNote(this.selectedPatient.id, noteId).subscribe({
-        next: () => {
-          this.patientNotes = this.patientNotes.filter(n => n.id !== noteId);
-          if (this.patientNotesPage > 1 && this.patientNotesPage > this.totalPatientNotesPages) {
-            this.patientNotesPage = this.totalPatientNotesPages;
-          }
-        },
-        error: (err) => {
-          console.error('Error al eliminar nota de paciente:', err);
-          this.patientNoteError = 'Error al eliminar la nota';
-        }
-      });
+    if (confirm("¿Está seguro de que desea eliminar esta nota?")) {
+      this.noteService
+        .deletePatientNote(this.selectedPatient.id, noteId)
+        .subscribe({
+          next: () => {
+            this.patientNotes = this.patientNotes.filter(
+              (n) => n.id !== noteId
+            );
+            if (
+              this.patientNotesPage > 1 &&
+              this.patientNotesPage > this.totalPatientNotesPages
+            ) {
+              this.patientNotesPage = this.totalPatientNotesPages;
+            }
+          },
+          error: (err) => {
+            console.error("Error al eliminar nota de paciente:", err);
+            this.patientNoteError = "Error al eliminar la nota";
+          },
+        });
     }
   }
 
   private isTempId(id: string): boolean {
-    return id.startsWith('temp_');
+    return id.startsWith("temp_");
   }
 
   /**
@@ -1011,7 +1121,7 @@ export class PatientsComponent implements OnInit {
     this.editingMedicalRecord = null;
     this.notesForRecord = [];
     this.viewMedicalRecordFiles = []; // Limpiar archivos al cerrar
-    this.newNoteDescription = '';
+    this.newNoteDescription = "";
     this.noteError = null;
   }
 
@@ -1052,7 +1162,7 @@ export class PatientsComponent implements OnInit {
    * Eliminar registro médico
    */
   deleteMedicalRecord(recordId: string): void {
-    if (confirm('¿Está seguro de que desea eliminar este registro médico?')) {
+    if (confirm("¿Está seguro de que desea eliminar este registro médico?")) {
       this.medicalRecordService.deleteMedicalRecord(recordId).subscribe({
         next: () => {
           if (this.selectedPatient) {
@@ -1060,7 +1170,8 @@ export class PatientsComponent implements OnInit {
           }
           this.closeMedicalRecordModal();
         },
-        error: (err) => console.error('Error al eliminar registro médico:', err)
+        error: (err) =>
+          console.error("Error al eliminar registro médico:", err),
       });
     }
   }
@@ -1069,7 +1180,7 @@ export class PatientsComponent implements OnInit {
    * Eliminar registro previo
    */
   deletePreviousRecord(recordId: string): void {
-    if (confirm('¿Está seguro de que desea eliminar este registro previo?')) {
+    if (confirm("¿Está seguro de que desea eliminar este registro previo?")) {
       this.previousRecordService.deletePreviousRecord(recordId).subscribe({
         next: () => {
           if (this.selectedPatient) {
@@ -1077,7 +1188,8 @@ export class PatientsComponent implements OnInit {
           }
           this.closePreviousRecordModal();
         },
-        error: (err) => console.error('Error al eliminar registro previo:', err)
+        error: (err) =>
+          console.error("Error al eliminar registro previo:", err),
       });
     }
   }
@@ -1096,9 +1208,9 @@ export class PatientsComponent implements OnInit {
         this.patientNotesLoading = false;
       },
       error: (err) => {
-        console.error('Error al cargar notas del paciente:', err);
+        console.error("Error al cargar notas del paciente:", err);
         this.patientNotesLoading = false;
-      }
+      },
     });
   }
 
@@ -1107,10 +1219,11 @@ export class PatientsComponent implements OnInit {
    */
   sortPatientNotes(field: string): void {
     if (this.patientNoteSort.field === field) {
-      this.patientNoteSort.direction = this.patientNoteSort.direction === 'asc' ? 'desc' : 'asc';
+      this.patientNoteSort.direction =
+        this.patientNoteSort.direction === "asc" ? "desc" : "asc";
     } else {
       this.patientNoteSort.field = field;
-      this.patientNoteSort.direction = 'desc';
+      this.patientNoteSort.direction = "desc";
     }
     this.sortPatientNotesList();
   }
@@ -1144,7 +1257,7 @@ export class PatientsComponent implements OnInit {
     this.closeViewPatientNoteModal();
     this.editingPatientNote = note;
     this.patientNoteForm.patchValue({
-      description: note.description
+      description: note.description,
     });
     this.patientNoteFormError = null;
     this.showPatientNoteModal = true;
@@ -1166,60 +1279,65 @@ export class PatientsComponent implements OnInit {
       // Editar nota existente
       const noteId = this.editingPatientNote.id;
       const updateDto = {
-        description: this.patientNoteForm.get('description')?.value
+        description: this.patientNoteForm.get("description")?.value,
       };
-      this.noteService.updatePatientNote(selectedPatientId, noteId, updateDto).subscribe({
-        next: () => {
-          // Capture note to view before closing modal resets it
-          const noteToView = this.editingPatientNote;
-          const updatedDescription = this.patientNoteForm.get('description')?.value;
+      this.noteService
+        .updatePatientNote(selectedPatientId, noteId, updateDto)
+        .subscribe({
+          next: () => {
+            // Capture note to view before closing modal resets it
+            const noteToView = this.editingPatientNote;
+            const updatedDescription =
+              this.patientNoteForm.get("description")?.value;
 
-          if (noteToView) {
-            noteToView.description = updatedDescription;
-          }
-
-          // Close edit modal and show details immediately
-          this.closePatientNoteModal();
-          this.patientNoteFormLoading = false;
-
-          if (noteToView) {
-            this.viewPatientNoteDetails(noteToView);
-          }
-
-          // Refresh list in background
-          this.noteService.getPatientNotes(selectedPatientId).subscribe({
-            next: (notes) => {
-              this.patientNotes = notes;
-              this.sortPatientNotesList();
-            },
-            error: (err) => {
-              console.error('Error al recargar notas:', err);
+            if (noteToView) {
+              noteToView.description = updatedDescription;
             }
-          });
-        },
-        error: (err) => {
-          this.patientNoteFormError = 'Error al actualizar nota';
-          console.error('Error:', err);
-          this.patientNoteFormLoading = false;
-        }
-      });
+
+            // Close edit modal and show details immediately
+            this.closePatientNoteModal();
+            this.patientNoteFormLoading = false;
+
+            if (noteToView) {
+              this.viewPatientNoteDetails(noteToView);
+            }
+
+            // Refresh list in background
+            this.noteService.getPatientNotes(selectedPatientId).subscribe({
+              next: (notes) => {
+                this.patientNotes = notes;
+                this.sortPatientNotesList();
+              },
+              error: (err) => {
+                console.error("Error al recargar notas:", err);
+              },
+            });
+          },
+          error: (err) => {
+            this.patientNoteFormError = "Error al actualizar nota";
+            console.error("Error:", err);
+            this.patientNoteFormLoading = false;
+          },
+        });
     } else {
       // Crear nueva nota
       const createDto = {
-        description: this.patientNoteForm.get('description')?.value
+        description: this.patientNoteForm.get("description")?.value,
       };
-      this.noteService.createPatientNote(selectedPatientId, createDto).subscribe({
-        next: () => {
-          this.loadPatientNotes(selectedPatientId);
-          this.closePatientNoteModal();
-          this.patientNoteFormLoading = false;
-        },
-        error: (err) => {
-          this.patientNoteFormError = 'Error al crear nota';
-          console.error('Error:', err);
-          this.patientNoteFormLoading = false;
-        }
-      });
+      this.noteService
+        .createPatientNote(selectedPatientId, createDto)
+        .subscribe({
+          next: () => {
+            this.loadPatientNotes(selectedPatientId);
+            this.closePatientNoteModal();
+            this.patientNoteFormLoading = false;
+          },
+          error: (err) => {
+            this.patientNoteFormError = "Error al crear nota";
+            console.error("Error:", err);
+            this.patientNoteFormLoading = false;
+          },
+        });
     }
   }
 
@@ -1229,19 +1347,21 @@ export class PatientsComponent implements OnInit {
   deletePatientNoteFromModal(noteId: string): void {
     if (!this.selectedPatient) return;
 
-    if (confirm('¿Está seguro de que desea eliminar esta nota?')) {
-      this.noteService.deletePatientNote(this.selectedPatient.id, noteId).subscribe({
-        next: () => {
-          if (this.selectedPatient) {
-            this.loadPatientNotes(this.selectedPatient.id);
-          }
-          this.closePatientNoteModal();
-        },
-        error: (err) => {
-          console.error('Error al eliminar nota:', err);
-          this.patientNoteFormError = 'Error al eliminar la nota';
-        }
-      });
+    if (confirm("¿Está seguro de que desea eliminar esta nota?")) {
+      this.noteService
+        .deletePatientNote(this.selectedPatient.id, noteId)
+        .subscribe({
+          next: () => {
+            if (this.selectedPatient) {
+              this.loadPatientNotes(this.selectedPatient.id);
+            }
+            this.closePatientNoteModal();
+          },
+          error: (err) => {
+            console.error("Error al eliminar nota:", err);
+            this.patientNoteFormError = "Error al eliminar la nota";
+          },
+        });
     }
   }
 
@@ -1276,7 +1396,6 @@ export class PatientsComponent implements OnInit {
 
   // ==================== FIN DE MÉTODOS DE NOTAS DE PACIENTE ====================
 
-
   /**
    * Cerrar formulario
    */
@@ -1293,19 +1412,21 @@ export class PatientsComponent implements OnInit {
    */
   public formatDateForInput(date: string | Date): string {
     const d = new Date(date);
-    return d.toISOString().split('T')[0];
+    return d.toISOString().split("T")[0];
   }
 
   /**
    * Convertir fecha a string YYYY-MM-DD para enviar al backend
    */
-  public convertDateToString(date: string | Date | null | undefined): string | undefined {
+  public convertDateToString(
+    date: string | Date | null | undefined
+  ): string | undefined {
     if (!date) {
       return undefined;
     }
     try {
       // Si es string ya, devolverlo
-      if (typeof date === 'string') {
+      if (typeof date === "string") {
         // Si ya está en formato YYYY-MM-DD, devolverlo
         if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
           return date;
@@ -1314,11 +1435,11 @@ export class PatientsComponent implements OnInit {
       // Si es Date o número, convertir
       const d = new Date(date);
       const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     } catch (e) {
-      console.error('Error al convertir fecha:', date, e);
+      console.error("Error al convertir fecha:", date, e);
       return undefined;
     }
   }
@@ -1329,27 +1450,27 @@ export class PatientsComponent implements OnInit {
   formatDate(date: string | Date | null | undefined): string {
     try {
       if (!date) {
-        return 'Sin fecha';
+        return "Sin fecha";
       }
 
       // Si es string
-      if (typeof date === 'string') {
+      if (typeof date === "string") {
         // Si contiene 'T', es LocalDateTime (ej: 2025-11-30T11:40:03.955164)
         // Si no contiene 'T', es LocalDate (ej: 1998-12-04)
-        if (date.includes('T')) {
+        if (date.includes("T")) {
           // Parsear LocalDateTime
-          return new Date(date).toLocaleDateString('es-ES');
+          return new Date(date).toLocaleDateString("es-ES");
         } else {
           // Parsear LocalDate
-          return new Date(date + 'T00:00:00').toLocaleDateString('es-ES');
+          return new Date(date + "T00:00:00").toLocaleDateString("es-ES");
         }
       }
 
       // Si es Date object
-      return new Date(date).toLocaleDateString('es-ES');
+      return new Date(date).toLocaleDateString("es-ES");
     } catch (e) {
-      console.error('Error formateando fecha:', date, e);
-      return 'Fecha inválida';
+      console.error("Error formateando fecha:", date, e);
+      return "Fecha inválida";
     }
   }
 
@@ -1359,44 +1480,47 @@ export class PatientsComponent implements OnInit {
   formatDateTime(date: string | Date | null | undefined): string {
     try {
       if (!date) {
-        return 'Sin fecha';
+        return "Sin fecha";
       }
 
       const dateObj = new Date(date);
 
       // Formatear fecha: dd/mm/aaaa
-      const dateStr = dateObj.toLocaleDateString('es-ES');
+      const dateStr = dateObj.toLocaleDateString("es-ES");
 
       // Formatear hora: hh:mm
-      const timeStr = dateObj.toLocaleTimeString('es-ES', {
-        hour: '2-digit',
-        minute: '2-digit'
+      const timeStr = dateObj.toLocaleTimeString("es-ES", {
+        hour: "2-digit",
+        minute: "2-digit",
       });
 
       return `${dateStr} ${timeStr}`;
     } catch (e) {
-      console.error('Error formateando fecha y hora:', date, e);
-      return 'Fecha inválida';
+      console.error("Error formateando fecha y hora:", date, e);
+      return "Fecha inválida";
     }
   }
 
   /**
    * Truncar texto para visualización
    */
-  public truncateText(text: string | null | undefined, maxLength: number = 20): string {
+  public truncateText(text: string | null | undefined, maxLength = 20): string {
     if (!text) {
-      return '';
+      return "";
     }
     if (text.length <= maxLength) {
       return text;
     }
-    return text.substring(0, maxLength) + '...';
+    return text.substring(0, maxLength) + "...";
   }
 
   /**
    * Verificar si el texto necesita ser truncado
    */
-  public needsTruncation(text: string | null | undefined, maxLength: number = 10000): boolean {
+  public needsTruncation(
+    text: string | null | undefined,
+    maxLength = 10000
+  ): boolean {
     if (!text) {
       return false;
     }
@@ -1417,24 +1541,27 @@ export class PatientsComponent implements OnInit {
    */
   public closeContentPopup(): void {
     this.showContentPopup = false;
-    this.contentPopupTitle = '';
-    this.contentPopupText = '';
+    this.contentPopupTitle = "";
+    this.contentPopupText = "";
   }
-
 
   /**
    * Obtener validación de campo
    */
   getFieldError(fieldName: string): string | null {
     const field = this.patientForm.get(fieldName);
-    if (field?.hasError('required')) {
-      return 'Este campo es requerido';
+    if (field?.hasError("required")) {
+      return "Este campo es requerido";
     }
-    if (field?.hasError('minlength')) {
-      return `Debe tener al menos ${field.getError('minlength').requiredLength} caracteres`;
+    if (field?.hasError("minlength")) {
+      return `Debe tener al menos ${
+        field.getError("minlength").requiredLength
+      } caracteres`;
     }
-    if (field?.hasError('maxlength')) {
-      return `No puede exceder los ${field.getError('maxlength').requiredLength} caracteres`;
+    if (field?.hasError("maxlength")) {
+      return `No puede exceder los ${
+        field.getError("maxlength").requiredLength
+      } caracteres`;
     }
     return null;
   }
@@ -1442,11 +1569,16 @@ export class PatientsComponent implements OnInit {
   /**
    * Obtener validación de campo
    */
-  getFieldValidation(fieldName: string, form: FormGroup = this.patientForm): any {
+  getFieldValidation(
+    fieldName: string,
+    form: FormGroup = this.patientForm
+  ): any {
     const field = form.get(fieldName);
     return {
-      invalid: field?.invalid && (field?.dirty || field?.touched || this.formSubmitted),
-      errors: field?.errors
+      invalid:
+        field?.invalid &&
+        (field?.dirty || field?.touched || this.formSubmitted),
+      errors: field?.errors,
     };
   }
 
@@ -1465,30 +1597,34 @@ export class PatientsComponent implements OnInit {
    * Cargar archivos de un registro médico
    */
   loadMedicalRecordFiles(medicalRecordId: string): void {
-    this.medicalRecordFileService.getAllByMedicalRecordId(medicalRecordId).subscribe({
-      next: (files) => {
-        this.viewMedicalRecordFiles = files;
-      },
-      error: (err) => {
-        console.error('Error al cargar archivos del registro médico:', err);
-      }
-    });
+    this.medicalRecordFileService
+      .getAllByMedicalRecordId(medicalRecordId)
+      .subscribe({
+        next: (files) => {
+          this.viewMedicalRecordFiles = files;
+        },
+        error: (err) => {
+          console.error("Error al cargar archivos del registro médico:", err);
+        },
+      });
   }
 
   /**
    * Cargar archivos de un registro previo
    */
   loadPreviousRecordFiles(previousRecordId: string): void {
-    console.log('Loading files for previous record:', previousRecordId);
-    this.previousRecordFileService.getAllByPreviousRecordId(previousRecordId).subscribe({
-      next: (files) => {
-        console.log('Files loaded:', files.length);
-        this.viewPreviousRecordFiles = files;
-      },
-      error: (err) => {
-        console.error('Error al cargar archivos del registro previo:', err);
-      }
-    });
+    console.log("Loading files for previous record:", previousRecordId);
+    this.previousRecordFileService
+      .getAllByPreviousRecordId(previousRecordId)
+      .subscribe({
+        next: (files) => {
+          console.log("Files loaded:", files.length);
+          this.viewPreviousRecordFiles = files;
+        },
+        error: (err) => {
+          console.error("Error al cargar archivos del registro previo:", err);
+        },
+      });
   }
 
   /**
@@ -1507,31 +1643,40 @@ export class PatientsComponent implements OnInit {
    */
   uploadMedicalRecordFile(medicalRecordId: string): void {
     if (!this.selectedFile) {
-      this.fileError = 'Por favor seleccione un archivo';
+      this.fileError = "Por favor seleccione un archivo";
       return;
     }
 
     this.uploadingFile = true;
     this.fileError = null;
 
-    this.medicalRecordFileService.uploadFile(medicalRecordId, this.selectedFile).subscribe({
-      next: (uploadedFile) => {
-        // Use spreading for immutable update to trigger change detection
-        this.viewMedicalRecordFiles = [...this.viewMedicalRecordFiles, uploadedFile];
-        this.selectedFile = null;
-        this.uploadingFile = false;
-        // Resetear el input de archivo
-        const fileInput = document.getElementById('editRecordFileInput') as HTMLInputElement;
-        if (fileInput) {
-          fileInput.value = '';
-        }
-      },
-      error: (err) => {
-        console.error('Error al subir archivo:', err);
-        this.fileError = 'Error al subir el archivo: ' + (err.error?.message || err.message || 'Error desconocido');
-        this.uploadingFile = false;
-      }
-    });
+    this.medicalRecordFileService
+      .uploadFile(medicalRecordId, this.selectedFile)
+      .subscribe({
+        next: (uploadedFile) => {
+          // Use spreading for immutable update to trigger change detection
+          this.viewMedicalRecordFiles = [
+            ...this.viewMedicalRecordFiles,
+            uploadedFile,
+          ];
+          this.selectedFile = null;
+          this.uploadingFile = false;
+          // Resetear el input de archivo
+          const fileInput = document.getElementById(
+            "editRecordFileInput"
+          ) as HTMLInputElement;
+          if (fileInput) {
+            fileInput.value = "";
+          }
+        },
+        error: (err) => {
+          console.error("Error al subir archivo:", err);
+          this.fileError =
+            "Error al subir el archivo: " +
+            (err.error?.message || err.message || "Error desconocido");
+          this.uploadingFile = false;
+        },
+      });
   }
 
   /**
@@ -1539,50 +1684,63 @@ export class PatientsComponent implements OnInit {
    */
   uploadPreviousRecordFile(previousRecordId: string): void {
     if (!this.selectedFile) {
-      this.fileError = 'Por favor seleccione un archivo';
+      this.fileError = "Por favor seleccione un archivo";
       return;
     }
 
     this.uploadingFile = true;
     this.fileError = null;
 
-    this.previousRecordFileService.uploadFile(previousRecordId, this.selectedFile).subscribe({
-      next: (uploadedFile) => {
-        // Use spreading for immutable update to trigger change detection
-        this.viewPreviousRecordFiles = [...this.viewPreviousRecordFiles, uploadedFile];
-        this.selectedFile = null;
-        this.uploadingFile = false;
-        // Resetear el input de archivo
-        const fileInput = document.getElementById('editPreviousRecordFileInput') as HTMLInputElement;
-        if (fileInput) {
-          fileInput.value = '';
-        }
-      },
-      error: (err) => {
-        console.error('Error al subir archivo:', err);
-        this.fileError = 'Error al subir el archivo: ' + (err.error?.message || err.message || 'Error desconocido');
-        this.uploadingFile = false;
-      }
-    });
+    this.previousRecordFileService
+      .uploadFile(previousRecordId, this.selectedFile)
+      .subscribe({
+        next: (uploadedFile) => {
+          // Use spreading for immutable update to trigger change detection
+          this.viewPreviousRecordFiles = [
+            ...this.viewPreviousRecordFiles,
+            uploadedFile,
+          ];
+          this.selectedFile = null;
+          this.uploadingFile = false;
+          // Resetear el input de archivo
+          const fileInput = document.getElementById(
+            "editPreviousRecordFileInput"
+          ) as HTMLInputElement;
+          if (fileInput) {
+            fileInput.value = "";
+          }
+        },
+        error: (err) => {
+          console.error("Error al subir archivo:", err);
+          this.fileError =
+            "Error al subir el archivo: " +
+            (err.error?.message || err.message || "Error desconocido");
+          this.uploadingFile = false;
+        },
+      });
   }
 
   /**
    * Eliminar archivo de un registro médico
    */
   deleteMedicalRecordFile(medicalRecordId: string, fileId: string): void {
-    if (confirm('¿Está seguro de que desea eliminar este archivo?')) {
-      this.medicalRecordFileService.deleteFile(medicalRecordId, fileId).subscribe({
-        next: () => {
-          this.viewMedicalRecordFiles = this.viewMedicalRecordFiles.filter(f => f.id !== fileId);
-          if (this.filesPage > 1 && this.filesPage > this.totalFilesPages) {
-            this.filesPage = this.totalFilesPages;
-          }
-        },
-        error: (err) => {
-          console.error('Error al eliminar archivo:', err);
-          this.fileError = 'Error al eliminar el archivo';
-        }
-      });
+    if (confirm("¿Está seguro de que desea eliminar este archivo?")) {
+      this.medicalRecordFileService
+        .deleteFile(medicalRecordId, fileId)
+        .subscribe({
+          next: () => {
+            this.viewMedicalRecordFiles = this.viewMedicalRecordFiles.filter(
+              (f) => f.id !== fileId
+            );
+            if (this.filesPage > 1 && this.filesPage > this.totalFilesPages) {
+              this.filesPage = this.totalFilesPages;
+            }
+          },
+          error: (err) => {
+            console.error("Error al eliminar archivo:", err);
+            this.fileError = "Error al eliminar el archivo";
+          },
+        });
     }
   }
 
@@ -1590,19 +1748,23 @@ export class PatientsComponent implements OnInit {
    * Eliminar archivo de un registro previo
    */
   deletePreviousRecordFile(previousRecordId: string, fileId: string): void {
-    if (confirm('¿Está seguro de que desea eliminar este archivo?')) {
-      this.previousRecordFileService.deleteFile(previousRecordId, fileId).subscribe({
-        next: () => {
-          this.viewPreviousRecordFiles = this.viewPreviousRecordFiles.filter(f => f.id !== fileId);
-          if (this.filesPage > 1 && this.filesPage > this.totalFilesPages) {
-            this.filesPage = this.totalFilesPages;
-          }
-        },
-        error: (err) => {
-          console.error('Error al eliminar archivo:', err);
-          this.fileError = 'Error al eliminar el archivo';
-        }
-      });
+    if (confirm("¿Está seguro de que desea eliminar este archivo?")) {
+      this.previousRecordFileService
+        .deleteFile(previousRecordId, fileId)
+        .subscribe({
+          next: () => {
+            this.viewPreviousRecordFiles = this.viewPreviousRecordFiles.filter(
+              (f) => f.id !== fileId
+            );
+            if (this.filesPage > 1 && this.filesPage > this.totalFilesPages) {
+              this.filesPage = this.totalFilesPages;
+            }
+          },
+          error: (err) => {
+            console.error("Error al eliminar archivo:", err);
+            this.fileError = "Error al eliminar el archivo";
+          },
+        });
     }
   }
 
@@ -1611,13 +1773,13 @@ export class PatientsComponent implements OnInit {
    */
   getFileIcon(category: string): string {
     switch (category) {
-      case 'IMAGE':
-        return '🖼️';
-      case 'VIDEO':
-        return '🎥';
-      case 'DOCUMENT':
+      case "IMAGE":
+        return "🖼️";
+      case "VIDEO":
+        return "🎥";
+      case "DOCUMENT":
       default:
-        return '📄';
+        return "📄";
     }
   }
 
@@ -1625,11 +1787,11 @@ export class PatientsComponent implements OnInit {
    * Formatear tamaño de archivo
    */
   formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
   }
 
   /**
@@ -1668,7 +1830,10 @@ export class PatientsComponent implements OnInit {
 
   get paginatedViewNotes(): Note[] {
     const start = (this.notesPage - 1) * this.recordPageSize;
-    return this.viewMedicalRecordNotes.slice(start, start + this.recordPageSize);
+    return this.viewMedicalRecordNotes.slice(
+      start,
+      start + this.recordPageSize
+    );
   }
 
   get totalViewNotesPages(): number {
@@ -1677,23 +1842,27 @@ export class PatientsComponent implements OnInit {
 
   get paginatedViewFiles(): BaseFile[] {
     const start = (this.filesPage - 1) * this.recordPageSize;
-    const isMedical = this.showViewMedicalRecordModal || this.showMedicalRecordModal;
-    const files = isMedical ? this.viewMedicalRecordFiles : this.viewPreviousRecordFiles;
+    const isMedical =
+      this.showViewMedicalRecordModal || this.showMedicalRecordModal;
+    const files = isMedical
+      ? this.viewMedicalRecordFiles
+      : this.viewPreviousRecordFiles;
 
-    console.log('Getter paginatedViewFiles:', {
+    console.log("Getter paginatedViewFiles:", {
       isMedical,
       totalFiles: files.length,
       page: this.filesPage,
-      returned: files.slice(start, start + this.recordPageSize).length
+      returned: files.slice(start, start + this.recordPageSize).length,
     });
 
     return files.slice(start, start + this.recordPageSize);
   }
 
   get totalFilesPages(): number {
-    const files = (this.showViewMedicalRecordModal || this.showMedicalRecordModal)
-      ? this.viewMedicalRecordFiles
-      : this.viewPreviousRecordFiles;
+    const files =
+      this.showViewMedicalRecordModal || this.showMedicalRecordModal
+        ? this.viewMedicalRecordFiles
+        : this.viewPreviousRecordFiles;
 
     return Math.ceil(files.length / this.recordPageSize);
   }
@@ -1701,7 +1870,9 @@ export class PatientsComponent implements OnInit {
   // Métodos para cambiar de página en el modal
   changeNotesPage(delta: number): void {
     const newPage = this.notesPage + delta;
-    const totalPages = this.showMedicalRecordModal ? this.totalNotesPages : this.totalViewNotesPages;
+    const totalPages = this.showMedicalRecordModal
+      ? this.totalNotesPages
+      : this.totalViewNotesPages;
     if (newPage >= 1 && newPage <= totalPages) {
       this.notesPage = newPage;
     }
@@ -1736,12 +1907,12 @@ export class PatientsComponent implements OnInit {
 
   openMedicalRecordFile(file: MedicalRecordFile): void {
     const url = `${environment.apiUrl}/medical-records/${file.medicalRecordId}/files/${file.id}/content`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   }
 
   openPreviousRecordFile(file: PreviousRecordFile): void {
     const url = `${environment.apiUrl}/previous-records/${file.previousRecordId}/files/${file.id}/content`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   }
 
   // ==================== PDF GENERATION ====================
@@ -1775,16 +1946,23 @@ export class PatientsComponent implements OnInit {
     this.generatedPdf = null;
 
     const selectedMedicalIds = Array.from(this.selectedMedicalRecords);
-    const observables = selectedMedicalIds.map(id => this.medicalRecordService.getMedicalRecordById(id));
+    const observables = selectedMedicalIds.map((id) =>
+      this.medicalRecordService.getMedicalRecordById(id)
+    );
 
-    const medicalRecordsSource$ = selectedMedicalIds.length > 0 ? forkJoin(observables) : new Observable<MedicalRecordDto[]>(sub => {
-      sub.next([]);
-      sub.complete();
-    });
+    const medicalRecordsSource$ =
+      selectedMedicalIds.length > 0
+        ? forkJoin(observables)
+        : new Observable<MedicalRecordDto[]>((sub) => {
+            sub.next([]);
+            sub.complete();
+          });
 
     medicalRecordsSource$.subscribe({
       next: (fullMedicalRecords) => {
-        const previousRecordsToPrint = this.previousRecords.filter(r => this.selectedPreviousRecords.has(r.id));
+        const previousRecordsToPrint = this.previousRecords.filter((r) =>
+          this.selectedPreviousRecords.has(r.id)
+        );
 
         // Load tracings for each medical record, then generate PDF
         if (fullMedicalRecords.length === 0) {
@@ -1792,46 +1970,52 @@ export class PatientsComponent implements OnInit {
           return;
         }
 
-        const tracingRequests = fullMedicalRecords.map(r =>
+        const tracingRequests = fullMedicalRecords.map((r) =>
           this.tracingService.getTracingsByMedicalRecordId(r.id)
         );
 
         forkJoin(tracingRequests).subscribe({
           next: (tracingsPerRecord) => {
-            fullMedicalRecords.forEach((r, i) => { r.tracings = tracingsPerRecord[i] || []; });
+            fullMedicalRecords.forEach((r, i) => {
+              r.tracings = tracingsPerRecord[i] || [];
+            });
             this.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint);
           },
-          error: () => this.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint)
+          error: () =>
+            this.buildAndShowPdf(fullMedicalRecords, previousRecordsToPrint),
         });
       },
       error: (err) => {
-        console.error('Error fetching full medical records for PDF:', err);
+        console.error("Error fetching full medical records for PDF:", err);
         this.pdfLoading = false;
-        alert('Error al obtener los detalles de las historias clínicas');
-      }
+        alert("Error al obtener los detalles de las historias clínicas");
+      },
     });
   }
 
-  private buildAndShowPdf(fullMedicalRecords: MedicalRecordDto[], previousRecordsToPrint: PreviousRecordListDto[]): void {
+  private buildAndShowPdf(
+    fullMedicalRecords: MedicalRecordDto[],
+    previousRecordsToPrint: PreviousRecordListDto[]
+  ): void {
     try {
       this.generatedPdf = this.pdfService.generatePatientPdf(
         this.selectedPatient!,
         fullMedicalRecords,
         previousRecordsToPrint
       );
-      this.generatedPdfBlob = this.generatedPdf.output('blob');
+      this.generatedPdfBlob = this.generatedPdf.output("blob");
       this.pdfLoading = false;
 
       setTimeout(() => {
-        const modalBody = document.querySelector('.modal-body.scrollable');
+        const modalBody = document.querySelector(".modal-body.scrollable");
         if (modalBody) {
           modalBody.scrollTop = modalBody.scrollHeight;
         }
       }, 100);
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error("Error generating PDF:", error);
       this.pdfLoading = false;
-      alert('Error al generar el PDF');
+      alert("Error al generar el PDF");
     }
   }
 
@@ -1839,11 +2023,13 @@ export class PatientsComponent implements OnInit {
    * Helper to get formatted filename
    */
   getPdfFileName(): string {
-    if (!this.selectedPatient) return 'historia_clinica.pdf';
-    const name = `${this.selectedPatient.lastName}_${this.selectedPatient.name}`.toLowerCase().replace(/\s+/g, '_');
+    if (!this.selectedPatient) return "historia_clinica.pdf";
+    const name = `${this.selectedPatient.lastName}_${this.selectedPatient.name}`
+      .toLowerCase()
+      .replace(/\s+/g, "_");
     const date = new Date();
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${name}_${day}_${month}_${year}.pdf`;
   }
@@ -1853,7 +2039,7 @@ export class PatientsComponent implements OnInit {
    */
   openPdf(): void {
     if (this.generatedPdf) {
-      window.open(this.generatedPdf.output('bloburl').toString(), '_blank');
+      window.open(this.generatedPdf.output("bloburl").toString(), "_blank");
     }
   }
   /**
@@ -1901,8 +2087,6 @@ export class PatientsComponent implements OnInit {
     this.openPdfModal();
   }
 
-
-
   /**
    * Preparar el envío por email
    */
@@ -1911,7 +2095,7 @@ export class PatientsComponent implements OnInit {
 
     // Set default subject
     this.emailSubject = `Historia Clínica - ${this.selectedPatient.lastName}, ${this.selectedPatient.name}`;
-    this.emailRecipient = '';
+    this.emailRecipient = "";
     this.showEmailModal = true;
   }
 
@@ -1920,8 +2104,8 @@ export class PatientsComponent implements OnInit {
    */
   cancelEmail(): void {
     this.showEmailModal = false;
-    this.emailRecipient = '';
-    this.emailSubject = '';
+    this.emailRecipient = "";
+    this.emailSubject = "";
   }
 
   /**
@@ -1935,7 +2119,9 @@ export class PatientsComponent implements OnInit {
 
     // 2. Construir el link mailto
     const subject = encodeURIComponent(this.emailSubject);
-    const body = encodeURIComponent(`Estimado/a,\n\nSe adjunta la historia clínica del paciente ${this.selectedPatient.name} ${this.selectedPatient.lastName}.\n\nAtentamente,\nCMED`);
+    const body = encodeURIComponent(
+      `Estimado/a,\n\nSe adjunta la historia clínica del paciente ${this.selectedPatient.name} ${this.selectedPatient.lastName}.\n\nAtentamente,\nCMED`
+    );
 
     // Nota: No podemos adjuntar archivos automáticamente via mailto por seguridad del navegador
     const mailtoLink = `mailto:${this.emailRecipient}?subject=${subject}&body=${body}`;
@@ -1944,18 +2130,22 @@ export class PatientsComponent implements OnInit {
     window.location.href = mailtoLink;
 
     // 4. Mostrar mensaje de instrucción
-    alert('El PDF se ha descargado en tu ordenador.\n\nSe ha abierto tu cliente de correo. Por favor, ARRASTRA o ADJUNTA el archivo PDF descargado al correo antes de enviarlo.');
+    alert(
+      "El PDF se ha descargado en tu ordenador.\n\nSe ha abierto tu cliente de correo. Por favor, ARRASTRA o ADJUNTA el archivo PDF descargado al correo antes de enviarlo."
+    );
 
     this.closePdfModal();
     this.showEmailModal = false;
   }
 
-
   // PDF Pagination Helpers
 
   get paginatedPdfMedicalRecords(): MedicalRecordListDto[] {
     const startIndex = (this.pdfMedicalPage - 1) * this.pdfItemsPerPage;
-    return this.medicalRecords.slice(startIndex, startIndex + this.pdfItemsPerPage);
+    return this.medicalRecords.slice(
+      startIndex,
+      startIndex + this.pdfItemsPerPage
+    );
   }
 
   get totalPdfMedicalPages(): number {
@@ -1971,7 +2161,10 @@ export class PatientsComponent implements OnInit {
 
   get paginatedPdfPreviousRecords(): PreviousRecordListDto[] {
     const startIndex = (this.pdfPreviousPage - 1) * this.pdfItemsPerPage;
-    return this.previousRecords.slice(startIndex, startIndex + this.pdfItemsPerPage);
+    return this.previousRecords.slice(
+      startIndex,
+      startIndex + this.pdfItemsPerPage
+    );
   }
 
   get totalPdfPreviousPages(): number {
@@ -1996,8 +2189,12 @@ export class PatientsComponent implements OnInit {
     this.generatedPdf = null;
 
     // Filter records
-    const medicalRecordsToPrint = this.medicalRecords.filter(r => this.selectedMedicalRecords.has(r.id));
-    const previousRecordsToPrint = this.previousRecords.filter(r => this.selectedPreviousRecords.has(r.id));
+    const medicalRecordsToPrint = this.medicalRecords.filter((r) =>
+      this.selectedMedicalRecords.has(r.id)
+    );
+    const previousRecordsToPrint = this.previousRecords.filter((r) =>
+      this.selectedPreviousRecords.has(r.id)
+    );
 
     // Wait a bit to show loading state (simulate async if needed, or just immediate)
     setTimeout(() => {
@@ -2009,9 +2206,9 @@ export class PatientsComponent implements OnInit {
         );
         this.pdfLoading = false;
       } catch (error) {
-        console.error('Error generating PDF:', error);
+        console.error("Error generating PDF:", error);
         this.pdfLoading = false;
-        alert('Error al generar el PDF');
+        alert("Error al generar el PDF");
       }
     }, 500);
   }
@@ -2021,7 +2218,7 @@ export class PatientsComponent implements OnInit {
    */
   openPdf_OLD(): void {
     if (this.generatedPdf) {
-      this.generatedPdf.output('dataurlnewwindow');
+      this.generatedPdf.output("dataurlnewwindow");
     }
   }
 
@@ -2033,12 +2230,16 @@ export class PatientsComponent implements OnInit {
       // In a real app, this would send the blob to a backend endpoint
       // For now, we'll open a mailto link with the subject
       const subject = `Historia Clínica - ${this.selectedPatient.lastName}, ${this.selectedPatient.name}`;
-      const body = 'Se adjunta la historia clínica solicitada.';
+      const body = "Se adjunta la historia clínica solicitada.";
 
       // We can't attach files via mailto, so we just open the client
-      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = `mailto:?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
 
-      alert('Se ha abierto su cliente de correo. Nota: No es posible adjuntar el PDF automáticamente desde el navegador por seguridad. Debe guardar el PDF y adjuntarlo manualmente.');
+      alert(
+        "Se ha abierto su cliente de correo. Nota: No es posible adjuntar el PDF automáticamente desde el navegador por seguridad. Debe guardar el PDF y adjuntarlo manualmente."
+      );
     }
   }
 }
