@@ -4,15 +4,15 @@ $OriginalLocation = Get-Location
 try {
     # 1. Build Angular Frontend
     Write-Host "Building Angular Frontend..."
-    Set-Location "cmed-web"
+    Set-Location "web"
     # Use npm to run the build script defined in package.json (handles ng and node options)
     npm install
     npm run build -- --configuration=production
 
     # 2. Copy Angular Build to Spring Boot Static Folder (Backend)
     Write-Host "Copying Frontend to Backend..."
-    $SourcePath = "dist/cmed"
-    $DestPath = "../cmed-app/src/main/resources/static"
+    $SourcePath = "dist/medcenter-manager"
+    $DestPath = "../app/src/main/resources/static"
 
     if (-not (Test-Path $SourcePath)) {
         Write-Error "Angular build output not found at $SourcePath. Did 'npm run build' succeed?"
@@ -26,7 +26,7 @@ try {
     Copy-Item "$SourcePath\*" $DestPath -Recurse -Force
 
     # 3. Build Spring Boot JAR
-    Set-Location "../cmed-app"
+    Set-Location "../app"
 
     # Run Tests
     Write-Host "Running Backend Tests..."
@@ -41,13 +41,13 @@ try {
     ./gradlew.bat bootJar
 
     # 4. Move JAR to Root
-    $JarSource = "build/libs/cmed-app-1.0.0.jar"
-    $JarDest = "../cmed.jar"
+    $JarSource = "build/libs/medcenter-manager-app-1.4.0.jar"
+    $JarDest = "../medcenter-manager.jar"
 
     if (Test-Path $JarSource) {
         Copy-Item $JarSource $JarDest -Force
         Write-Host "Success! Portable JAR created at: $JarDest"
-        Write-Host "Run with: java -jar cmed.jar"
+        Write-Host "Run with: java -jar medcenter-manager.jar"
     } else {
         Write-Error "JAR not found at $JarSource"
     }

@@ -1,0 +1,16 @@
+package com.medcentermanager.app.dtos.patients;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public record PatientListDto(
+        UUID id,
+        String name,
+        String lastName,
+        String secondLastName,
+        String dni,
+        String email,
+        LocalDate birthDate,
+        LocalDateTime createdAt
+) {}

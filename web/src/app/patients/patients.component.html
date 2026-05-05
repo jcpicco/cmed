@@ -1,0 +1,220 @@
+<div class="patients-container">
+  <div class="header">
+    <div class="header-left">
+      <button class="btn btn-secondary" routerLink="/">
+        ← Volver
+      </button>
+      <h1>Gestor de Pacientes</h1>
+    </div>
+    <button class="btn btn-success" (click)="openCreateForm()" [disabled]="showForm">
+      + Nuevo Paciente
+    </button>
+  </div>
+
+  <!-- Barra de búsqueda -->
+  <div class="search-section">
+    <input type="text" class="search-input" placeholder="Buscar por nombre, apellido, email o DNI..."
+      [(ngModel)]="searchTerm" (input)="applyFilters()" />
+    <span class="results-count">{{ filteredPatients.length }} paciente(s) encontrado(s)</span>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando pacientes...</p>
+  </div>
+
+  <!-- Formulario -->
+  <div *ngIf="showForm" class="form-section">
+    <div class="form-header">
+      <h2>{{ isEditMode ? 'Editar Paciente' : 'Crear Nuevo Paciente' }}</h2>
+      <button class="btn-close" (click)="closeForm()">✕</button>
+    </div>
+
+    <form [formGroup]="patientForm" (ngSubmit)="savePatient()" class="patient-form">
+      <!-- Error message -->
+      <div *ngIf="formError" class="alert alert-danger">
+        {{ formError }}
+      </div>
+
+      <!-- Row 1: First Name & Last Name -->
+      <div class="form-row three-cols">
+        <div class="form-group">
+          <label for="name">Nombre *</label>
+          <input type="text" id="name" formControlName="name" class="form-control" maxlength="50"
+            [class.is-invalid]="(formSubmitted || patientForm.get('name')?.touched) && patientForm.get('name')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('name')?.touched) && patientForm.get('name')?.invalid">
+            {{ getFieldError('name') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Apellido *</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control" maxlength="50"
+            [class.is-invalid]="(formSubmitted || patientForm.get('lastName')?.touched) && patientForm.get('lastName')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('lastName')?.touched) && patientForm.get('lastName')?.invalid">
+            {{ getFieldError('lastName') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="secondLastName">Segundo Apellido</label>
+          <input type="text" id="secondLastName" formControlName="secondLastName" class="form-control" maxlength="50"
+            [class.is-invalid]="(formSubmitted || patientForm.get('secondLastName')?.touched) && patientForm.get('secondLastName')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('secondLastName')?.touched) && patientForm.get('secondLastName')?.invalid">
+            {{ getFieldError('secondLastName') }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Row 2: Email & Phone -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" class="form-control" maxlength="100"
+            [class.is-invalid]="(formSubmitted || patientForm.get('email')?.touched) && patientForm.get('email')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('email')?.touched) && patientForm.get('email')?.invalid">
+            {{ getFieldError('email') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Teléfono *</label>
+          <input type="tel" id="phone" formControlName="phone" class="form-control" maxlength="15"
+            [class.is-invalid]="(formSubmitted || patientForm.get('phone')?.touched) && patientForm.get('phone')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('phone')?.touched) && patientForm.get('phone')?.invalid">
+            {{ getFieldError('phone') }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Row 3: DNI & Birth Date -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dni">DNI</label>
+          <input type="text" id="dni" formControlName="dni" class="form-control" maxlength="9"
+            [class.is-invalid]="(formSubmitted || patientForm.get('dni')?.touched) && patientForm.get('dni')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('dni')?.touched) && patientForm.get('dni')?.invalid">
+            {{ getFieldError('dni') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="birthDate">Fecha de Nacimiento *</label>
+          <input type="date" id="birthDate" formControlName="birthDate" class="form-control"
+            [class.is-invalid]="(formSubmitted || patientForm.get('birthDate')?.touched) && patientForm.get('birthDate')?.invalid" />
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('birthDate')?.touched) && patientForm.get('birthDate')?.invalid">
+            {{ getFieldError('birthDate') }}
+          </span>
+        </div>
+      </div>
+
+
+      <!-- Row 4: Allergies -->
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="allergies">Alergias</label>
+          <textarea id="allergies" formControlName="allergies" class="form-control" maxlength="255" rows="2"
+            [class.is-invalid]="(formSubmitted || patientForm.get('allergies')?.touched) && patientForm.get('allergies')?.invalid"></textarea>
+          <div class="char-counter">
+            {{ patientForm.get('allergies')?.value?.length || 0 }} / 255
+          </div>
+          <span class="error-message"
+            *ngIf="(formSubmitted || patientForm.get('allergies')?.touched) && patientForm.get('allergies')?.invalid">
+            {{ getFieldError('allergies') }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="closeForm()" [disabled]="formLoading">
+          Cancelar
+        </button>
+        <div class="spacer"></div>
+        <button type="submit" class="btn btn-primary" [disabled]="formLoading">
+          {{ formLoading ? 'Guardando...' : (isEditMode ? 'Guardar' : 'Crear') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabla de pacientes -->
+  <div *ngIf="!loading && !showForm" class="table-section">
+    <table class="patients-table">
+      <thead>
+        <tr>
+          <th (click)="sortPatients('name')" class="sortable">
+            Nombre <span *ngIf="patientSort.field === 'name'">{{ patientSort.direction === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th (click)="sortPatients('lastName')" class="sortable">
+            Apellido <span *ngIf="patientSort.field === 'lastName'">{{ patientSort.direction === 'asc' ? '↑' : '↓'
+              }}</span>
+          </th>
+          <th (click)="sortPatients('email')" class="sortable">
+            Email <span *ngIf="patientSort.field === 'email'">{{ patientSort.direction === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th (click)="sortPatients('dni')" class="sortable">
+            DNI <span *ngIf="patientSort.field === 'dni'">{{ patientSort.direction === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th (click)="sortPatients('birthDate')" class="sortable">
+            Nacimiento <span *ngIf="patientSort.field === 'birthDate'">{{ patientSort.direction === 'asc' ? '↑' : '↓'
+              }}</span>
+          </th>
+          <th (click)="sortPatients('createdAt')" class="sortable">
+            Creado <span *ngIf="patientSort.field === 'createdAt'">{{ patientSort.direction === 'asc' ? '↑' : '↓'
+              }}</span>
+          </th>
+          <th class="actions-col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of paginatedPatients" class="patient-row clickable"
+          [routerLink]="['/patients', patient.id]">
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.lastName }} {{ patient.secondLastName }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.dni }}</td>
+          <td>{{ formatDate(patient.birthDate) }}</td>
+          <td>{{ formatDateTime(patient.createdAt) }}</td>
+          <td class="actions-cell">
+            <a [href]="getPatientUrl(patient.id)" target="_blank" (click)="openInBackgroundTab($event, patient.id)" class="new-tab-btn" title="Abrir en nueva pestaña">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+              </svg>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="pagination" *ngIf="filteredPatients.length > 0">
+      <button class="btn btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">
+        ← Anterior
+      </button>
+
+      <div class="page-info">
+        Página {{ currentPage }} de {{ totalPages }}
+      </div>
+
+      <button class="btn btn-sm" (click)="nextPage()" [disabled]="currentPage >= totalPages || totalPages === 0">
+        Siguiente →
+      </button>
+    </div>
+  </div>
+
+  <!-- Sin resultados -->
+  <div *ngIf="!loading && filteredPatients.length === 0 && !showForm" class="no-results">
+    <p>No se encontraron pacientes</p>
+  </div>
+
+</div>

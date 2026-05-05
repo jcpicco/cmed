@@ -1,0 +1,5 @@
+<button class="theme-toggle-btn" (click)="toggleDarkMode()"
+    [title]="isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+    {{ isDarkMode ? '☀️' : '🌙' }}
+</button>
+<router-outlet></router-outlet>

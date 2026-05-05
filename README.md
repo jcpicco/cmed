@@ -1,11 +1,11 @@
-# CMED App
+# MedCenter Manager App
 
 Medical Management Application (Clinical Medical Management).
 
 ## 📚 Documentation
 
-- [API Reference](cmed-app/api.md): Documentation for REST endpoints, DTOs, and validations.
-- [File System](cmed-app/FILES.md): Documentation on attachment management, storage, and architecture.
+- [API Reference](medcenter-manager-app/api.md): Documentation for REST endpoints, DTOs, and validations.
+- [File System](medcenter-manager-app/FILES.md): Documentation on attachment management, storage, and architecture.
 
 ## 🚀 Version
 1.1.0
@@ -28,7 +28,7 @@ This version allows running the application (Backend + Frontend + Database) in a
 
 ### Build Instructions
 
-To generate the portable file `cmed-app-portable.jar`:
+To generate the portable file `medcenter-manager-app-portable.jar`:
 
 **On Windows:**
 ```powershell
@@ -45,7 +45,7 @@ The script will handle:
 1. Compiling the Angular frontend in production mode.
 2. Copying static files to the Spring Boot backend.
 3. Compiling the backend packaging everything together.
-4. Generating the `cmed-app-portable.jar` file in the project root.
+4. Generating the `medcenter-manager-app-portable.jar` file in the project root.
 
 ### How to Run
 

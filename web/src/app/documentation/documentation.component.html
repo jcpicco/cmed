@@ -1,0 +1,680 @@
+<div class="documentation-container">
+    <header class="doc-header">
+        <div class="header-content">
+            <h1>📚 Documentación del Sistema MedCenter Manager-WEB</h1>
+            <p>Guía completa para el uso del Gestor de Pacientes</p>
+            <button class="btn btn-primary" routerLink="/">
+                ← Volver al Inicio
+            </button>
+        </div>
+    </header>
+
+    <div class="doc-content">
+
+        <!-- Introduction -->
+        <section class="doc-section intro">
+            <h2>Introducción</h2>
+            <p>
+                El Gestor de Pacientes MedCenter Manager es una herramienta integral diseñada para simplificar la
+                administración de
+                historiales médicos. Permite gestionar pacientes, registrar historias clínicas completas, almacenar
+                antecedentes, gestionar notas y adjuntar documentación digital de forma segura y eficiente.
+            </p>
+            <div class="version-badge">
+                <strong>Versión 1.3.0</strong> - Actualizado el 23/04/2026
+            </div>
+        </section>
+
+        <!-- ============== GESTIÓN DE PACIENTES ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">👥</span>
+                <h2>Gestión de Pacientes</h2>
+            </div>
+            <div class="section-body">
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3>✨ Crear Paciente</h3>
+                        <p>Utiliza el botón <span class="badge badge-success">+ Nuevo Paciente</span> para registrar una
+                            nueva ficha. Es obligatorio ingresar:</p>
+                        <ul>
+                            <li>Nombre y apellido</li>
+                            <li>DNI (3-20 caracteres) <span class="badge badge-warning"
+                                    style="font-size: 0.6em">NEW</span></li>
+                            <li>Email (Opcional) <span class="badge badge-warning" style="font-size: 0.6em">NEW</span>
+                            </li>
+                            <li>Teléfono (3-20 caracteres) <span class="badge badge-warning"
+                                    style="font-size: 0.6em">NEW</span></li>
+                            <li>Fecha de nacimiento</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🔍 Búsqueda Inteligente</h3>
+                        <p>La barra de búsqueda en tiempo real permite encontrar pacientes instantáneamente por:</p>
+                        <ul>
+                            <li>Nombre</li>
+                            <li>Apellido</li>
+                            <li>DNI</li>
+                            <li>Correo electrónico</li>
+                        </ul>
+                        <p class="note">Los resultados se filtran automáticamente mientras escribes y ahora
+                            <strong>ignoran acentos y mayúsculas/minúsculas</strong>.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🌙 Modo Oscuro</h3>
+                        <p>Nuevo botón de alternancia en la esquina superior derecha para cambiar entre tema claro y
+                            oscuro.</p>
+                        <p>Ideal para reducir la fatiga visual en entornos con poca luz.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🔄 Ordenamiento Dinámico</h3>
+                        <p>Haz click en cualquier cabecera de columna para ordenar:</p>
+                        <ul>
+                            <li>Nombre, Apellido</li>
+                            <li>Email, DNI</li>
+                            <li>Fecha de nacimiento</li>
+                            <li>Fecha de creación (con hora)</li>
+                        </ul>
+                        <p class="note">El primer click ordena descendente ↓, el segundo ascendente ↑</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>📄 Paginación</h3>
+                        <p>La lista muestra <strong>10 pacientes por página</strong> con controles de navegación:</p>
+                        <ul>
+                            <li>← Anterior / Siguiente →</li>
+                            <li>Indicador "Página X de Y"</li>
+                            <li>Botones deshabilitados en límites</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3>🆕 Apertura de Fichas <span class="badge badge-warning" style="font-size: 0.6em">NEW
+                                v1.2</span></h3>
+                        <p>Los pacientes cuentan con un botón en su listado para <strong>abrir la ficha en una pestaña
+                                nueva</strong> (en segundo plano), permitiendo revisar historial sin perder la
+                            navegación de la lista.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>✏️ Edición de Datos</h3>
+                        <p>Accede al perfil del paciente y selecciona <span class="badge badge-primary">Editar</span>
+                            para actualizar su información de contacto.</p>
+                        <p class="note"><strong>Nota:</strong> El DNI no puede modificarse una vez creado el paciente.
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>📅 Formato de Fechas</h3>
+                        <p>Las fechas se muestran en formato español:</p>
+                        <ul>
+                            <li><strong>Nacimiento:</strong> dd/mm/aaaa (ej: 04/12/1998)</li>
+                            <li><strong>Creado:</strong> dd/mm/aaaa hh:mm (ej: 08/02/2026 23:30)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============== VISTA DE DETALLES ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📊</span>
+                <h2>Vista de Detalles del Paciente</h2>
+            </div>
+            <div class="section-body">
+                <p>Al hacer click en un paciente, se abre un panel lateral con <strong>3 pestañas principales</strong>:
+                </p>
+
+                <div class="tabs-info">
+                    <div class="tab-card">
+                        <h3>📋 Historia Clínica</h3>
+                        <p>Registros médicos de consultas y tratamientos actuales</p>
+                    </div>
+                    <div class="tab-card">
+                        <h3>📂 Antecedentes</h3>
+                        <p>Historial médico previo y documentación antigua</p>
+                    </div>
+                    <div class="tab-card">
+                        <h3>📝 Notas</h3>
+                        <p>Notas generales independientes del paciente</p>
+                    </div>
+                </div>
+
+                <p class="note">
+                    <strong>Nota:</strong> Todas las listas tienen ordenamiento por columna (por defecto, lo más antiguo
+                    primero <span class="badge badge-warning" style="font-size: 0.6em">NEW</span>) y
+                    truncamiento automático de texto largo (máximo 100 caracteres + "...") expandible al hacer clic
+                    <span class="badge badge-warning" style="font-size: 0.6em">NEW</span>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============== HISTORIA CLÍNICA ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📋</span>
+                <h2>Historia Clínica</h2>
+            </div>
+            <div class="section-body">
+                <h3>🏥 Estructura de un Registro Médico</h3>
+                <p>Cada registro médico contiene:</p>
+
+                <div class="card-list">
+                    <div class="info-card">
+                        <h4>1️⃣ Enfermedad Actual</h4>
+                        <p>Descripción principal del motivo de consulta o condición actual del paciente.</p>
+                        <span class="required">Obligatorio</span>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>2️⃣ Antecedentes</h4>
+                        <p>Descripción de antecedentes médicos o quirúrgicos relevantes para la consulta actual.</p>
+                        <span class="optional">Opcional</span>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>3️⃣ Valoraciones</h4>
+                        <p>Notas médicas asociadas al registro para seguimiento evolutivo.</p>
+                        <ul>
+                            <li>Se agregan desde el modal de edición</li>
+                            <li>Paginación: 3 valoraciones por página</li>
+                            <li>Se pueden eliminar individualmente</li>
+                        </ul>
+                        <span class="optional">Opcional</span>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>4️⃣ Diagnósticos</h4>
+                        <p>Diagnósticos médicos con tratamiento opcional.</p>
+                        <ul>
+                            <li>Descripción del diagnóstico (obligatorio)</li>
+                            <li>Prescripción/Tratamiento (opcional)</li>
+                            <li>Paginación: 3 diagnósticos por página</li>
+                        </ul>
+                        <span class="optional">Opcional</span>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>5️⃣ Archivos Adjuntos</h4>
+                        <p>Documentos, imágenes o videos relacionados.</p>
+                        <ul>
+                            <li>Solo disponible en modo edición</li>
+                            <li>Tipos: 📄 Documentos, 🖼️ Imágenes, 🎥 Videos</li>
+                            <li>Visualización de metadatos (nombre, tamaño, fecha)</li>
+                        </ul>
+                        <span class="optional">Opcional</span>
+                    </div>
+                </div>
+
+                <h3>🔄 Flujo de Trabajo</h3>
+                <div class="workflow">
+                    <div class="step">
+                        <strong>1.</strong> Click en <span class="badge">+ Agregar Registro</span>
+                    </div>
+                    <div class="step">
+                        <strong>2.</strong> Completar "Enfermedad Actual" y "Antecedentes" (si aplica)
+                    </div>
+                    <div class="step">
+                        <strong>3.</strong> Agregar Valoraciones (opcional)
+                    </div>
+                    <div class="step">
+                        <strong>4.</strong> Agregar Diagnósticos (opcional)
+                    </div>
+                    <div class="step">
+                        <strong>5.</strong> Click en <span class="badge badge-success">Crear</span>
+                    </div>
+                    <div class="step">
+                        <strong>6.</strong> Se abre automáticamente la vista del registro
+                    </div>
+                    <div class="step">
+                        <strong>7.</strong> Click en <span class="badge badge-primary">Actualizar</span> para editar
+                    </div>
+                    <div class="step">
+                        <strong>8.</strong> Subir archivos adjuntos en modo edición
+                    </div>
+                    <div class="step">
+                        <strong>9.</strong> Click en <span class="badge badge-success">Guardar</span>
+                    </div>
+                    <div class="step">
+                        <strong>10.</strong> Vuelve a la vista con datos actualizados ✅
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============== ANTECEDENTES ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📂</span>
+                <h2>Antecedentes Médicos</h2>
+            </div>
+            <div class="section-body">
+                <p>Registro de antecedentes personales y familiares del paciente.</p>
+
+                <h3>📌 Casos de Uso</h3>
+                <div class="use-cases">
+                    <div class="case">🩹 Alergias conocidas</div>
+                    <div class="case">🏥 Cirugías previas</div>
+                    <div class="case">🔬 Enfermedades crónicas</div>
+                    <div class="case">👨‍👩‍👧 Antecedentes familiares</div>
+                    <div class="case">💊 Medicación habitual</div>
+                    <div class="case">🚑 Hospitalizaciones anteriores</div>
+                </div>
+
+                <h3>✨ Características</h3>
+                <ul>
+                    <li>Mismo diseño y flujo que Historia Clínica</li>
+                    <li>Modal de creación/edición separado de vista</li>
+                    <li>Soporte para archivos adjuntos</li>
+                    <li>Ordenamiento por descripción o fecha</li>
+                    <li>Paginación: 10 registros por página</li>
+                    <li>Truncamiento de texto: 100 caracteres + "..."</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============== NOTAS DEL PACIENTE (NUEVO) ============== -->
+        <section class="doc-section highlight">
+            <div class="section-header">
+                <span class="icon">📝</span>
+                <h2>Notas del Paciente <span class="badge badge-warning"
+                        style="font-size: 0.6em; vertical-align: middle;">NEW v1.1</span></h2>
+            </div>
+            <div class="section-body">
+                <p class="intro-highlight">
+                    Sistema independiente de notas <strong>directamente asociadas al paciente</strong>,
+                    separado de las valoraciones de registros médicos.
+                </p>
+
+                <h3>🆚 Diferencia con Valoraciones</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Notas de Paciente</th>
+                            <th>Valoraciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Asociación</strong></td>
+                            <td>Directa al paciente</td>
+                            <td>Asociada a registro médico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ubicación</strong></td>
+                            <td>Pestaña "Notas"</td>
+                            <td>Dentro de Historia Clínica</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uso</strong></td>
+                            <td>Notas generales, recordatorios</td>
+                            <td>Información de consulta específica</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gestión</strong></td>
+                            <td>Modal independiente</td>
+                            <td>Dentro del modal de HC</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>✨ Funcionalidades</h3>
+                <div class="feature-list">
+                    <div class="feature">✅ Modal de creación/edición propio</div>
+                    <div class="feature">✅ Modal de vista de solo lectura</div>
+                    <div class="feature">✅ Mismo diseño que HC y Antecedentes</div>
+                    <div class="feature">✅ Ordenamiento por descripción o fecha</div>
+                    <div class="feature">✅ Paginación: 10 notas por página</div>
+                    <div class="feature">✅ Truncamiento de texto largo</div>
+                    <div class="feature">✅ Actualización automática de vistas</div>
+                </div>
+
+                <h3>🔄 Cómo Usarlo</h3>
+                <ol class="steps-list">
+                    <li>Selecciona un paciente de la lista</li>
+                    <li>Ve a la pestaña <strong>📝 Notas</strong></li>
+                    <li>Click en <span class="badge">+ Agregar Registro</span></li>
+                    <li>Escribe la descripción de la nota</li>
+                    <li>Click en <span class="badge badge-success">Crear</span></li>
+                    <li>La lista se actualiza automáticamente</li>
+                    <li>Click en una nota para ver detalles</li>
+                    <li>Click en <span class="badge badge-primary">Actualizar</span> para editar</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============== SISTEMA DE MODALES ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">🪟</span>
+                <h2>Sistema de Modales</h2>
+            </div>
+            <div class="section-body">
+                <p>Todos los registros (Historia Clínica, Antecedentes, Notas) usan un sistema de <strong>doble
+                        modal</strong>:</p>
+
+                <div class="modal-types">
+                    <div class="modal-type">
+                        <h3>1️⃣ Modal de Creación/Edición</h3>
+                        <ul>
+                            <li>Formulario reactivo con validaciones</li>
+                            <li>Título dinámico: "Crear" o "Editar"</li>
+                            <li>Gestión de sub-elementos (valoraciones, diagnósticos, archivos)</li>
+                            <li>Botón "Eliminar" solo en modo edición</li>
+                            <li>Botones "Cancelar" y "Crear"/"Guardar"</li>
+                            <li>Indicadores de carga durante guardado</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-type">
+                        <h3>2️⃣ Modal de Vista (Solo Lectura)</h3>
+                        <ul>
+                            <li>Visualización de todos los datos</li>
+                            <li>Listas paginadas de sub-elementos</li>
+                            <li>Sin campos editables</li>
+                            <li>Botón "Cerrar" para salir</li>
+                            <li>Botón "Actualizar" para ir a modo edición</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🔄 Navegación Entre Modales</h3>
+                <div class="modal-flow">
+                    <span>Lista</span> →
+                    <span>Click</span> →
+                    <span class="highlight">Modal Vista</span> →
+                    <span>Click "Actualizar"</span> →
+                    <span class="highlight">Modal Edición</span> →
+                    <span>Guardar</span> →
+                    <span class="highlight">Modal Vista (Actualizado)</span> ✅
+                </div>
+            </div>
+        </section>
+
+        <!-- ============== GESTIÓN DE ARCHIVOS ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📎</span>
+                <h2>Gestión de Archivos</h2>
+            </div>
+            <div class="section-body">
+                <p>El sistema permite adjuntar archivos a Historia Clínica y Antecedentes.</p>
+
+                <h3>📋 Tipos de Archivos Soportados</h3>
+                <div class="file-types">
+                    <div class="type"><span class="icon">📄</span> DOCUMENT (PDF, Word, Excel, etc.)</div>
+                    <div class="type"><span class="icon">🖼️</span> IMAGE (JPG, PNG, GIF, etc.)</div>
+                    <div class="type"><span class="icon">🎥</span> VIDEO (MP4, AVI, MOV, etc.)</div>
+                </div>
+
+                <h3>✨ Funcionalidades</h3>
+                <ul>
+                    <li>Subida de archivos solo en modo edición</li>
+                    <li>Visualización de metadatos (nombre, tamaño, fecha y hora de creación)</li>
+                    <li>Descarga/apertura en nueva pestaña</li>
+                    <li>Eliminación con confirmación</li>
+                    <li>Iconos según categoría del archivo</li>
+                    <li>Paginación: 3 archivos por página en modales</li>
+                </ul>
+
+                <p class="note">
+                    <strong>Nota:</strong> Los archivos se almacenan en el servidor y se pueden previsualizar
+                    o descargar directamente desde el detalle del registro.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============== GENERACIÓN DE REPORTES PDF ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📄</span>
+                <h2>Generación de Reportes PDF</h2>
+            </div>
+            <div class="section-body">
+                <p>Funcionalidad completa para generar, descargar y enviar historias clínicas en formato PDF.</p>
+
+                <h3>🚀 Características Principales</h3>
+                <ul>
+                    <li><strong>Selección Interactiva:</strong> Modal dedicado para elegir qué registros incluir.</li>
+                    <li><strong>Control Total:</strong> Casillas de verificación para "Historia Clínica" y
+                        "Antecedentes".</li>
+                    <li><strong>Estilo Uniforme:</strong> Listas de selección con diseño "Valoraciones" para mejor
+                        legibilidad.</li>
+                    <li><strong>Paginación:</strong> Listas de selección paginadas (3 registros por página).</li>
+                    <li><strong>Nuevo v1.3.0:</strong> Selector de tipo de documento con dos flujos:
+                        <code>Historial clínico</code> o <code>Consentimientos predefinidos</code>.</li>
+                    <li><strong>Nuevo v1.3.0:</strong> Plantillas de consentimiento con formulario dinámico y
+                        validaciones por campo.</li>
+                    <li><strong>Nuevo v1.3.0:</strong> Soporte de campos tipo selector (ej: tipo de representante
+                        legal).</li>
+                </ul>
+
+                <h3>📝 Formato del Documento</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>Encabezado y Pie de Página</h4>
+                        <p>Logo oficial de la clínica, información de contacto web/email. Pie de página corporativo con
+                            firma médica y títulos profesionales.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Datos del Paciente</h4>
+                        <p>Diseño centrado con título en colSpan. <strong>¡Limpieza automática!</strong> Los datos no
+                            informados (tanto de cabecera como de historial clínico) se ocultan completamente del PDF.
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Detalle Completo</h4>
+                        <p>Registros sin cuadros vacíos, incluyendo:</p>
+                        <ul>
+                            <li><strong>VALORACIONES:</strong> Notas de evolución.</li>
+                            <li><strong>DIAGNÓSTICOS:</strong> Tratamiento y conducta.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🖱️ Acciones Disponibles</h3>
+                <div class="action-buttons-doc" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn btn-primary" style="pointer-events: none;">Vista previa</button>
+                    <button class="btn btn-secondary" style="pointer-events: none;">Enviar por Email</button>
+                </div>
+                <ul style="margin-top: 10px;">
+                    <li><strong>Vista previa:</strong> Abre el PDF generado en una pestaña nueva para validarlo antes de
+                        enviarlo o descargarlo.</li>
+                    <li><strong>Descargar PDF:</strong> En el flujo clásico, se guarda con nombre estandarizado:
+                        <code>nombre_apellido_dd_mm_aaaa.pdf</code>.
+                    </li>
+                    <li><strong>Descargar consentimiento:</strong> En plantillas, se descarga como:
+                        <code>plantilla_[templateId].pdf</code>.
+                    </li>
+                    <li><strong>Enviar por Email:</strong> Abre tu cliente de correo (Outlook, Mail, etc.) con el asunto
+                        y
+                        cuerpo predefinidos. <strong>Nota:</strong> El PDF se descarga automáticamente y debes
+                        adjuntarlo manualmente al correo.</li>
+                </ul>
+
+                <h3>🧾 Consentimientos Disponibles (v1.3.0)</h3>
+                <ul>
+                    <li><strong>Consentimiento Infusión de Vitamina C</strong></li>
+                    <li><strong>Consentimiento básico sin fármacos</strong></li>
+                    <li><strong>Consentimiento Autohemotransfusión con Ozono</strong></li>
+                </ul>
+            </div>
+        </section>
+
+
+        <!-- ============== EJECUTABLE PORTABLE ============== -->
+        <section class="doc-section highlight">
+            <div class="section-header">
+                <span class="icon">🚀</span>
+                <h2>Lanzamiento Portable <span class="badge badge-warning"
+                        style="font-size: 0.6em; vertical-align: middle;">NEW v1.1</span></h2>
+            </div>
+            <div class="section-body">
+                <p>
+                    Ahora MedCenter Manager cuenta con soporte para ser lanzado como un ejecutable portable, agrupando
+                    base de datos,
+                    backend y frontend.
+                </p>
+                <ul>
+                    <li>Sin necesidad de Docker.</li>
+                    <li>Soporta doble clic para ejecutar.</li>
+                    <li>Ejecuta <code>build_portable.ps1</code> o <code>build_portable.sh</code> para compilar la
+                        aplicación completa en un único archivo JAR.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============== DOCUMENTACIÓN DE API (SWAGGER) ============== -->
+        <section class="doc-section highlight">
+            <div class="section-header">
+                <span class="icon">🔌</span>
+                <h2>Documentación de API (Swagger) <span class="badge badge-warning"
+                        style="font-size: 0.6em; vertical-align: middle;">NEW v1.1</span></h2>
+            </div>
+            <div class="section-body">
+                <p>
+                    El backend está completamente documentado utilizando OpenAPI 3 (Swagger UI).
+                    Esto permite explorar y probar interactivamente todos los endpoints de la API.
+                </p>
+                <ul>
+                    <li><strong>Interfaz Visual (Swagger UI):</strong> <a
+                            href="http://localhost:8080/swagger-ui/index.html"
+                            target="_blank">http://localhost:8080/swagger-ui/index.html</a></li>
+                    <li><strong>Definición JSON (OpenAPI v3):</strong> <a href="http://localhost:8080/v3/api-docs"
+                            target="_blank">http://localhost:8080/v3/api-docs</a></li>
+                </ul>
+                <p class="note">
+                    Asegúrate de que el backend esté en ejecución (por ejemplo, mediante <code>./gradlew bootRun</code>
+                    o tu ejecutable portable) para acceder a estas URLs.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============== CHANGELOG REDUCIDO ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">📦</span>
+                <h2>Changelog (Historial de Cambios)</h2>
+            </div>
+            <div class="section-body">
+                <h3>Versión 1.3.0 <span class="badge badge-success"
+                        style="font-size: 0.6em; vertical-align: middle;">ACTUAL</span></h3>
+                <ul>
+                    <li><strong>Feature:</strong> Nuevo motor de PDFs por plantilla con <code>pdf-lib</code> para
+                        rellenar consentimientos predefinidos.</li>
+                    <li><strong>Feature:</strong> Nuevo selector de tipo de documento en el modal PDF (historial clásico
+                        vs. plantillas).</li>
+                    <li><strong>Feature:</strong> Integración de 3 consentimientos en español: Vitamina C, Básico sin
+                        fármacos y Autohemotransfusión con Ozono.</li>
+                    <li><strong>Mejora:</strong> Formulario dinámico por plantilla con validaciones y autocompletado de
+                        nombre, DNI, edad y fecha.</li>
+                    <li><strong>Mejora:</strong> Nuevo tipo de campo <code>select</code> para "Tipo de representante
+                        legal" con opciones: representante legal, familiar o allegado.</li>
+                    <li><strong>Bugfix:</strong> Ajustes de posicionamiento de campos en consentimiento básico sin
+                        fármacos para alinear correctamente sobre líneas del PDF.</li>
+                    <li><strong>Bugfix:</strong> Corrección de compatibilidad al generar Blob del PDF de plantillas.
+                    </li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">Versión 1.2.2</h3>
+                <ul>
+                    <li><strong>Feature:</strong> Apertura de pacientes en nueva pestaña en segundo plano desde el
+                        listado.</li>
+                    <li><strong>Mejora:</strong> Buscador de pacientes normalizado (insensible a mayúsculas y acentos).
+                    </li>
+                    <li><strong>Mejora PDF:</strong> Rediseño total de la estructura de tablas PDF. Cabecera clínica y
+                        pie de página de Dr. Consigliere.</li>
+                    <li><strong>Mejora PDF:</strong> Diseño dinámico inteligente que oculta campos o filas de
+                        antecedentes y clínica que estén vacíos en el documento PDF para un informe limpio.</li>
+                    <li><strong>UI/UX:</strong> Indicadores visuales en letra itálica para los campos que no hayan sido
+                        cubiertos en la ficha web del paciente (Mostrando "No proporcionado").</li>
+                    <li><strong>Bugfix:</strong> Corrección de los espaciados, bordes y paginación en el generador de
+                        PDF (jspdf-autotable).</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">Versión 1.1</h3>
+                <ul>
+                    <li><strong>Feature:</strong> Documentación interactiva de la API Backend integrada usando
+                        Swagger/OpenAPI 3.</li>
+                    <li><strong>Feature:</strong> Lanzamiento como ejecutable (.JAR) mediante scripts portables
+                        (Windows/Linux).</li>
+                    <li><strong>Feature:</strong> Nuevo sistema de notas directamente vinculadas al paciente.</li>
+                    <li><strong>Mejora:</strong> Refactorización de todos los endpoints de la API Backend a formato
+                        kebab-case (ej. <code>/api/medical-records</code>) mejorando la consistencia RESTful.</li>
+                    <li><strong>Mejora:</strong> Modo Oscuro optimizado para el exportador a PDF y validaciones.</li>
+                    <li><strong>Mejora:</strong> Reportes PDF refactorizados con mejor estructura, logo centrado, y
+                        botones mejorados.</li>
+                    <li><strong>Mejora:</strong> Listas ordenadas por defecto de más antiguo a más reciente; texto
+                        expandible en detalles.</li>
+                    <li><strong>Componentes:</strong> Extracción de <code>patient-detail</code> para un enrutamiento
+                        lazy-loaded.</li>
+                    <li><strong>Formularios:</strong> Validaciones más amigables (DNI, Teléfono) y campo Email opcional.
+                        Alertas visuales "on-touch".</li>
+                    <li><strong>Arquitectura:</strong> Simplificación del Backend quitando el subdirectorio
+                        <code>app/</code> y eliminando Docker por defecto. Rutas REST estandarizadas.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============== CONSEJOS Y BUENAS PRÁCTICAS ============== -->
+        <section class="doc-section">
+            <div class="section-header">
+                <span class="icon">💡</span>
+                <h2>Consejos y Buenas Prácticas</h2>
+            </div>
+            <div class="section-body">
+                <div class="tips">
+                    <div class="tip">
+                        <h4>✅ Usa Notas del Paciente para:</h4>
+                        <ul>
+                            <li>Recordatorios generales</li>
+                            <li>Observaciones importantes no ligadas a una consulta</li>
+                            <li>Información administrativa</li>
+                            <li>Alertas sobre el paciente</li>
+                        </ul>
+                    </div>
+
+                    <div class="tip">
+                        <h4>✅ Usa Valoraciones (HC) para:</h4>
+                        <ul>
+                            <li>Evolución de un tratamiento específico</li>
+                            <li>Notas de seguimiento de consulta</li>
+                            <li>Observaciones médicas de un registro</li>
+                        </ul>
+                    </div>
+
+                    <div class="tip">
+                        <h4>✅ Organiza los Archivos:</h4>
+                        <ul>
+                            <li>Usa nombres descriptivos al subir archivos</li>
+                            <li>Adjunta estudios a su registro correspondiente</li>
+                            <li>Documentación antigua va en Antecedentes</li>
+                            <li>Estudios recientes van en Historia Clínica</li>
+                        </ul>
+                    </div>
+
+                    <div class="tip">
+                        <h4>✅ Aprovecha el Ordenamiento:</h4>
+                        <ul>
+                            <li>Ordena por fecha para ver lo más reciente</li>
+                            <li>Ordena por descripción para buscar alfabéticamente</li>
+                            <li>Click en la misma columna alterna asc/desc</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="doc-footer">
+            <p>
+                <strong>Sistema MedCenter Manager-WEB v1.3.0</strong> - Desarrollado para la gestión médica integral<br>
+                Última actualización: 23/04/2026
+            </p>
+            <button class="btn btn-primary" routerLink="/">
+                ← Volver al Inicio
+            </button>
+        </footer>
+
+    </div>
+</div>
