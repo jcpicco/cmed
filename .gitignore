@@ -28,17 +28,17 @@ gradle-app.setting
 logs/
 *.log
 
-# CMED Specific
+# MedCenter Manager Specific
 cmed-files/
-cmed.jar
-cmed-app-portable.jar
+medcenter-manager.jar
+medcenter-manager-app-portable.jar
 
 # Frontend (generated)
-cmed-web/dist/
-cmed-web/node_modules/
-cmed-web/.angular/
+web/dist/
+web/node_modules/
+web/.angular/
 
 # Backend (generated)
-cmed-app/.gradle/
-cmed-app/build/
-cmed-app/bin/
+app/.gradle/
+app/build/
+app/bin/

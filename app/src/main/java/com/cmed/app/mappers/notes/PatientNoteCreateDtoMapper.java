@@ -1,0 +1,26 @@
+package com.medcentermanager.app.mappers.notes;
+
+import com.medcentermanager.app.dtos.notes.NoteCreateDto;
+import com.medcentermanager.app.models.notes.PatientNote;
+import com.medcentermanager.app.models.Patient;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+import java.util.UUID;
+
+@Mapper(componentModel = "spring")
+public interface PatientNoteCreateDtoMapper {
+
+
+
+    NoteCreateDto toDto(PatientNote note);
+
+    @Mapping(target = "patient", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    PatientNote toEntity(NoteCreateDto dto);
+
+
+}

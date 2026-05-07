@@ -1,0 +1,89 @@
+<div class="container">
+  <header class="header">
+    <h1>🏥 Sistema de Gestión Médica</h1>
+    <p class="subtitle">Conectado a medcenter-manager-app Backend</p>
+  </header>
+
+  <!-- Status Backend -->
+  <section class="status-section">
+    <h2>Estado del Sistema</h2>
+
+    <div *ngIf="loading" class="loading">
+      ⏳ Conectando al backend...
+    </div>
+
+    <div *ngIf="error" class="error-box">
+      {{ error }}
+    </div>
+
+    <div *ngIf="backendConnected && !loading" class="success-box">
+      ✅ <strong>Backend conectado exitosamente!</strong>
+      <p>{{ patients.length }} pacientes encontrados en la base de datos</p>
+    </div>
+  </section>
+
+  <!-- Información de Servicios -->
+  <section class="services-section">
+    <h2>Servicios Disponibles</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>👥 Pacientes</h3>
+        <p>7 métodos CRUD</p>
+      </div>
+      <div class="service-card">
+        <h3>📋 Registros Médicos</h3>
+        <p>5 métodos CRUD</p>
+      </div>
+      <div class="service-card">
+        <h3>🩺 Diagnósticos</h3>
+        <p>5 métodos CRUD</p>
+      </div>
+      <div class="service-card">
+        <h3>📝 Notas</h3>
+        <p>5 métodos CRUD</p>
+      </div>
+      <div class="service-card">
+        <h3>📂 Registros Previos</h3>
+        <p>5 métodos CRUD</p>
+      </div>
+      <div class="service-card">
+        <h3>📁 Archivos</h3>
+        <p>2 métodos (upload/delete)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de Pacientes -->
+  <section class="patients-section" *ngIf="backendConnected && patients.length > 0">
+    <h2>Pacientes Registrados</h2>
+    <div class="patient-list">
+      <div class="patient-card" *ngFor="let patient of patients">
+        <h4>{{ patient.firstName }} {{ patient.lastName }}</h4>
+        <p><strong>DNI:</strong> {{ patient.dni }}</p>
+        <p><strong>Email:</strong> {{ patient.email }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instrucciones de Instalación -->
+  <section class="instructions-section" *ngIf="!backendConnected">
+    <h2>¿Cómo Iniciar el Backend?</h2>
+    <p>Abre otra terminal y ejecuta:</p>
+    <code>
+      cd ~/Documents/git/medcenter-manager-app<br>
+      ./gradlew bootRun
+    </code>
+    <p>El backend estará disponible en: <strong>http://localhost:8080</strong></p>
+  </section>
+
+  <!-- Documentación -->
+  <section class="docs-section">
+    <h2>📚 Documentación</h2>
+    <ul>
+      <li><a href="../../START_HERE.md" target="_blank">START_HERE.md</a> - Comienza aquí</li>
+      <li><a href="../../QUICK_START.md" target="_blank">QUICK_START.md</a> - Inicio rápido</li>
+      <li><a href="../../SERVICIOS_README.md" target="_blank">SERVICIOS_README.md</a> - Guía de servicios</li>
+      <li><a href="../../FAQ_SERVICIOS.md" target="_blank">FAQ_SERVICIOS.md</a> - Preguntas frecuentes</li>
+    </ul>
+  </section>
+</div>
