@@ -9,19 +9,29 @@ import { PdfService } from "./pdf.service";
 
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
-export type PdfFlowType = "legacy" | "template";
+export type PdfFlowType = "legacy" | "template" | "factura";
 
 export interface PdfTemplateField {
   key: string;
   label: string;
-  pageIndex: number;
-  x: number;
-  y: number;
-  inputType?: "text" | "select";
-  options?: string[];
+  x?: number;
+  y?: number;
+  pageIndex?: number;
   fontSize?: number;
+  inputType?: "text" | "textarea" | "select";
+  options?: string[];
   maxLength?: number;
   required?: boolean;
+  maxWidth?: number;
+  lineHeight?: number;
+  maxLines?: number;
+  positions?: {
+    pageIndex: number;
+    x: number;
+    y: number;
+    valueMatch?: string;
+    drawValue?: string;
+  }[];
 }
 
 export interface PdfTemplateDefinition {
@@ -44,22 +54,45 @@ export class PdfManagerService {
         {
           key: "date",
           label: "Fecha",
+          x: 140,
+          y: 690,
           pageIndex: 0,
-          x: 104,
-          y: 291,
-          fontSize: 12,
-          maxLength: 20,
+          fontSize: 11,
           required: true,
         },
         {
           key: "fullName",
           label: "Nombre y Apellidos",
+          x: 172,
+          y: 225,
           pageIndex: 0,
-          x: 175,
-          y: 250,
-          fontSize: 12,
-          maxLength: 100,
+          fontSize: 11,
           required: true,
+        },
+        {
+          key: "dni",
+          label: "DNI/NIF",
+          x: 410,
+          y: 225,
+          pageIndex: 0,
+          fontSize: 11,
+          required: true,
+        },
+        {
+          key: "legalRepresentativeName",
+          label: "Representante legal",
+          x: 98,
+          y: 250,
+          pageIndex: 0,
+          fontSize: 11,
+        },
+        {
+          key: "legalRepresentativeDni",
+          label: "DNI/NIF Representante",
+          x: 410,
+          y: 250,
+          pageIndex: 0,
+          fontSize: 11,
         },
       ],
     },
@@ -69,82 +102,135 @@ export class PdfManagerService {
       assetPath: "assets/pdf/vitc_infusion_es.pdf",
       fields: [
         {
-          key: "fullName",
-          label: "Nombre y apellidos del paciente",
+          key: "date",
+          label: "Fecha",
+          x: 150,
+          y: 702,
           pageIndex: 0,
-          x: 101,
-          y: 643,
           fontSize: 11,
-          maxLength: 100,
           required: true,
         },
         {
-          key: "age",
-          label: "Edad del paciente",
-          pageIndex: 0,
-          x: 69,
-          y: 632,
+          key: "fullName",
+          label: "Nombre y apellidos",
+          positions: [
+            { pageIndex: 0, x: 158, y: 608 },
+            { pageIndex: 1, x: 172, y: 429 },
+          ],
           fontSize: 11,
-          maxLength: 3,
           required: true,
         },
         {
           key: "dni",
-          label: "DNI del paciente",
-          pageIndex: 0,
-          x: 221,
-          y: 632,
+          label: "DNI",
+          positions: [
+            { pageIndex: 0, x: 85, y: 594 },
+            { pageIndex: 1, x: 411, y: 429 },
+          ],
           fontSize: 11,
-          maxLength: 20,
           required: true,
+        },
+        {
+          key: "birthDate",
+          label: "Fecha de nacimiento",
+          x: 162,
+          y: 580,
+          pageIndex: 0,
+          fontSize: 11,
+          required: true,
+        },
+        {
+          key: "renal_litiasis",
+          label: "Alteración de la función renal o litiasis",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 468, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 468, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "funcion_cardiaca",
+          label: "Alteración de la función cardíaca",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 447, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 447, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "diabetes",
+          label: "Diabetes",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 426, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 426, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "deficiencia_g6pd",
+          label: "Deficiencia de G6PD",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 406, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 406, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "hipomagnesemia",
+          label: "Hipomagnesemia o hipoclacemia",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 385, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 385, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "hemocromatosis",
+          label: "Hemocromatosis",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 364, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 364, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "hiperoxaluria",
+          label: "Hiperoxaluria",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 343, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 343, valueMatch: "No", drawValue: "X" },
+          ],
         },
         {
           key: "legalRepresentativeName",
-          label: "Nombre y apellidos del representante legal",
-          pageIndex: 0,
-          x: 133,
-          y: 577,
-          fontSize: 10,
-          maxLength: 100,
-        },
-        {
-          key: "legalRepresentativeAge",
-          label: "Edad del representante legal",
-          pageIndex: 0,
-          x: 57,
-          y: 567,
-          fontSize: 10,
-          maxLength: 3,
+          label: "Representante legal",
+          x: 100,
+          y: 454,
+          pageIndex: 1,
+          fontSize: 11,
         },
         {
           key: "legalRepresentativeDni",
-          label: "DNI del representante legal",
-          pageIndex: 0,
-          x: 198,
-          y: 567,
-          fontSize: 10,
-          maxLength: 20,
-        },
-        {
-          key: "legalRepresentativeRole",
-          label: "Tipo de representante legal",
-          pageIndex: 0,
-          x: 340,
-          y: 567,
-          inputType: "select",
-          options: ["Representante legal", "Familiar", "Allegado"],
-          fontSize: 10,
-          maxLength: 40,
-        },
-        {
-          key: "date",
-          label: "Fecha",
-          pageIndex: 0,
-          x: 114,
-          y: 98,
-          fontSize: 12,
-          maxLength: 20,
-          required: true,
+          label: "DNI Representante",
+          x: 411,
+          y: 454,
+          pageIndex: 1,
+          fontSize: 11,
         },
       ],
     },
@@ -154,118 +240,156 @@ export class PdfManagerService {
       assetPath: "assets/pdf/non_pharma_es.pdf",
       fields: [
         {
-          key: "fullName",
-          label: "Nombre y apellidos del paciente",
+          key: "date",
+          label: "Fecha",
+          x: 150,
+          y: 703,
           pageIndex: 0,
-          x: 101,
-          y: 656,
           fontSize: 11,
-          maxLength: 100,
           required: true,
         },
         {
-          key: "age",
-          label: "Edad del paciente",
-          pageIndex: 0,
-          x: 69,
-          y: 645,
+          key: "fullName",
+          label: "Nombre y apellidos",
+          positions: [
+            { pageIndex: 0, x: 154, y: 557 },
+            { pageIndex: 1, x: 172, y: 202 },
+          ],
           fontSize: 11,
-          maxLength: 3,
           required: true,
         },
         {
           key: "dni",
-          label: "DNI del paciente",
-          pageIndex: 0,
-          x: 221,
-          y: 645,
+          label: "DNI",
+          positions: [
+            { pageIndex: 0, x: 83, y: 542 },
+            { pageIndex: 1, x: 412, y: 202 },
+          ],
           fontSize: 11,
-          maxLength: 20,
           required: true,
+        },
+        {
+          key: "birthDate",
+          label: "Fecha de nacimiento",
+          x: 162,
+          y: 528,
+          pageIndex: 0,
+          fontSize: 11,
+          required: true,
+        },
+        {
+          key: "especifications",
+          label: "Especificaciones",
+          pageIndex: 1,
+          x: 55,
+          y: 650,
+          inputType: "textarea",
+          maxWidth: 450,
+          lineHeight: 15,
+          maxLines: 4,
+          maxLength: 2000,
+        },
+        {
+          key: "hipertension",
+          label: "Hipertensión arterial",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 490, y: 419, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 517, y: 419, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "diabetes",
+          label: "Diabetes",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 490, y: 397, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 517, y: 397, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "coagulation",
+          label: "Alteraciones de la coagulación",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 490, y: 377, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 517, y: 377, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "anesthesics",
+          label: "Intolerancia a los anestésicos locales",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 490, y: 356, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 517, y: 356, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "allergies",
+          label: "¿Sufre algún tipo de alergia?",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 490, y: 325, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 517, y: 325, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "allergiesDetail",
+          label: "En caso afirmativo, indique a qué",
+          inputType: "textarea",
+          pageIndex: 0,
+          x: 60,
+          y: 325,
+          maxWidth: 430,
+          lineHeight: 10,
+          maxLines: 4,
+        },
+        {
+          key: "antecedents",
+          label: "Antecedentes relacionados con la prueba",
+          pageIndex: 0,
+          x: 55,
+          y: 245,
+          inputType: "textarea",
+          maxWidth: 450,
+          lineHeight: 15,
+          maxLines: 4,
+          maxLength: 2000,
+        },
+        {
+          key: "infiltrationType",
+          label: "Infiltración a realizar",
+          x: 223,
+          y: 358,
+          pageIndex: 1,
+          fontSize: 11,
         },
         {
           key: "legalRepresentativeName",
-          label: "Nombre y apellidos del representante legal",
-          pageIndex: 0,
-          x: 133,
-          y: 591,
-          fontSize: 10,
-          maxLength: 100,
-        },
-        {
-          key: "legalRepresentativeAge",
-          label: "Edad del representante legal",
-          pageIndex: 0,
-          x: 57,
-          y: 581,
-          fontSize: 10,
-          maxLength: 3,
+          label: "Representante legal",
+          x: 100,
+          y: 227,
+          pageIndex: 1,
+          fontSize: 11,
         },
         {
           key: "legalRepresentativeDni",
-          label: "DNI del representante legal",
-          pageIndex: 0,
-          x: 198,
-          y: 581,
-          fontSize: 10,
-          maxLength: 20,
-        },
-        {
-          key: "legalRepresentativeRole",
-          label: "Tipo de representante legal",
-          pageIndex: 0,
-          x: 340,
-          y: 581,
-          inputType: "select",
-          options: ["Representante legal", "Familiar", "Allegado"],
-          fontSize: 10,
-          maxLength: 40,
-        },
-        {
-          key: "generalMedicalHistory",
-          label: "Antecedentes generales",
-          pageIndex: 0,
-          x: 270,
-          y: 538,
-          fontSize: 10,
-          maxLength: 120,
-        },
-        {
-          key: "allergyDetail",
-          label: "Detalle de alergias",
-          pageIndex: 0,
-          x: 57,
-          y: 501,
-          fontSize: 10,
-          maxLength: 80,
-        },
-        {
-          key: "relatedMedicalHistory",
-          label: "Antecedentes relacionados",
-          pageIndex: 0,
-          x: 57,
-          y: 458,
-          fontSize: 10,
-          maxLength: 180,
-        },
-        {
-          key: "procedureName",
-          label: "Procedimiento a realizar",
-          pageIndex: 0,
-          x: 201,
-          y: 160,
-          fontSize: 10,
-          maxLength: 120,
-        },
-        {
-          key: "date",
-          label: "Fecha",
-          pageIndex: 0,
-          x: 114,
-          y: 135,
-          fontSize: 12,
-          maxLength: 20,
-          required: true,
+          label: "DNI Representante",
+          x: 409,
+          y: 228,
+          pageIndex: 1,
+          fontSize: 11,
         },
       ],
     },
@@ -275,82 +399,113 @@ export class PdfManagerService {
       assetPath: "assets/pdf/ozone_autohemo_es.pdf",
       fields: [
         {
-          key: "fullName",
-          label: "Nombre y apellidos del paciente",
+          key: "date",
+          label: "Fecha",
+          x: 150,
+          y: 703,
           pageIndex: 0,
-          x: 101,
-          y: 615,
           fontSize: 11,
-          maxLength: 100,
           required: true,
         },
         {
-          key: "age",
-          label: "Edad del paciente",
-          pageIndex: 0,
-          x: 69,
-          y: 604,
+          key: "fullName",
+          label: "Nombre y apellidos",
+          positions: [
+            { pageIndex: 0, x: 154, y: 541 },
+            { pageIndex: 1, x: 170, y: 544 },
+          ],
           fontSize: 11,
-          maxLength: 3,
           required: true,
         },
         {
           key: "dni",
-          label: "DNI del paciente",
-          pageIndex: 0,
-          x: 221,
-          y: 604,
+          label: "DNI",
+          positions: [
+            { pageIndex: 0, x: 83, y: 528 },
+            { pageIndex: 1, x: 410, y: 544 },
+          ],
           fontSize: 11,
-          maxLength: 20,
           required: true,
         },
         {
-          key: "legalRepresentativeName",
-          label: "Nombre y apellidos del representante legal",
+          key: "age",
+          label: "Edad",
+          x: 87,
+          y: 515,
           pageIndex: 0,
-          x: 133,
-          y: 549,
-          fontSize: 10,
-          maxLength: 100,
-        },
-        {
-          key: "legalRepresentativeAge",
-          label: "Edad del representante legal",
-          pageIndex: 0,
-          x: 57,
-          y: 539,
-          fontSize: 10,
+          fontSize: 11,
           maxLength: 3,
         },
         {
-          key: "legalRepresentativeDni",
-          label: "DNI del representante legal",
-          pageIndex: 0,
-          x: 198,
-          y: 539,
-          fontSize: 10,
-          maxLength: 20,
-        },
-        {
-          key: "legalRepresentativeRole",
-          label: "Tipo de representante legal",
-          pageIndex: 0,
-          x: 340,
-          y: 539,
+          key: "favismo",
+          label: "Favismo",
           inputType: "select",
-          options: ["Representante legal", "Familiar", "Allegado"],
-          fontSize: 10,
-          maxLength: 40,
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 297, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 297, valueMatch: "No", drawValue: "X" },
+          ],
         },
         {
-          key: "date",
-          label: "Fecha (dd/mm/aaaa)",
-          pageIndex: 0,
-          x: 114,
-          y: 126,
-          fontSize: 12,
-          maxLength: 10,
-          required: true,
+          key: "hipertiroidismo",
+          label: "Hipertiroidismo con nódulos activos",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 277, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 277, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "enfermedad_sangre",
+          label: "Enfermedad severa de la sangre",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 256, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 256, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "embarazo",
+          label: "Embarazo",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 235, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 235, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "infarto",
+          label: "Infarto de Miocardio agudo o reciente",
+          inputType: "select",
+          options: ["Sí", "No"],
+          fontSize: 13,
+          positions: [
+            { pageIndex: 0, x: 453, y: 214, valueMatch: "Sí", drawValue: "X" },
+            { pageIndex: 0, x: 505, y: 214, valueMatch: "No", drawValue: "X" },
+          ],
+        },
+        {
+          key: "legalRepresentativeName",
+          label: "Representante legal",
+          x: 100,
+          y: 569,
+          pageIndex: 1,
+          fontSize: 11,
+        },
+        {
+          key: "legalRepresentativeDni",
+          label: "DNI Representante",
+          x: 410,
+          y: 569,
+          pageIndex: 1,
+          fontSize: 11,
         },
       ],
     },
@@ -371,6 +526,18 @@ export class PdfManagerService {
       medicalRecords,
       previousRecords
     );
+  }
+
+  generateInvoiceWithJsPDF(
+    patient: PatientDto,
+    invoiceData: {
+      facturaNumber: string;
+      address: string;
+      totalAmount: number;
+      concept: string;
+    }
+  ): jsPDF {
+    return this.pdfService.generateInvoicePdf(patient, invoiceData);
   }
 
   getTemplates(): PdfTemplateDefinition[] {
@@ -395,33 +562,81 @@ export class PdfManagerService {
       .toPromise();
 
     const pdfDoc = await PDFDocument.load(templateBytes);
-    const font = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+    const fontRegular = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+    const fontBoldSans = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
     const pages = pdfDoc.getPages();
 
     template.fields.forEach((field) => {
-      const rawValue = formData[field.key] || "";
-      const value = rawValue.toString().trim();
-      if (!value) {
-        return;
-      }
+      const value = formData[field.key] || "";
 
-      const page = pages[field.pageIndex];
-      if (!page) {
-        return;
-      }
+      const posList = field.positions || [
+        {
+          pageIndex: field.pageIndex ?? 0,
+          x: field.x ?? 0,
+          y: field.y ?? 0,
+        },
+      ];
 
-      page.drawText(value, {
-        x: field.x,
-        y: field.y,
-        size: field.fontSize || 10,
-        font,
-        color: rgb(0, 0, 0),
+      posList.forEach((pos) => {
+        if (pos.valueMatch && pos.valueMatch !== value) {
+          return;
+        }
+
+        const page = pages[pos.pageIndex];
+        if (!page) return;
+
+        let drawValue = pos.drawValue ?? value;
+
+        const isOptionField = field.inputType === "select" || !!pos.drawValue;
+        const font = isOptionField ? fontBoldSans : fontRegular;
+
+        if (field.maxWidth && field.maxLines && !isOptionField) {
+          const words = drawValue.split(/\s+/);
+          const lines: string[] = [];
+          let currentLine = "";
+
+          for (const word of words) {
+            const testLine = currentLine ? currentLine + " " + word : word;
+            const testWidth = font.widthOfTextAtSize(
+              testLine,
+              field.fontSize || 10
+            );
+
+            if (testWidth > field.maxWidth) {
+              if (currentLine) {
+                lines.push(currentLine);
+                currentLine = word;
+              } else {
+                lines.push(word);
+                currentLine = "";
+              }
+            } else {
+              currentLine = testLine;
+            }
+          }
+          if (currentLine) {
+            lines.push(currentLine);
+          }
+
+          drawValue = lines.slice(0, field.maxLines).join("\n");
+        }
+
+        page.drawText(drawValue, {
+          x: pos.x,
+          y: pos.y,
+          size: field.fontSize || 10,
+          font,
+          color: rgb(0, 0, 0),
+          maxWidth: field.maxWidth,
+          lineHeight: field.lineHeight,
+        });
       });
     });
 
-    const filledPdf = await pdfDoc.save();
-    const filledPdfBytes = new Uint8Array(filledPdf.byteLength);
-    filledPdfBytes.set(filledPdf);
+    const pdfBytes = await pdfDoc.save();
+    const filledPdfBytes = new Uint8Array(pdfBytes.byteLength);
+    filledPdfBytes.set(pdfBytes);
     return new Blob([filledPdfBytes], { type: "application/pdf" });
   }
 }

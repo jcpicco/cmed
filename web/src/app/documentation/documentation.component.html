@@ -21,7 +21,7 @@
                 antecedentes, gestionar notas y adjuntar documentación digital de forma segura y eficiente.
             </p>
             <div class="version-badge">
-                <strong>Versión 1.4.0</strong> - Actualizado el 07/05/2026
+                <strong>Versión 1.4.1</strong> - Actualizado el 01/07/2026
             </div>
         </section>
 
@@ -454,6 +454,12 @@
                     </li>
                     <li><strong>v1.4.0:</strong> Encabezados de PDF actualizados con la nueva identidad
                         corporativa.</li>
+                    <li><strong>v1.4.1:</strong> Motor de PDFs por plantilla con mapeo preciso de coordenadas
+                        (<code>pdf-lib</code>): coloca texto y marcas "X" de Sí/No en posiciones exactas sobre los PDFs prediseñados.</li>
+                    <li><strong>v1.4.1:</strong> Nuevos campos de historial clínico en el consentimiento de Infusión de
+                        Vitamina C (alteración renal, cardíaca, diabetes, G6PD, hipomagnesemia, hemocromatosis,
+                        hiperoxaluria).</li>
+                    <li><strong>v1.4.1:</strong> Soporte del flujo <code>factura</code> en el generador de PDFs.</li>
                 </ul>
 
                 <h3>📝 Formato del Documento</h3>
@@ -499,10 +505,11 @@
                         adjuntarlo manualmente al correo.</li>
                 </ul>
 
-                <h3>🧾 Consentimientos Disponibles (v1.3.0)</h3>
+                <h3>🧾 Consentimientos Disponibles</h3>
                 <ul>
-                    <li><strong>Consentimiento Infusión de Vitamina C</strong></li>
-                    <li><strong>Consentimiento básico sin fármacos</strong></li>
+                    <li><strong>Documento de Protección de Datos (GDPR)</strong> <span class="badge badge-warning" style="font-size: 0.6em">v1.4.1</span></li>
+                    <li><strong>Consentimiento Infusión de Vitamina C</strong> — incluye 7 campos de historial clínico con marcas Sí/No <span class="badge badge-warning" style="font-size: 0.6em">actualizado v1.4.1</span></li>
+                    <li><strong>Consentimiento Básico sin Fármacos</strong></li>
                     <li><strong>Consentimiento Autohemotransfusión con Ozono</strong></li>
                 </ul>
             </div>
@@ -564,8 +571,20 @@
                 <h2>Changelog (Historial de Cambios)</h2>
             </div>
             <div class="section-body">
-                <h3>Versión 1.4.0 <span class="badge badge-success"
+                <h3>Versión 1.4.1 <span class="badge badge-success"
                         style="font-size: 0.6em; vertical-align: middle;">ACTUAL</span></h3>
+                <ul>
+                    <li><strong>Feature PDF:</strong> Motor de plantillas PDF con mapeo preciso de coordenadas usando
+                        <code>pdf-lib</code>. Coloca texto y marcas "X" directamente sobre los documentos prediseñados.</li>
+                    <li><strong>Feature PDF:</strong> Nuevos campos de historial clínico en el consentimiento de Infusión
+                        de Vitamina C: Alteración de la función renal o litiasis, Alteración de la función cardíaca,
+                        Diabetes, Deficiencia de G6PD, Hipomagnesemia o hipoclacemia, Hemocromatosis e Hiperoxaluria.</li>
+                    <li><strong>Feature PDF:</strong> Integración del documento de Protección de Datos (GDPR) como
+                        consentimiento generado por plantilla.</li>
+                    <li><strong>Bugfix:</strong> Soporte del flujo <code>factura</code> en el tipo <code>PdfFlowType</code>.</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">Versión 1.4.0</h3>
                 <ul>
                     <li><strong>Rebranding:</strong> Migración completa de identidad de <strong>CMED</strong> a
                         <strong>MedCenter Manager</strong>.
@@ -694,8 +713,8 @@
         <!-- Footer -->
         <footer class="doc-footer">
             <p>
-                <strong>Sistema MedCenter Manager v1.4.0</strong> - Desarrollado para la gestión médica integral<br>
-                Última actualización: 07/05/2026
+                <strong>Sistema MedCenter Manager v1.4.1</strong> - Desarrollado para la gestión médica integral<br>
+                Última actualización: 01/07/2026
             </p>
             <button class="btn btn-primary" routerLink="/">
                 ← Volver al Inicio

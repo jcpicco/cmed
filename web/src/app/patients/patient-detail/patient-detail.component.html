@@ -1039,8 +1039,10 @@
               <div *ngFor="let field of selectedTemplate?.fields" class="form-group">
                 <label [for]="'templateField_' + field.key">{{ field.label }} <span
                     *ngIf="field.required">*</span></label>
-                <input *ngIf="field.inputType !== 'select'" [id]="'templateField_' + field.key" type="text"
+                <input *ngIf="field.inputType !== 'select' && field.inputType !== 'textarea'" [id]="'templateField_' + field.key" type="text"
                   class="form-control" [formControlName]="field.key" [maxlength]="field.maxLength || 120" />
+                <textarea *ngIf="field.inputType === 'textarea'" [id]="'templateField_' + field.key" class="form-control"
+                  [formControlName]="field.key" rows="4" [maxlength]="field.maxLength || 2000"></textarea>
                 <select *ngIf="field.inputType === 'select'" [id]="'templateField_' + field.key" class="form-control"
                   [formControlName]="field.key">
                   <option value="">Seleccione una opción</option>
@@ -1048,6 +1050,30 @@
                     {{ option }}
                   </option>
                 </select>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div *ngIf="!generatedPdf && !generatedTemplatePdfBlob && !pdfLoading && pdfFlowStep === 'factura'">
+          <div class="form-section">
+            <h3>Factura</h3>
+            <form [formGroup]="invoiceForm">
+              <div class="form-group">
+                <label for="invoiceFacturaNumber">Factura Nº <span>*</span></label>
+                <input id="invoiceFacturaNumber" type="text" class="form-control" formControlName="facturaNumber" maxlength="50" placeholder="Ej: 2026/001" />
+              </div>
+              <div class="form-group">
+                <label for="invoiceAddress">Dirección del paciente <span>*</span></label>
+                <textarea id="invoiceAddress" class="form-control" formControlName="address" rows="3" maxlength="255" placeholder="Dirección completa..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="invoiceConcept">Concepto <span>*</span></label>
+                <textarea id="invoiceConcept" class="form-control" formControlName="concept" rows="5" placeholder="Ej: Consulta y/o terapia médica..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="invoiceTotalAmount">Total servicios médicos (€) <span>*</span></label>
+                <input id="invoiceTotalAmount" type="number" class="form-control" formControlName="totalAmount" min="0" step="0.01" placeholder="Ej: 150.00" />
               </div>
             </form>
           </div>
@@ -1135,7 +1161,7 @@
         <div class="spacer"></div>
         <button *ngIf="!generatedPdf && !generatedTemplatePdfBlob" class="btn btn-primary"
           (click)="confirmPdfGeneration()"
-          [disabled]="pdfLoading || (pdfFlowStep === 'template' && templateForm.invalid)">
+          [disabled]="pdfLoading || (pdfFlowStep === 'template' && templateForm.invalid) || (pdfFlowStep === 'factura' && invoiceForm.invalid)">
           <span *ngIf="!pdfLoading">Generar PDF</span>
           <span *ngIf="pdfLoading" class="spinner-small"></span>
         </button>

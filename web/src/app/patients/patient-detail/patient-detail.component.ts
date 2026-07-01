@@ -158,11 +158,12 @@ export class PatientDetailComponent implements OnInit {
   generatedPdfFlow: PdfFlowType | null = null;
   selectedMedicalRecordIds: string[] = [];
   selectedPreviousRecordIds: string[] = [];
-  pdfFlowStep: "legacy" | "template" = "legacy";
+  pdfFlowStep: "legacy" | "template" | "factura" = "legacy";
   selectedPdfFlowOption = "legacy";
   pdfTemplates: PdfTemplateDefinition[] = [];
   selectedTemplate: PdfTemplateDefinition | null = null;
   templateForm: FormGroup;
+  invoiceForm: FormGroup;
   emailSending = false;
 
   constructor(
@@ -185,7 +186,17 @@ export class PatientDetailComponent implements OnInit {
     this.noteForm = this.createNoteForm();
     this.patientForm = this.createPatientForm();
     this.templateForm = this.formBuilder.group({});
+    this.invoiceForm = this.createInvoiceForm();
     this.pdfTemplates = this.pdfManagerService.getTemplates();
+  }
+
+  private createInvoiceForm(): FormGroup {
+    return this.formBuilder.group({
+      facturaNumber: ["", Validators.required],
+      address: ["", Validators.required],
+      concept: ["Consulta y/o terapia médica", Validators.required],
+      totalAmount: ["", [Validators.required, Validators.min(0)]],
+    });
   }
 
   private createNoteForm(): FormGroup {
@@ -2108,6 +2119,7 @@ export class PatientDetailComponent implements OnInit {
     this.selectedPdfFlowOption = "legacy";
     this.pdfFlowStep = "legacy";
     this.selectedTemplate = null;
+    this.invoiceForm.reset();
     this.showPdfModal = true;
   }
 
@@ -2123,9 +2135,14 @@ export class PatientDetailComponent implements OnInit {
     this.selectedPdfFlowOption = "legacy";
     this.pdfFlowStep = "legacy";
     this.selectedTemplate = null;
+    this.invoiceForm.reset();
   }
 
   confirmPdfGeneration(): void {
+    if (this.pdfFlowStep === "factura") {
+      this.confirmFacturaPdfGeneration();
+      return;
+    }
     if (this.pdfFlowStep === "template") {
       this.confirmTemplatePdfGeneration();
       return;
@@ -2139,6 +2156,10 @@ export class PatientDetailComponent implements OnInit {
       this.selectLegacyFlow();
       return;
     }
+    if (selectedValue === "factura") {
+      this.selectFacturaFlow();
+      return;
+    }
     this.selectTemplateFlow(selectedValue);
   }
 
@@ -2149,6 +2170,16 @@ export class PatientDetailComponent implements OnInit {
     this.generatedPdf = null;
     this.generatedTemplatePdfBlob = null;
     this.generatedPdfFlow = null;
+  }
+
+  private selectFacturaFlow(): void {
+    this.pdfFlowStep = "factura";
+    this.selectedTemplate = null;
+    this.templateForm = this.formBuilder.group({});
+    this.generatedPdf = null;
+    this.generatedTemplatePdfBlob = null;
+    this.generatedPdfFlow = null;
+    this.invoiceForm.reset();
   }
 
   private selectTemplateFlow(templateId: string): void {
@@ -2288,6 +2319,30 @@ export class PatientDetailComponent implements OnInit {
     }
   }
 
+  private confirmFacturaPdfGeneration(): void {
+    if (!this.selectedPatient) return;
+    if (this.invoiceForm.invalid) {
+      this.invoiceForm.markAllAsTouched();
+      return;
+    }
+
+    this.pdfLoading = true;
+    try {
+      const invoiceData = this.invoiceForm.getRawValue();
+      const doc = this.pdfManagerService.generateInvoiceWithJsPDF(
+        this.selectedPatient,
+        invoiceData
+      );
+      this.generatedPdf = doc;
+      this.generatedPdfFlow = "factura";
+    } catch (e) {
+      console.error("Error generating invoice PDF", e);
+      alert("Error al generar la factura");
+    } finally {
+      this.pdfLoading = false;
+    }
+  }
+
   private async confirmTemplatePdfGeneration(): Promise<void> {
     if (!this.selectedTemplate) {
       alert("Seleccione una plantilla para continuar.");
@@ -2325,7 +2380,7 @@ export class PatientDetailComponent implements OnInit {
       window.open(this.generatedTemplatePdfUrl, "_blank");
       return;
     }
-    if (this.generatedPdfFlow === "legacy" && this.generatedPdf) {
+    if ((this.generatedPdfFlow === "legacy" || this.generatedPdfFlow === "factura") && this.generatedPdf) {
       window.open(this.generatedPdf.output("bloburl").toString(), "_blank");
     }
   }
@@ -2343,10 +2398,11 @@ export class PatientDetailComponent implements OnInit {
   }
 
   executeEmail(): void {
-    if (this.generatedPdfFlow === "legacy" && this.generatedPdf) {
-      this.generatedPdf.save(
-        `historia_clinica_${this.selectedPatient?.lastName || "paciente"}.pdf`
-      );
+    if ((this.generatedPdfFlow === "legacy" || this.generatedPdfFlow === "factura") && this.generatedPdf) {
+      const fileName = this.generatedPdfFlow === "factura" 
+        ? `factura_${this.selectedPatient?.lastName || "paciente"}.pdf`
+        : `historia_clinica_${this.selectedPatient?.lastName || "paciente"}.pdf`;
+      this.generatedPdf.save(fileName);
     } else if (
       this.generatedPdfFlow === "template" &&
       this.generatedTemplatePdfBlob
